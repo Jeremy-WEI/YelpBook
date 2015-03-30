@@ -1,7 +1,5 @@
 var express = require('express');
 var router = express.Router();
-
-console.log('mysql');
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
 	host     : 'mydatabase.cfxag8k1xo7h.us-east-1.rds.amazonaws.com',
