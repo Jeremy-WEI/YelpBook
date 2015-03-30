@@ -28,7 +28,9 @@ function query(res) {
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-	query(res);
+	// query(res);
+//	res.render('user', {"title": "abc", "feeds": [{"a": "aa", "b": "bb"}]});
+    res.render('user', {"title": "abc", "feeds": [{"user": "user1", "text": "user1's text", "datetime": "user1time"}]});
 });
 
 

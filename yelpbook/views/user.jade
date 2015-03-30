@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  form(action='search', method='POST')
+    .form-group
+      .row
+        .col-md-8
+          input#search.form-control(name='search_business', placeholder='Search for business', type='text')
+        .col-md-4
+          input(type='submit', value='Search')
+  h1 News Feed
+  .row
+    .col-md-8
+      section.content-wrapper
+        .container
+          for feed in feeds
+            .row
+              .col-md-8
+                p #{feed.user}
+            .row
+              .col-md-8
+                p #{feed.text}
+            .row
+              .col-md-8
+                p #{feed.datetime}
