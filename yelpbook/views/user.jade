@@ -3,13 +3,6 @@ extends layout
 block content
   h1= user_id
   p Welcome to #{user_id}
-  form(action='search', method='POST')
-    .form-group
-      .row
-        .col-md-8
-          input#search.form-control(name='search', placeholder='Search for business', type='text')
-        .col-md-4
-          input(type='submit', value='Search')
   h1 News Feeds From Friends
   .row
     .col-md-8

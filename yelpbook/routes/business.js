@@ -39,6 +39,19 @@ function doBusinessQuery(req, res, next) {
 	});
 }
 
+function doBusinessSearch(req, res, next) {
+    var query_string = req.query.search;
+    console.log(query_string);
+    var query = "SELECT * FROM BUSINESS WHERE name LIKE \"%" + query_string + "%\" LIMIT 50";
+    connection.query(query, function(err, results) {
+        if(err) {
+            next(new Error(500));
+        } else {
+            res.render('businesses', {"results": results});
+        }
+    });
+}
+
 router.get('/', function(req, res, next) {
 	if (req.query.business_id == undefined)
 		next(new Error(404));
@@ -46,6 +59,14 @@ router.get('/', function(req, res, next) {
 		doBusinessQuery(req, res, next);
 });
 
+
+router.get('/search', function(req, res, next) {
+    if (req.query.search == undefined)
+        next(new Error(404));
+    else {
+        doBusinessSearch(req, res, next);
+    }
+});
 
 module.exports = router;
 

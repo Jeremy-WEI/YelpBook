@@ -17,4 +17,11 @@ html
     script(src="/scripts/raphael-min.js")
     script(src="/scripts/sb-admin-2.js")
   body
+    form(action='/business/search', method='GET')
+      .form-group
+        .row
+          .col-md-8
+            input#search.form-control(name='search', placeholder='Search for business', type='text')
+          .col-md-4
+            input(type='submit', value='Search For Businesses')
     block content
