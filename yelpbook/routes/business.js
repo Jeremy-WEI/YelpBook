@@ -27,7 +27,7 @@ function doBusinessQuery(req, res, next) {
 	function(err, busInfo) {
 		if (!err) {
 			if (busInfo.length == 0) {
-				connection.end();
+//				connection.end();
 				next(new Error(404));
 			}
 			else 
