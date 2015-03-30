@@ -1,0 +1,800 @@
+extends layout
+
+block content
+  nav.navbar.navbar-default.navbar-static-top(role='navigation', style='margin-bottom: 0')
+    .navbar-header
+      button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar 
+    // /.navbar-header
+    ul.nav.navbar-top-links.navbar-right
+      li.dropdown
+        a.dropdown-toggle(data-toggle='dropdown', href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+          i.fa.fa-envelope.fa-fw
+          i.fa.fa-caret-down
+        ul.dropdown-menu.dropdown-messages
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                strong John Smith
+                span.pull-right.text-muted
+                  em Yesterday
+              div
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...
+          li.divider
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                strong John Smith
+                span.pull-right.text-muted
+                  em Yesterday
+              div
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...
+          li.divider
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                strong John Smith
+                span.pull-right.text-muted
+                  em Yesterday
+              div
+                | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...
+          li.divider
+          li
+            a.text-center(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              strong Read All Messages
+              i.fa.fa-angle-right
+        // /.dropdown-messages
+      // /.dropdown
+      li.dropdown
+        a.dropdown-toggle(data-toggle='dropdown', href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+          i.fa.fa-tasks.fa-fw
+          i.fa.fa-caret-down
+        ul.dropdown-menu.dropdown-tasks
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                p
+                  strong Task 1
+                  span.pull-right.text-muted 40% Complete
+                .progress.progress-striped.active
+                  .progress-bar.progress-bar-success(role='progressbar', aria-valuenow='40', aria-valuemin='0', aria-valuemax='100', style='width: 40%')
+                    span.sr-only 40% Complete (success)
+          li.divider
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                p
+                  strong Task 2
+                  span.pull-right.text-muted 20% Complete
+                .progress.progress-striped.active
+                  .progress-bar.progress-bar-info(role='progressbar', aria-valuenow='20', aria-valuemin='0', aria-valuemax='100', style='width: 20%')
+                    span.sr-only 20% Complete
+          li.divider
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                p
+                  strong Task 3
+                  span.pull-right.text-muted 60% Complete
+                .progress.progress-striped.active
+                  .progress-bar.progress-bar-warning(role='progressbar', aria-valuenow='60', aria-valuemin='0', aria-valuemax='100', style='width: 60%')
+                    span.sr-only 60% Complete (warning)
+          li.divider
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                p
+                  strong Task 4
+                  span.pull-right.text-muted 80% Complete
+                .progress.progress-striped.active
+                  .progress-bar.progress-bar-danger(role='progressbar', aria-valuenow='80', aria-valuemin='0', aria-valuemax='100', style='width: 80%')
+                    span.sr-only 80% Complete (danger)
+          li.divider
+          li
+            a.text-center(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              strong See All Tasks
+              i.fa.fa-angle-right
+        // /.dropdown-tasks
+      // /.dropdown
+      li.dropdown
+        a.dropdown-toggle(data-toggle='dropdown', href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+          i.fa.fa-bell.fa-fw
+          i.fa.fa-caret-down
+        ul.dropdown-menu.dropdown-alerts
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                i.fa.fa-comment.fa-fw
+                |  New Comment
+                span.pull-right.text-muted.small 4 minutes ago
+          li.divider
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                i.fa.fa-twitter.fa-fw
+                |  3 New Followers
+                span.pull-right.text-muted.small 12 minutes ago
+          li.divider
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                i.fa.fa-envelope.fa-fw
+                |  Message Sent
+                span.pull-right.text-muted.small 4 minutes ago
+          li.divider
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                i.fa.fa-tasks.fa-fw
+                |  New Task
+                span.pull-right.text-muted.small 4 minutes ago
+          li.divider
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              div
+                i.fa.fa-upload.fa-fw
+                |  Server Rebooted
+                span.pull-right.text-muted.small 4 minutes ago
+          li.divider
+          li
+            a.text-center(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              strong See All Alerts
+              i.fa.fa-angle-right
+        // /.dropdown-alerts
+      // /.dropdown
+      li.dropdown
+        a.dropdown-toggle(data-toggle='dropdown', href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+          i.fa.fa-user.fa-fw
+          i.fa.fa-caret-down
+        ul.dropdown-menu.dropdown-user
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              i.fa.fa-user.fa-fw
+              |  User Profile
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              i.fa.fa-gear.fa-fw
+              |  Settings
+          li.divider
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/login.html')
+              i.fa.fa-sign-out.fa-fw
+              |  Logout
+        // /.dropdown-user
+      // /.dropdown
+    // /.navbar-top-links
+    .navbar-default.sidebar(role='navigation')
+      .sidebar-nav.navbar-collapse
+        ul#side-menu.nav.in
+          li.sidebar-search
+            .input-group.custom-search-form
+              input.form-control(type='text', placeholder='Search...')
+              span.input-group-btn
+                button.btn.btn-default(type='button')
+                  i.fa.fa-search
+            // /input-group
+          li
+            a.active(href='./SB Admin 2 - Bootstrap Admin Theme_files/SB Admin 2 - Bootstrap Admin Theme.html')
+              i.fa.fa-dashboard.fa-fw
+              |  Dashboard
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              i.fa.fa-bar-chart-o.fa-fw
+              |  Charts
+              span.fa.arrow
+            ul.nav.nav-second-level.collapse
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/flot.html') Flot Charts
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/morris.html') Morris.js Charts
+            // /.nav-second-level
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/tables.html')
+              i.fa.fa-table.fa-fw
+              |  Tables
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/forms.html')
+              i.fa.fa-edit.fa-fw
+              |  Forms
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              i.fa.fa-wrench.fa-fw
+              |  UI Elements
+              span.fa.arrow
+            ul.nav.nav-second-level.collapse
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/panels-wells.html') Panels and Wells
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/buttons.html') Buttons
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/notifications.html') Notifications
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/typography.html') Typography
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/icons.html')  Icons
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/grid.html') Grid
+            // /.nav-second-level
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              i.fa.fa-sitemap.fa-fw
+              |  Multi-Level Dropdown
+              span.fa.arrow
+            ul.nav.nav-second-level.collapse
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Second Level Item
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Second Level Item
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                  | Third Level 
+                  span.fa.arrow
+                ul.nav.nav-third-level.collapse
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Third Level Item
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Third Level Item
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Third Level Item
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Third Level Item
+                // /.nav-third-level
+            // /.nav-second-level
+          li
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              i.fa.fa-files-o.fa-fw
+              |  Sample Pages
+              span.fa.arrow
+            ul.nav.nav-second-level.collapse
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/blank.html') Blank Page
+              li
+                a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/login.html') Login Page
+            // /.nav-second-level
+      // /.sidebar-collapse
+    // /.navbar-static-side
+  #page-wrapper(style='min-height: 610px;')
+    .row
+      .col-lg-12
+        h1.page-header Dashboard
+      // /.col-lg-12
+    // /.row
+    .row
+      .col-lg-3.col-md-6
+        .panel.panel-primary
+          .panel-heading
+            .row
+              .col-xs-3
+                i.fa.fa-comments.fa-5x
+              .col-xs-9.text-right
+                .huge 26
+                div New Comments!
+          a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+            .panel-footer
+              span.pull-left View Details
+              span.pull-right
+                i.fa.fa-arrow-circle-right
+              .clearfix
+      .col-lg-3.col-md-6
+        .panel.panel-green
+          .panel-heading
+            .row
+              .col-xs-3
+                i.fa.fa-tasks.fa-5x
+              .col-xs-9.text-right
+                .huge 12
+                div New Tasks!
+          a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+            .panel-footer
+              span.pull-left View Details
+              span.pull-right
+                i.fa.fa-arrow-circle-right
+              .clearfix
+      .col-lg-3.col-md-6
+        .panel.panel-yellow
+          .panel-heading
+            .row
+              .col-xs-3
+                i.fa.fa-shopping-cart.fa-5x
+              .col-xs-9.text-right
+                .huge 124
+                div New Orders!
+          a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+            .panel-footer
+              span.pull-left View Details
+              span.pull-right
+                i.fa.fa-arrow-circle-right
+              .clearfix
+      .col-lg-3.col-md-6
+        .panel.panel-red
+          .panel-heading
+            .row
+              .col-xs-3
+                i.fa.fa-support.fa-5x
+              .col-xs-9.text-right
+                .huge 13
+                div Support Tickets!
+          a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+            .panel-footer
+              span.pull-left View Details
+              span.pull-right
+                i.fa.fa-arrow-circle-right
+              .clearfix
+    // /.row
+    .row
+      .col-lg-8
+        .panel.panel-default
+          .panel-heading
+            i.fa.fa-bar-chart-o.fa-fw
+            |  Area Chart Example
+            .pull-right
+              .btn-group
+                button.btn.btn-default.btn-xs.dropdown-toggle(type='button', data-toggle='dropdown')
+                  | Actions
+                  span.caret
+                ul.dropdown-menu.pull-right(role='menu')
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Action
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Another action
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Something else here
+                  li.divider
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Separated link
+          // /.panel-heading
+          .panel-body
+            #morris-area-chart(style='position: relative; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+              svg(height='342', version='1.1', width='587', xmlns='http://www.w3.org/2000/svg', style='overflow: hidden; position: relative;')
+                desc(style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') Created with Raphaël 2.1.0
+                defs(style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                text(x='49.21875', y='310', text-anchor='end', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal')
+                  tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 0
+                path(fill='none', stroke='#aaaaaa', d='M61.71875,310H562', stroke-width='0.5', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                text(x='49.21875', y='238.75', text-anchor='end', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal')
+                  tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 7,500
+                path(fill='none', stroke='#aaaaaa', d='M61.71875,238.75H562', stroke-width='0.5', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                text(x='49.21875', y='167.5', text-anchor='end', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal')
+                  tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 15,000
+                path(fill='none', stroke='#aaaaaa', d='M61.71875,167.5H562', stroke-width='0.5', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                text(x='49.21875', y='96.25', text-anchor='end', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal')
+                  tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 22,500
+                path(fill='none', stroke='#aaaaaa', d='M61.71875,96.25H562', stroke-width='0.5', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                text(x='49.21875', y='25', text-anchor='end', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal')
+                  tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 30,000
+                path(fill='none', stroke='#aaaaaa', d='M61.71875,25H562', stroke-width='0.5', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                text(x='469.6236282340135', y='322.5', text-anchor='middle', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal', transform='matrix(1,0,0,1,0,6)')
+                  tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 2012
+                text(x='247.73796421700166', y='322.5', text-anchor='middle', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal', transform='matrix(1,0,0,1,0,6)')
+                  tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 2011
+                path(fill='#7cb47c', stroke='none', d='M61.71875,259.5265C75.69425400929066,254.3015,103.64526202787201,243.45734306342018,117.62076603716267,238.62650000000002C131.6026023998785,233.79346806342016,159.5662751253101,227.48419371727746,173.54811148802594,220.87099999999998C187.38430372196345,214.32669371727746,215.0566881898385,187.9492337456847,228.892880423776,185.9965C242.57076382208496,184.0661087456847,269.9265306187028,203.91826414014199,283.6044140170118,205.3385C297.57991802630244,206.789639140142,325.5309260448838,196.51559394110984,339.5064300541745,197.482C353.48826641689027,198.44884394110986,381.4519391423219,230.22641099476442,395.4337755050377,213.07150000000001C409.26996773897525,196.09528599476442,436.9423522068503,69.23864499885559,450.7785444407878,60.95750000000001C464.6084043213002,52.68014499885558,492.2681240823249,134.69512400364383,506.0979839628373,146.8375C520.073487972128,159.10774900364382,548.0244959907093,155.665375,562,158.608L562,310L61.71875,310Z', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                path(fill='none', stroke='#4da74d', d='M61.71875,259.5265C75.69425400929066,254.3015,103.64526202787201,243.45734306342018,117.62076603716267,238.62650000000002C131.6026023998785,233.79346806342016,159.5662751253101,227.48419371727746,173.54811148802594,220.87099999999998C187.38430372196345,214.32669371727746,215.0566881898385,187.9492337456847,228.892880423776,185.9965C242.57076382208496,184.0661087456847,269.9265306187028,203.91826414014199,283.6044140170118,205.3385C297.57991802630244,206.789639140142,325.5309260448838,196.51559394110984,339.5064300541745,197.482C353.48826641689027,198.44884394110986,381.4519391423219,230.22641099476442,395.4337755050377,213.07150000000001C409.26996773897525,196.09528599476442,436.9423522068503,69.23864499885559,450.7785444407878,60.95750000000001C464.6084043213002,52.68014499885558,492.2681240823249,134.69512400364383,506.0979839628373,146.8375C520.073487972128,159.10774900364382,548.0244959907093,155.665375,562,158.608', stroke-width='3', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='61.71875', cy='259.5265', r='2', fill='#4da74d', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='117.62076603716267', cy='238.62650000000002', r='2', fill='#4da74d', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='173.54811148802594', cy='220.87099999999998', r='2', fill='#4da74d', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='228.892880423776', cy='185.9965', r='2', fill='#4da74d', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='283.6044140170118', cy='205.3385', r='2', fill='#4da74d', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='339.5064300541745', cy='197.482', r='2', fill='#4da74d', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='395.4337755050377', cy='213.07150000000001', r='2', fill='#4da74d', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='450.7785444407878', cy='60.95750000000001', r='2', fill='#4da74d', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='506.0979839628373', cy='146.8375', r='2', fill='#4da74d', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='562', cy='158.608', r='2', fill='#4da74d', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                path(fill='#a7b3bc', stroke='none', d='M61.71875,284.673C75.69425400929066,278.95875,103.64526202787201,266.8201787938845,117.62076603716267,261.81600000000003C131.6026023998785,256.8095537938845,159.5662751253101,247.3665,173.54811148802594,244.63049999999998C187.38430372196345,241.92299999999997,215.0566881898385,242.24315491944765,228.892880423776,240.042C242.57076382208496,237.86602991944764,269.9265306187028,230.1750959468743,283.6044140170118,227.122C297.57991802630244,224.0024709468743,325.5309260448838,215.22209181766704,339.5064300541745,215.3515C353.48826641689027,215.48096681766702,381.4519391423219,241.3803062827225,395.4337755050377,228.1575C409.26996773897525,215.0724312827225,436.9423522068503,117.87852540627146,450.7785444407878,110.12C464.6084043213002,102.36502540627147,492.2681240823249,157.95857515372353,506.0979839628373,166.1035C520.073487972128,174.33420015372351,548.0244959907093,173.24275,562,175.6225L562,310L61.71875,310Z', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                path(fill='none', stroke='#7a92a3', d='M61.71875,284.673C75.69425400929066,278.95875,103.64526202787201,266.8201787938845,117.62076603716267,261.81600000000003C131.6026023998785,256.8095537938845,159.5662751253101,247.3665,173.54811148802594,244.63049999999998C187.38430372196345,241.92299999999997,215.0566881898385,242.24315491944765,228.892880423776,240.042C242.57076382208496,237.86602991944764,269.9265306187028,230.1750959468743,283.6044140170118,227.122C297.57991802630244,224.0024709468743,325.5309260448838,215.22209181766704,339.5064300541745,215.3515C353.48826641689027,215.48096681766702,381.4519391423219,241.3803062827225,395.4337755050377,228.1575C409.26996773897525,215.0724312827225,436.9423522068503,117.87852540627146,450.7785444407878,110.12C464.6084043213002,102.36502540627147,492.2681240823249,157.95857515372353,506.0979839628373,166.1035C520.073487972128,174.33420015372351,548.0244959907093,173.24275,562,175.6225', stroke-width='3', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='61.71875', cy='284.673', r='2', fill='#7a92a3', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='117.62076603716267', cy='261.81600000000003', r='2', fill='#7a92a3', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='173.54811148802594', cy='244.63049999999998', r='2', fill='#7a92a3', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='228.892880423776', cy='240.042', r='2', fill='#7a92a3', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='283.6044140170118', cy='227.122', r='2', fill='#7a92a3', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='339.5064300541745', cy='215.3515', r='2', fill='#7a92a3', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='395.4337755050377', cy='228.1575', r='2', fill='#7a92a3', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='450.7785444407878', cy='110.12', r='2', fill='#7a92a3', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='506.0979839628373', cy='166.1035', r='2', fill='#7a92a3', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='562', cy='175.6225', r='2', fill='#7a92a3', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                path(fill='#2577b5', stroke='none', d='M61.71875,284.673C75.69425400929066,284.407,103.64526202787201,286.27552089467724,117.62076603716267,283.609C131.6026023998785,280.94127089467725,159.5662751253101,264.5165863874346,173.54811148802594,263.336C187.38430372196345,262.16771138743457,215.0566881898385,276.4803432105869,228.892880423776,274.2135C242.57076382208496,271.97259321058687,269.9265306187028,247.5404911838791,283.6044140170118,245.305C297.57991802630244,243.0208661838791,325.5309260448838,253.77241024915062,339.5064300541745,256.135C353.48826641689027,258.4986602491506,381.4519391423219,275.4345235602094,395.4337755050377,264.21C409.26996773897525,253.1023985602094,436.9423522068503,173.77515715838865,450.7785444407878,166.8065C464.6084043213002,159.84103215838866,492.2681240823249,200.62862024595765,506.0979839628373,208.4735C520.073487972128,216.40099524595766,548.0244959907093,224.540375,562,229.89600000000002L562,310L61.71875,310Z', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                path(fill='none', stroke='#0b62a4', d='M61.71875,284.673C75.69425400929066,284.407,103.64526202787201,286.27552089467724,117.62076603716267,283.609C131.6026023998785,280.94127089467725,159.5662751253101,264.5165863874346,173.54811148802594,263.336C187.38430372196345,262.16771138743457,215.0566881898385,276.4803432105869,228.892880423776,274.2135C242.57076382208496,271.97259321058687,269.9265306187028,247.5404911838791,283.6044140170118,245.305C297.57991802630244,243.0208661838791,325.5309260448838,253.77241024915062,339.5064300541745,256.135C353.48826641689027,258.4986602491506,381.4519391423219,275.4345235602094,395.4337755050377,264.21C409.26996773897525,253.1023985602094,436.9423522068503,173.77515715838865,450.7785444407878,166.8065C464.6084043213002,159.84103215838866,492.2681240823249,200.62862024595765,506.0979839628373,208.4735C520.073487972128,216.40099524595766,548.0244959907093,224.540375,562,229.89600000000002', stroke-width='3', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='61.71875', cy='284.673', r='2', fill='#0b62a4', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='117.62076603716267', cy='283.609', r='2', fill='#0b62a4', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='173.54811148802594', cy='263.336', r='2', fill='#0b62a4', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='228.892880423776', cy='274.2135', r='2', fill='#0b62a4', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='283.6044140170118', cy='245.305', r='2', fill='#0b62a4', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='339.5064300541745', cy='256.135', r='2', fill='#0b62a4', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='395.4337755050377', cy='264.21', r='2', fill='#0b62a4', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='450.7785444407878', cy='166.8065', r='2', fill='#0b62a4', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='506.0979839628373', cy='208.4735', r='2', fill='#0b62a4', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                circle(cx='562', cy='229.89600000000002', r='2', fill='#0b62a4', stroke='#ffffff', stroke-width='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+              .morris-hover.morris-default-style(style='left: 283.006430054175px; top: 152px; display: none;')
+                .morris-hover-row-label 2011 Q2
+                .morris-hover-point(style='color: #0b62a4')
+                  | iPhone:
+                  | 5,670
+                .morris-hover-point(style='color: #7A92A3')
+                  | iPad:
+                  | 4,293
+                .morris-hover-point(style='color: #4da74d')
+                  | iPod Touch:
+                  | 1,881
+          // /.panel-body
+        // /.panel
+        .panel.panel-default
+          .panel-heading
+            i.fa.fa-bar-chart-o.fa-fw
+            |  Bar Chart Example
+            .pull-right
+              .btn-group
+                button.btn.btn-default.btn-xs.dropdown-toggle(type='button', data-toggle='dropdown')
+                  | Actions
+                  span.caret
+                ul.dropdown-menu.pull-right(role='menu')
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Action
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Another action
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Something else here
+                  li.divider
+                  li
+                    a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Separated link
+          // /.panel-heading
+          .panel-body
+            .row
+              .col-lg-4
+                .table-responsive
+                  table.table.table-bordered.table-hover.table-striped
+                    thead
+                      tr
+                        th #
+                        th Date
+                        th Time
+                        th Amount
+                    tbody
+                      tr
+                        td 3326
+                        td 10/21/2013
+                        td 3:29 PM
+                        td $321.33
+                      tr
+                        td 3325
+                        td 10/21/2013
+                        td 3:20 PM
+                        td $234.34
+                      tr
+                        td 3324
+                        td 10/21/2013
+                        td 3:03 PM
+                        td $724.17
+                      tr
+                        td 3323
+                        td 10/21/2013
+                        td 3:00 PM
+                        td $23.71
+                      tr
+                        td 3322
+                        td 10/21/2013
+                        td 2:49 PM
+                        td $8345.23
+                      tr
+                        td 3321
+                        td 10/21/2013
+                        td 2:23 PM
+                        td $245.12
+                      tr
+                        td 3320
+                        td 10/21/2013
+                        td 2:15 PM
+                        td $5663.54
+                      tr
+                        td 3319
+                        td 10/21/2013
+                        td 2:13 PM
+                        td $943.45
+                // /.table-responsive
+              // /.col-lg-4 (nested)
+              .col-lg-8
+                #morris-bar-chart(style='position: relative; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                  svg(height='342', version='1.1', width='382', xmlns='http://www.w3.org/2000/svg', style='overflow: hidden; position: relative; left: -0.765625px;')
+                    desc(style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') Created with Raphaël 2.1.0
+                    defs(style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                    text(x='32.53125', y='310', text-anchor='end', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal')
+                      tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 0
+                    path(fill='none', stroke='#aaaaaa', d='M45.03125,310H357', stroke-width='0.5', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                    text(x='32.53125', y='238.75', text-anchor='end', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal')
+                      tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 25
+                    path(fill='none', stroke='#aaaaaa', d='M45.03125,238.75H357', stroke-width='0.5', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                    text(x='32.53125', y='167.5', text-anchor='end', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal')
+                      tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 50
+                    path(fill='none', stroke='#aaaaaa', d='M45.03125,167.5H357', stroke-width='0.5', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                    text(x='32.53125', y='96.25', text-anchor='end', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal')
+                      tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 75
+                    path(fill='none', stroke='#aaaaaa', d='M45.03125,96.25H357', stroke-width='0.5', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                    text(x='32.53125', y='25', text-anchor='end', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: end; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal')
+                      tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 100
+                    path(fill='none', stroke='#aaaaaa', d='M45.03125,25H357', stroke-width='0.5', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                    text(x='334.71651785714283', y='322.5', text-anchor='middle', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal', transform='matrix(1,0,0,1,0,6)')
+                      tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 2012
+                    text(x='245.58258928571428', y='322.5', text-anchor='middle', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal', transform='matrix(1,0,0,1,0,6)')
+                      tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 2010
+                    text(x='156.44866071428572', y='322.5', text-anchor='middle', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal', transform='matrix(1,0,0,1,0,6)')
+                      tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 2008
+                    text(x='67.31473214285714', y='322.5', text-anchor='middle', font='10px "Arial"', stroke='none', fill='#888888', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 12px; line-height: normal; font-family: sans-serif;', font-size='12px', font-family='sans-serif', font-weight='normal', transform='matrix(1,0,0,1,0,6)')
+                      tspan(dy='4.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 2006
+                    rect(x='50.602120535714285', y='25', width='15.212611607142858', height='285', r='0', rx='0', ry='0', fill='#0b62a4', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='68.81473214285714', y='53.5', width='15.212611607142858', height='256.5', r='0', rx='0', ry='0', fill='#7a92a3', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='95.16908482142856', y='96.25', width='15.212611607142858', height='213.75', r='0', rx='0', ry='0', fill='#0b62a4', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='113.38169642857142', y='124.75', width='15.212611607142858', height='185.25', r='0', rx='0', ry='0', fill='#7a92a3', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='139.73604910714283', y='167.5', width='15.212611607142858', height='142.5', r='0', rx='0', ry='0', fill='#0b62a4', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='157.9486607142857', y='196', width='15.212611607142858', height='114', r='0', rx='0', ry='0', fill='#7a92a3', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='184.30301339285714', y='96.25', width='15.212611607142858', height='213.75', r='0', rx='0', ry='0', fill='#0b62a4', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='202.515625', y='124.75', width='15.212611607142858', height='185.25', r='0', rx='0', ry='0', fill='#7a92a3', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='228.86997767857142', y='167.5', width='15.212611607142858', height='142.5', r='0', rx='0', ry='0', fill='#0b62a4', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='247.08258928571428', y='196', width='15.212611607142858', height='114', r='0', rx='0', ry='0', fill='#7a92a3', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='273.4369419642857', y='96.25', width='15.212611607142858', height='213.75', r='0', rx='0', ry='0', fill='#0b62a4', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='291.64955357142856', y='124.75', width='15.212611607142858', height='185.25', r='0', rx='0', ry='0', fill='#7a92a3', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='318.00390625', y='25', width='15.212611607142858', height='285', r='0', rx='0', ry='0', fill='#0b62a4', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                    rect(x='336.21651785714283', y='53.5', width='15.212611607142858', height='256.5', r='0', rx='0', ry='0', fill='#7a92a3', stroke='none', fill-opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); fill-opacity: 1;')
+                  .morris-hover.morris-default-style(style='display: none;')
+              // /.col-lg-8 (nested)
+            // /.row
+          // /.panel-body
+        // /.panel
+        .panel.panel-default
+          .panel-heading
+            i.fa.fa-clock-o.fa-fw
+            |  Responsive Timeline
+          // /.panel-heading
+          .panel-body
+            ul.timeline
+              li
+                .timeline-badge
+                  i.fa.fa-check
+                .timeline-panel
+                  .timeline-heading
+                    h4.timeline-title Lorem ipsum dolor
+                    p
+                      small.text-muted
+                        i.fa.fa-clock-o
+                        |  11 hours ago via Twitter
+                  .timeline-body
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero laboriosam dolor perspiciatis omnis exercitationem. Beatae, officia pariatur? Est cum veniam excepturi. Maiores praesentium, porro voluptas suscipit facere rem dicta, debitis.
+              li.timeline-inverted
+                .timeline-badge.warning
+                  i.fa.fa-credit-card
+                .timeline-panel
+                  .timeline-heading
+                    h4.timeline-title Lorem ipsum dolor
+                  .timeline-body
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dolorem quibusdam, tenetur commodi provident cumque magni voluptatem libero, quis rerum. Fugiat esse debitis optio, tempore. Animi officiis alias, officia repellendus.
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium maiores odit qui est tempora eos, nostrum provident explicabo dignissimos debitis vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.
+              li
+                .timeline-badge.danger
+                  i.fa.fa-bomb
+                .timeline-panel
+                  .timeline-heading
+                    h4.timeline-title Lorem ipsum dolor
+                  .timeline-body
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus numquam facilis enim eaque, tenetur nam id qui vel velit similique nihil iure molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.
+              li.timeline-inverted
+                .timeline-panel
+                  .timeline-heading
+                    h4.timeline-title Lorem ipsum dolor
+                  .timeline-body
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias sapiente rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut debitis!
+              li
+                .timeline-badge.info
+                  i.fa.fa-save
+                .timeline-panel
+                  .timeline-heading
+                    h4.timeline-title Lorem ipsum dolor
+                  .timeline-body
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis minus modi quam ipsum alias at est molestiae excepturi delectus nesciunt, quibusdam debitis amet, beatae consequuntur impedit nulla qui! Laborum, atque.
+                    hr
+                    .btn-group
+                      button.btn.btn-primary.btn-sm.dropdown-toggle(type='button', data-toggle='dropdown')
+                        i.fa.fa-gear
+                        span.caret
+                      ul.dropdown-menu(role='menu')
+                        li
+                          a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Action
+                        li
+                          a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Another action
+                        li
+                          a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Something else here
+                        li.divider
+                        li
+                          a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Separated link
+              li
+                .timeline-panel
+                  .timeline-heading
+                    h4.timeline-title Lorem ipsum dolor
+                  .timeline-body
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi fuga odio quibusdam. Iure expedita, incidunt unde quis nam! Quod, quisquam. Officia quam qui adipisci quas consequuntur nostrum sequi. Consequuntur, commodi.
+              li.timeline-inverted
+                .timeline-badge.success
+                  i.fa.fa-graduation-cap
+                .timeline-panel
+                  .timeline-heading
+                    h4.timeline-title Lorem ipsum dolor
+                  .timeline-body
+                    p
+                      | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati, quaerat tempore officia voluptas debitis consectetur culpa amet, accusamus dolorum fugiat, animi dicta aperiam, enim incidunt quisquam maxime neque eaque.
+          // /.panel-body
+        // /.panel
+      // /.col-lg-8
+      .col-lg-4
+        .panel.panel-default
+          .panel-heading
+            i.fa.fa-bell.fa-fw
+            |  Notifications Panel
+          // /.panel-heading
+          .panel-body
+            .list-group
+              a.list-group-item(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                i.fa.fa-comment.fa-fw
+                |  New Comment
+                span.pull-right.text-muted.small
+                  em 4 minutes ago
+              a.list-group-item(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                i.fa.fa-twitter.fa-fw
+                |  3 New Followers
+                span.pull-right.text-muted.small
+                  em 12 minutes ago
+              a.list-group-item(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                i.fa.fa-envelope.fa-fw
+                |  Message Sent
+                span.pull-right.text-muted.small
+                  em 27 minutes ago
+              a.list-group-item(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                i.fa.fa-tasks.fa-fw
+                |  New Task
+                span.pull-right.text-muted.small
+                  em 43 minutes ago
+              a.list-group-item(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                i.fa.fa-upload.fa-fw
+                |  Server Rebooted
+                span.pull-right.text-muted.small
+                  em 11:32 AM
+              a.list-group-item(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                i.fa.fa-bolt.fa-fw
+                |  Server Crashed!
+                span.pull-right.text-muted.small
+                  em 11:13 AM
+              a.list-group-item(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                i.fa.fa-warning.fa-fw
+                |  Server Not Responding
+                span.pull-right.text-muted.small
+                  em 10:57 AM
+              a.list-group-item(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                i.fa.fa-shopping-cart.fa-fw
+                |  New Order Placed
+                span.pull-right.text-muted.small
+                  em 9:49 AM
+              a.list-group-item(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                i.fa.fa-money.fa-fw
+                |  Payment Received
+                span.pull-right.text-muted.small
+                  em Yesterday
+            // /.list-group
+            a.btn.btn-default.btn-block(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') View All Alerts
+          // /.panel-body
+        // /.panel
+        .panel.panel-default
+          .panel-heading
+            i.fa.fa-bar-chart-o.fa-fw
+            |  Donut Chart Example
+          .panel-body
+            #morris-donut-chart
+              svg(height='342', version='1.1', width='263', xmlns='http://www.w3.org/2000/svg', style='overflow: hidden; position: relative; left: -0.328125px;')
+                desc(style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') Created with Raphaël 2.1.0
+                defs(style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                path(fill='none', stroke='#0b62a4', d='M131.5,254.5A81,81,0,0,0,208.1590235852246,199.66092702791667', stroke-width='2', opacity='0', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;')
+                path(fill='#0b62a4', stroke='#ffffff', d='M131.5,257.5A84,84,0,0,0,210.99824668097364,200.62985025117285L241.75649688492177,211.12651850311474A116.5,116.5,0,0,1,131.5,290Z', stroke-width='3', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                path(fill='none', stroke='#3980b5', d='M208.1590235852246,199.66092702791667A81,81,0,0,0,58.856631795541645,137.667876759652', stroke-width='2', opacity='1', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 1;')
+                path(fill='#3980b5', stroke='#ffffff', d='M210.99824668097364,200.62985025117285A84,84,0,0,0,56.166136676858,136.34076108408354L22.53494769331246,119.75181513947797A121.5,121.5,0,0,1,246.48853537783685,212.74139054187503Z', stroke-width='3', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                path(fill='none', stroke='#679dc6', d='M58.856631795541645,137.667876759652A81,81,0,0,0,131.47455309992458,254.49999600281024', stroke-width='2', opacity='0', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); opacity: 0;')
+                path(fill='#679dc6', stroke='#ffffff', d='M56.166136676858,136.34076108408354A84,84,0,0,0,131.473610622144,257.4999958547662L131.46340044618785,289.9999942509555A116.5,116.5,0,0,1,27.01910622445186,121.96367459875873Z', stroke-width='3', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);')
+                text(x='131.5', y='163.5', text-anchor='middle', font='10px "Arial"', stroke='none', fill='#000000', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: 800; font-stretch: normal; font-size: 15px; line-height: normal; font-family: Arial;', font-size='15px', font-weight='800', transform='matrix(1.4571,0,0,1.4571,-60.1072,-78.5051)', stroke-width='0.6862997256515775')
+                  tspan(dy='5.25', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') In-Store Sales
+                text(x='131.5', y='183.5', text-anchor='middle', font='10px "Arial"', stroke='none', fill='#000000', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0); text-anchor: middle; font-style: normal; font-variant: normal; font-weight: normal; font-stretch: normal; font-size: 14px; line-height: normal; font-family: Arial;', font-size='14px', transform='matrix(1.7419,0,0,1.7419,-97.5645,-130.3952)', stroke-width='0.5740740740740741')
+                  tspan(dy='4.75', style='-webkit-tap-highlight-color: rgba(0, 0, 0, 0);') 30
+            a.btn.btn-default.btn-block(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') View Details
+          // /.panel-body
+        // /.panel
+        .chat-panel.panel.panel-default
+          .panel-heading
+            i.fa.fa-comments.fa-fw
+            |                             Chat
+            .btn-group.pull-right
+              button.btn.btn-default.btn-xs.dropdown-toggle(type='button', data-toggle='dropdown')
+                i.fa.fa-chevron-down
+              ul.dropdown-menu.slidedown
+                li
+                  a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                    i.fa.fa-refresh.fa-fw
+                    |  Refresh
+                li
+                  a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                    i.fa.fa-check-circle.fa-fw
+                    |  Available
+                li
+                  a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                    i.fa.fa-times.fa-fw
+                    |  Busy
+                li
+                  a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                    i.fa.fa-clock-o.fa-fw
+                    |  Away
+                li.divider
+                li
+                  a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+                    i.fa.fa-sign-out.fa-fw
+                    |  Sign Out
+          // /.panel-heading
+          .panel-body
+            ul.chat
+              li.left.clearfix
+                span.chat-img.pull-left
+                  img.img-circle(src='./SB Admin 2 - Bootstrap Admin Theme_files/fff', alt='User Avatar')
+                .chat-body.clearfix
+                  .header
+                    strong.primary-font Jack Sparrow
+                    small.pull-right.text-muted
+                      i.fa.fa-clock-o.fa-fw
+                      |  12 mins ago
+                  p
+                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
+              li.right.clearfix
+                span.chat-img.pull-right
+                  img.img-circle(src='./SB Admin 2 - Bootstrap Admin Theme_files/fff(1)', alt='User Avatar')
+                .chat-body.clearfix
+                  .header
+                    small.text-muted
+                      i.fa.fa-clock-o.fa-fw
+                      |  13 mins ago
+                    strong.pull-right.primary-font Bhaumik Patel
+                  p
+                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
+              li.left.clearfix
+                span.chat-img.pull-left
+                  img.img-circle(src='./SB Admin 2 - Bootstrap Admin Theme_files/fff', alt='User Avatar')
+                .chat-body.clearfix
+                  .header
+                    strong.primary-font Jack Sparrow
+                    small.pull-right.text-muted
+                      i.fa.fa-clock-o.fa-fw
+                      |  14 mins ago
+                  p
+                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
+              li.right.clearfix
+                span.chat-img.pull-right
+                  img.img-circle(src='./SB Admin 2 - Bootstrap Admin Theme_files/fff(1)', alt='User Avatar')
+                .chat-body.clearfix
+                  .header
+                    small.text-muted
+                      i.fa.fa-clock-o.fa-fw
+                      |  15 mins ago
+                    strong.pull-right.primary-font Bhaumik Patel
+                  p
+                    | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales.
+          // /.panel-body
+          .panel-footer
+            .input-group
+              input#btn-input.form-control.input-sm(type='text', placeholder='Type your message here...')
+              span.input-group-btn
+                button#btn-chat.btn.btn-warning.btn-sm
+                  | Send
+          // /.panel-footer
+        // /.panel .chat-panel
+      // /.col-lg-4
+    // /.row
+  // /#page-wrapper
+
