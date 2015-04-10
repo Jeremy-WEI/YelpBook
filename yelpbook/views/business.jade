@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  form(action='/follow/#{business[0].business_id}', method='post')
+  form(action='/business/follow/#{business[0].business_id}', method='post')
     input(type='submit', value='follow')
   .row
     .col-lg-12

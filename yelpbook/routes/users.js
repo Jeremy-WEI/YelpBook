@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
     database : 'YelpBook'
 });
 
-function doUserQuery(req, res, next) {
+function doUserQuery(req, res, next, msg) {
     console.log(req.params.id);
     var user_id = req.params.id;
     var fb_name = null;
@@ -26,19 +26,49 @@ function doUserQuery(req, res, next) {
             if (err)
                 next(new Error(500));
             else {
-                res.render('user', {"user_id" : uid, "results": results});
+                res.render('user', {"user_id" : uid, "results": results, "message": msg});
             }
         }
     );
 }
+
+function redirectUser(res, user_id) {
+    res.writeHead(302, {
+        'Location': '/user/' + user_id
+    });
+    res.end();
+}
+
+function newPost(req, res, next) {
+    console.log(req.params.id);
+    var user_id = connection.escape(req.user.id);
+    var post_text = connection.escape(req.query.new_post);
+    console.log(user_id);
+    console.log(post_text);
+    var query = "INSERT INTO HAS_POST (user_id, text, datetime) VALUES (" + user_id + ", " + post_text + ", NOW())";
+    console.log(query);
+    connection.query(query, function(err, results) {
+            if (err)
+                doUserQuery(req, res, next, "The post Failed!");
+            else {
+                doUserQuery(req, res, next, "The post was sent successfully!");
+            }
+        }
+    );
+}
+
+router.post('/new_post', function(req, res, next) {
+    newPost(req, res, next);
+});
 
 /* GET users listing. */
 router.get('/:id', function(req, res, next) {
 	// query(res);
 //    res.render('user', {"title": "abc", "feeds": [{"user": "user1", "text": "user1's text", "datetime": "user1time"}]});
 
-    doUserQuery(req, res, next);
+    doUserQuery(req, res, next, "");
 });
+
 
 
 

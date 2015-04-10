@@ -85,14 +85,6 @@ function doFollow(req, res, next) {
     });
 }
 
-router.get('/', function (req, res, next) {
-    if (req.query.business_id == undefined)
-        next(new Error(404));
-    else
-        doBusinessQuery(req, res, next);
-});
-
-
 router.get('/search', function (req, res, next) {
     if (req.query.search == undefined)
         next(new Error(404));
@@ -101,14 +93,28 @@ router.get('/search', function (req, res, next) {
     }
 });
 
-router.post('/:business_id', function (req, res, next) {
+//do follow
+router.post('/follow/:business_id', function (req, res, next) {
     if (req.params.business_id == undefined) {
         console.log("/:business_id: business_id == undefined");
         next(new Error(404));
     } else {
-        console.log("/:business_id: doFollow");
+        console.log("/post/:business_id: doFollow");
         doFollow(req, res, next);
     }
+});
+
+router.post('/', function (req, res, next) {
+    console.log("POST /business/");
+    next(new Error(404));
+});
+
+router.get('/', function (req, res, next) {
+    console.log("/business/");
+    if (req.query.business_id == undefined)
+        next(new Error(404));
+    else
+        doBusinessQuery(req, res, next);
 });
 
 module.exports = router;
