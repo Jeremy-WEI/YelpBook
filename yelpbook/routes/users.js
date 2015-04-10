@@ -41,7 +41,7 @@ function redirectUser(res, user_id) {
 
 function newPost(req, res, next) {
     console.log(req.params.id);
-    var user_id = connection.escape(req.user.id);
+    var user_id = connection.escape(req.user);
     var post_text = connection.escape(req.query.new_post);
     console.log(user_id);
     console.log(post_text);

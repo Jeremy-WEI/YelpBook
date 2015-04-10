@@ -8,11 +8,25 @@ var connection = mysql.createConnection({
     database: 'YelpBook'
 });
 
+function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
+    connection.query('SELECT * FROM WORD_STATISTICS WHERE business_id = "' + req.query.business_id + '"',
+        function (err, wordCounts) {
+            if (!err)
+                res.render('business', {
+                    business: busInfo,
+                    categories: categories,
+                    reviews: reviews,
+                    wordCounts: wordCounts
+                });
+            else
+                next(new Error(500));
+        });
+}
 function doReviewQuery(req, res, busInfo, categories, next) {
     connection.query('SELECT * FROM REVIEW INNER JOIN USER ON REVIEW.user_id = USER.user_id WHERE REVIEW.business_id = "' + req.query.business_id + '"',
         function (err, reviews) {
             if (!err)
-                res.render('business', {business: busInfo, categories: categories, reviews: reviews});
+                doWordCountQuery(req, res, busInfo, categories, reviews, next)
             else
                 next(new Error(500));
         });
