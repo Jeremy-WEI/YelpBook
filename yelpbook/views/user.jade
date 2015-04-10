@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1= user_id
+  p Welcome to #{user_id}
+  h1 News Feeds From Friends
+  .row
+    .col-md-8
+      section.content-wrapper
+        .content-box
+          for post in results
+            .row
+              .col-md-8
+                p user name: #{post.user_id}
+            .row
+              .col-md-8
+                p #{post.text}
+            .row
+              .col-md-8
+                p Posted on: #{post.datetime}
+  form(action='new_post', method='POST')
+    .form-group
+      .row
+        .col-md-8
+          input#new_post.form-control(name='new_post', placeholder='New Post', type='textarea', rows='4', cols='50')
+        .col-md-4
+          input(type='submit', value='Post')

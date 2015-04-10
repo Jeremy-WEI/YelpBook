@@ -1,0 +1,17 @@
+// show all businesses (index page)
+   Created by dichenli on 3/30/15.
+extends layout
+block content
+  h1 Results
+    table
+      tr
+        th Name
+        th Address
+        th Rating
+      for result in results
+        tr
+          td
+            a(href='/business?business_id=#{result.business_id}') #{result.name}
+          td #{result.address}
+          td #{result.avg_stars}
+
