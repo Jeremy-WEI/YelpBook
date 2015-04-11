@@ -9,6 +9,7 @@ var connection = mysql.createConnection({
 });
 
 function get_user(req) {
+    console.log("fb: " + req.user.id);
     var fb = req.user.id;
     var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb;
     console.log(query_find_userid);
@@ -24,13 +25,40 @@ function get_user(req) {
     });
 }
 
+function redirectLogin(res) {
+    res.writeHead(302, {
+        'Location': '/login'
+    });
+    res.write('Please log in first');
+    res.end();
+}
+
 //to render the user news feed page. This method gets all news feeds
 function doUserQuery(req, res, next, msg) {
-    console.log("req.user.id: " + req.user.id);
-    var user_id = get_user(req.user.id);
-    console.log("user_id: " + user_id);
+    console.log("getCurrentUser fb: " + req.user.id); //get the user who sent request
+    var fb = req.user.id;
+    var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb;
+    console.log(query_find_userid);
+    connection.query(query_find_userid, function (err, userid) {
+        console.log(userid);
+        if (err) {
+            redirectLogin(res);
+        } else if (userid.length != 1){
+            redirectLogin(res);
+        } else {
+            getPostsQuery(req, res, next, err, userid[0], msg);
+        }
+    });
+}
+
+function renderUserPosts(res, uid, results,  msg) {
+    res.render('user', {"user_id" : uid, "results": results, "message": msg});
+}
+
+function getPostsQuery(req, res, next, err, user_id, msg) {
+    console.log("getPostsQuery user_id: " + user_id);
 //    var fb_name = null;
-    var uid = connection.escape(user_id);
+    var uid = connection.escape(user_id[0]);
     console.log("uid: " + uid);
     var query = "(SELECT * FROM HAS_POST WHERE user_id IN"
     + "(SELECT user_id2 as user_id FROM FRIEND WHERE user_id1=" + uid + "))"
@@ -42,9 +70,9 @@ function doUserQuery(req, res, next, msg) {
     console.log(query);
     connection.query(query, function(err, results) {
             if (err)
-                next(new Error(500));
+                renderUserPosts(res, uid, results, "Get Posts failed!");
             else {
-                res.render('user', {"user_id" : uid, "results": results, "message": msg});
+                renderUserPosts(res, uid, results, msg);
             }
         }
     );
@@ -58,7 +86,7 @@ function redirectUser(res, user_id) {
 }
 
 function newPost(req, res, next) {
-    if(done==true){
+    if(done==true) {
         console.log(req.files);
         console.log("req.user.id: " + req.user.id);
         var user_id = get_user(req.user.id);
