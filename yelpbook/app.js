@@ -10,6 +10,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 
+var expressSession = require('express-session');
+
 var routes = require('./routes/index');
 var business = require('./routes/business');
 var users = require('./routes/users');
@@ -74,6 +76,8 @@ app.use(cookieParser());
 app.use(methodOverride());
 app.use(methodOverride());
 app.use(session({ secret: 'keyboard cat' }));
+
+app.use(expressSession({secret:'5data5base0'}));
 
 // Initialize Passport!  Also use passport.session() middleware, to support
 // persistent login sessions (recommended).
@@ -141,7 +145,6 @@ function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
     res.redirect('/login')
 }
-
 
 
 // catch 404 and forward to error handler

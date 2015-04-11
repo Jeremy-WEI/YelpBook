@@ -31,7 +31,7 @@ function insertUser(req, res, next) {
                         next(new Error(500));
                 })
             }
-        })
+        });
         res.render('index', {user: req.user});
     }
 
