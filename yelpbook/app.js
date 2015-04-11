@@ -63,7 +63,7 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -89,8 +89,10 @@ app.use('/users', users);
 
 
 app.get('/', function(req, res){
-    res.render('index', { user: req.user });
+//    res.render('index', { user: req.user });
+    res.render('index', { user: req.user});
 });
+
 
 app.get('/account', ensureAuthenticated, function(req, res){
     res.render('account', { user: req.user });
