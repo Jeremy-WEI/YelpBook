@@ -34,7 +34,7 @@ function redirectLogin(res) {
 }
 
 //to render the user news feed page. This method gets all news feeds
-function doUserQuery(req, res, next, msg) {
+function myFeedQuery(req, res, next, msg) {
     console.log("getCurrentUser fb: " + req.user.id); //get the user who sent request
     var fb = req.user.id;
     var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb;
@@ -46,7 +46,7 @@ function doUserQuery(req, res, next, msg) {
         } else if (userid.length != 1){
             redirectLogin(res);
         } else {
-            getPostsQuery(req, res, next, err, userid[0], msg);
+            getPostsQuery(req, res, next, err, userid[0].user_id, msg);
         }
     });
 }
@@ -58,10 +58,11 @@ function renderUserPosts(res, uid, results,  msg) {
 function getPostsQuery(req, res, next, err, user_id, msg) {
     console.log("getPostsQuery user_id: " + user_id);
 //    var fb_name = null;
-    var uid = connection.escape(user_id[0]);
-    console.log("uid: " + uid);
+//    var uid = connection.escape(user_id[0]);
+//    console.log("uid: " + uid);
+    var uid = user_id;
     var query = "(SELECT * FROM HAS_POST WHERE user_id IN"
-    + "(SELECT user_id2 as user_id FROM FRIEND WHERE user_id1=" + uid + "))"
+    + "(SELECT user_id2 as user_id FROM FRIEND WHERE user_id1='" + uid + "'))"
     + "UNION"
     + "(SELECT * FROM HAS_POST WHERE user_id IN"
     + "(SELECT user_id1 as user_id FROM FRIEND WHERE user_id2=" + uid + "))"
@@ -114,14 +115,21 @@ router.post('/new_post', function(req, res, next) {
     newPost(req, res, next);
 });
 
+
+router.get('/my_feed', function(req, res, next) {
+    // query(res);
+//    res.render('user', {"title": "abc", "feeds": [{"user": "user1", "text": "user1's text", "datetime": "user1time"}]});
+
+    myFeedQuery(req, res, next, "My news Feeds");
+});
+
 /* GET users listing. */
 router.get('/:id', function(req, res, next) {
 	// query(res);
 //    res.render('user', {"title": "abc", "feeds": [{"user": "user1", "text": "user1's text", "datetime": "user1time"}]});
 
-    doUserQuery(req, res, next, "");
+    myFeedQuery(req, res, next, "");
 });
-
 
 
 
