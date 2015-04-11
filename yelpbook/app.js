@@ -85,14 +85,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //file upload package configuration
 app.use(multer({ dest: './uploads/',
-    rename: function (fieldname, filename) {
-        return filename+Date.now();
+    rename: function (fieldname, filename, req, res) {
+        return fieldname + filename + Date.now();
     },
     onFileUploadStart: function (file) {
         console.log(file.originalname + ' is starting ...')
     },
     onFileUploadComplete: function (file) {
-        console.log(file.fieldname + ' uploaded to  ' + file.path)
+        console.log(file.name + ' uploaded to  ' + file.path)
         done=true;
     }
 }));

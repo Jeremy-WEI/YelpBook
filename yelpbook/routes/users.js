@@ -8,45 +8,66 @@ var connection = mysql.createConnection({
     database : 'YelpBook'
 });
 
-function get_user(req) {
-    console.log("fb: " + req.user.id);
-    var fb = req.user.id;
-    var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb;
-    console.log(query_find_userid);
-    connection.query(query_find_userid, function (err, userid) {
-        if (err) {
-            return undefined;
-        } else if (userid.length != 1){
-            // use cannot be found or more than one user_id mapped to one facebook account
-            return undefined;
-        } else {
-            return userid[0];
-        }
-    });
-}
-
 function redirectLogin(res) {
     res.writeHead(302, {
-        'Location': '/login'
+        'Location': '/'
     });
     res.write('Please log in first');
     res.end();
 }
 
-//to render the user news feed page. This method gets all news feeds
-function myFeedQuery(req, res, next, msg) {
-    console.log("getCurrentUser fb: " + req.user.id); //get the user who sent request
+function redirectUser(res, user_id) {
+    res.writeHead(302, {
+        'Location': '/user/' + user_id
+    });
+    res.end();
+}
+//call back function to show my news feed
+function myFeed(req, res, next, err, userid, msg) {
+    console.log("myFeed callback found userid: " + userid[0].user_id);
+    getPostsQuery(req, res, next, err, userid[0].user_id, msg);
+}
+
+//call back function to process a new post
+function newPost(req, res, next, err, userid, msg) {
+    if (done != true) {
+        console.log("File uploaded done==false");
+    } else if (false) {
+
+    } else {
+        var uid = userid[0].user_id;
+        var post_text = req.body.new_post;
+        var query = "INSERT INTO HAS_POST (user_id, text, datetime) VALUES ('" + uid + "', '" + post_text + "', NOW())";
+        console.log(query);
+        connection.query(query,
+            function(err, results) {
+                if (err)
+                    getPostsQuery(req, res, next, err, uid, "The post Failed!");
+                else {
+                    getPostsQuery(req, res, next, err, uid, "The post was sent successfully!");
+                }
+            }
+        );
+    }
+}
+
+//to get the user currently logged in. This method requires a callBack to define what to do
+//next afert current user is found
+function getUserQuery(req, res, next, msg, callBack) {
+    if(typeof req.user === 'undefined'){
+        redirectLogin(res);
+    }
+    console.log("getUserQuery fb: " + req.user.id); //get the user who sent request
     var fb = req.user.id;
     var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb;
     console.log(query_find_userid);
     connection.query(query_find_userid, function (err, userid) {
-        console.log(userid);
         if (err) {
             redirectLogin(res);
         } else if (userid.length != 1){
             redirectLogin(res);
         } else {
-            getPostsQuery(req, res, next, err, userid[0].user_id, msg);
+            callBack(req, res, next, err, userid, msg);
         }
     });
 }
@@ -79,40 +100,11 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
     );
 }
 
-function redirectUser(res, user_id) {
-    res.writeHead(302, {
-        'Location': '/user/' + user_id
-    });
-    res.end();
-}
 
-function newPost(req, res, next) {
-    if(done==true) {
-        console.log(req.files);
-        console.log("req.user.id: " + req.user.id);
-        var user_id = get_user(req.user.id);
-        console.log("user_id: " + user_id);
-        var post_text = connection.escape(req.body.new_post);
-        console.log(user_id);
-        console.log(post_text);
-        var query = "INSERT INTO HAS_POST (user_id, text, datetime) VALUES (" + user_id + ", " + post_text + ", NOW())";
-        console.log(query);
-        connection.query(query, function(err, results) {
-                if (err)
-                    doUserQuery(req, res, next, "The post Failed!");
-                else {
-                    doUserQuery(req, res, next, "The post was sent successfully!");
-                }
-            }
-        );
-    } else {
-        console.log("File not yet uploaded");
-    }
-}
 
 
 router.post('/new_post', function(req, res, next) {
-    newPost(req, res, next);
+    getUserQuery(req, res, next, "New Post", newPost);
 });
 
 
@@ -120,7 +112,7 @@ router.get('/my_feed', function(req, res, next) {
     // query(res);
 //    res.render('user', {"title": "abc", "feeds": [{"user": "user1", "text": "user1's text", "datetime": "user1time"}]});
 
-    myFeedQuery(req, res, next, "My news Feeds");
+    getUserQuery(req, res, next, "", myFeed);
 });
 
 /* GET users listing. */
@@ -128,7 +120,7 @@ router.get('/:id', function(req, res, next) {
 	// query(res);
 //    res.render('user', {"title": "abc", "feeds": [{"user": "user1", "text": "user1's text", "datetime": "user1time"}]});
 
-    myFeedQuery(req, res, next, "");
+    getUserQuery(req, res, next, "");
 });
 
 
