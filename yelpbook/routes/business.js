@@ -70,6 +70,8 @@ function doBusinessSearch(req, res, next) {
 }
 
 router.get('/', function (req, res, next) {
+    //res.render('test', {
+    //});
     if (req.query.business_id == undefined)
         next(new Error(404));
     else

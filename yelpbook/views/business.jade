@@ -1,14 +1,10 @@
 extends layout
 
 block content
-  //.row
-  //  .panel-body
-  //.panel.panel-default
-  //  .panel-heading
-  //    i.fa.fa-clock-o.fa-fw
-  //    |  See What Others Describe it
-  //  .panel-body
-  //    canvas#canvas.canvas
+  //h1= Object.keys(wordCounts).length
+  //h1#testing asd
+  each word, index in wordCounts
+    h6.hidden= word.WORD + ' ' + word.COUNT
   .row
     .col-lg-12
       h1.page-header= business[0].name
@@ -77,14 +73,20 @@ block content
                   i.fa.fa-arrow-circle-right
                 .clearfix
     .col-lg-4.col-md-12
-       .panel.panel-default
-         .panel-heading
-           i.fa.fa-clock-o.fa-fw
-           |  See What Others Describe it
-         .panel-body
-           canvas#canvas.canvas
-  .row
+      .panel.panel-default
+        .panel-heading
+          i.fa.fa-clock-o.fa-fw
+          |  See What Others Describe it
+        .panel-body
+          canvas#wordle_canvas.canvas
+  hr
+  .panel.panel-default
+    .panel-heading
+      i.fa.fa-clock-o.fa-fw
+      |  Nearby Business
     .panel-body
+      #map_canvas
+  hr
   .panel.panel-default
     .panel-heading
       i.fa.fa-clock-o.fa-fw
@@ -199,10 +201,24 @@ block content
         //        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati, quaerat tempore officia voluptas debitis consectetur culpa amet, accusamus dolorum fugiat, animi dicta aperiam, enim incidunt quisquam maxime neque eaque.
 
   script.
-    var canvas = document.getElementById('canvas')
-    canvas.width = 300
-    canvas.height = 220
-    list = [['foo', 10], ['bar', 6], ['asd', 1], ['as2d', 0.5]]
-    WordCloud(canvas, {list: list, fontWeight: 600, weightFactor: 10})
-
+    var wordle_canvas = document.getElementById('wordle_canvas')
+    wordle_canvas.width = 320
+    wordle_canvas.height = 220
+    words = []
+    $(".hidden").each(function () {
+      var tokens = $(this).text().split(" ")
+      words.push([tokens[0], parseInt(tokens[1])])
+    });
+    words.push(['amazing', 0.8], ['awesome', 0.8], ['fantastic', 0.8], ['wonderful', 0.8], ['nice', 0.8], ['gorgeous', 0.8], ['good', 0.8], ['worthy', 0.8], ['best', 0.8], ['pretty', 0.8], ['I love it.', 0.8])
+    WordCloud(wordle_canvas, {list: words, fontWeight: 600, weightFactor: 20})
+    var map;
+    function initialize() {
+      var mapOptions = {
+        zoom: 8,
+        center: new google.maps.LatLng(-34.397, 150.644)
+      };
+      map = new google.maps.Map(document.getElementById('map_canvas'),
+              mapOptions);
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
 
