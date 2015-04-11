@@ -1,10 +1,13 @@
 extends layout
 
 block content
+<<<<<<< HEAD
   //h1= Object.keys(wordCounts).length
   //h1#testing asd
   each word, index in wordCounts
     h6.hidden= word.WORD + ' ' + word.COUNT
+  form(action='/business/follow/#{business[0].business_id}', method='post')
+    input(type='submit', value='follow')
   .row
     .col-lg-12
       h1.page-header= business[0].name

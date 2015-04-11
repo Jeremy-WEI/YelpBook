@@ -1,5 +1,13 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  if (!user)
+    p Please log in!
+    a(href='/auth/facebook')
+        img(src= "login-with-facebook.png")
+  else
+    p Welcome to #{user.displayName}
+    a(href='/account') Account
+    a(href='/homepage') Homepage
+    a(href='/logout') Logout
+    

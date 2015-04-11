@@ -1,0 +1,33 @@
+extends layout
+
+block content
+    h1 Friend Lists
+    .row
+        .col-md-8
+            section.content-wrapper
+                .content-box
+                    for friend in friends
+                        .row
+                            .col-md-8
+                                p friend name: #{friend.fb_name}
+
+    h1 Posts Lists
+    .row
+        .col-md-8
+            section.content-wrapper
+                .content-box
+                    for post in posts
+                        .row
+                            .col-md-8
+                                p post: #{post.text}
+
+
+    h1 Following Business
+    .row
+        .col-md-8
+            section.content-wrapper
+                .content-box
+                    for follow in follows
+                        .row
+                            .col-md-8
+                                p business name: #{follow.name}
