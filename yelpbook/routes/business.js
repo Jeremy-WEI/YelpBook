@@ -11,13 +11,19 @@ var connection = mysql.createConnection({
 function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
     connection.query('SELECT * FROM WORD_STATISTICS WHERE business_id = "' + req.query.business_id + '"',
         function (err, wordCounts) {
-            if (!err)
+            if (!err){
+                var follow = req.session.follow;
+                console.log(follow);
                 res.render('business', {
                     business: busInfo,
                     categories: categories,
                     reviews: reviews,
-                    wordCounts: wordCounts
+                    wordCounts: wordCounts,
+                    follow: follow
                 });
+                req.session.follow = null;
+            }
+
             else
                 next(new Error(500));
         });
@@ -69,6 +75,15 @@ function doBusinessSearch(req, res, next) {
     });
 }
 
+router.get('/', function (req, res, next) {
+    //res.render('test', {
+    //});
+    if (req.query.business_id == undefined)
+        next(new Error(404));
+    else
+        doBusinessQuery(req, res, next);
+});
+
 function redirectBusiness(res, business_id) {
     res.writeHead(302, {
         'Location': '/business?business_id=' + business_id
@@ -76,27 +91,88 @@ function redirectBusiness(res, business_id) {
     res.end();
 }
 
-//follow not tested!
+function addReview(req, res, next){
+    if(!req.user){
+        // user doesn't login
+        // redirect to login page
+        res.render('index', {user: req.user});
+    }
+    else{
+        var fb_account = req.user.id;
+        var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb_account;
+        connection.query(query_find_userid, function (err, userid) {
+            if (err) {
+                next(new Error(500));
+            }
+            else {
+                var user_id = userid[0].user_id;
+                var business_id = req.params.business_id;
+                var review = req.body.review;
+                var rating = req.body.rating;
+                var date = new Date();
+                var nowdate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+                console.log(rating);
+                var query_add_review = "INSERT INTO REVIEW (business_id, user_id, text, stars, date) VALUES (\""+business_id+"\", "+user_id
+                    +", \""+review+"\", "+rating+", \""+nowdate+"\")";
+                connection.query(query_add_review, function (err, review) {
+                    if (err) {
+                        next(new Error(500));
+                    }
+                    // successfully add review
+                    redirectBusiness(res, business_id);
+                });
+            }
+        });
+    }
+}
+
+
 function doFollow(req, res, next) {
     var business_id = req.params.business_id;
-    var user_id = req.user;
-    var query = "INSERT INTO FOLLOWS (business_id, user_id) VALUES ('" + business_id + "', '" + user_id + "')";
-    console.log(query);
-    connection.query(query, function (err, reviews) {
-        if (err) {
-            console.log(err.message);
-            var msg = err.message;
-            //case: no user id found (unkonwn user request for follow, probably not logged in
-            if(msg.indexOf("a foreign key constraint fails") > -1 &&
-                msg.indexOf("FOREIGN KEY (`user_id`) REFERENCES `USER` (`user_id`)") > -1) {
-                redirectBusiness(res, business_id);
-            } else {
-                next(new Error(400));
+    if(!req.user){
+        // user doesn't login
+        // redirect to login page
+        res.render('index', {user: req.user});
+    }
+    else{
+        var fb_account = req.user.id;
+        var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb_account;
+        connection.query(query_find_userid, function (err, userid) {
+            if (err) {
+                next(new Error(500));
             }
-        } else { //success, redirect to original page
-            redirectBusiness(res, business_id);
-        }
-    });
+            else if (userid.length != 0) {
+                var user_id = userid[0].user_id;
+                console.log(user_id);
+                var query_check_exist = "SELECT * FROM FOLLOWS WHERE business_id=\"" + business_id + "\" AND user_id=" + user_id;
+                console.log(query_check_exist);
+                connection.query(query_check_exist, function (err, exist) {
+                    if (err) {
+                        next(new Error(400));
+                    }
+                    else if(exist.length == 0)
+                    {
+                        // follow does not exist
+                        var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id) VALUES (\""+business_id+"\", "+user_id+")";
+                        console.log(query_add_follow);
+                        connection.query(query_add_follow, function (err, follow) {
+                            if (err) {
+                                next(new Error(500));
+                            }
+                            // successfully create follows
+                            req.session.follow = 'succ';
+                        });
+                    }
+                    else if(exist.length != 0){
+                        console.log("exists!!!!!")
+                        req.session.follow = 'exist';
+                    }
+                });
+                redirectBusiness(res, business_id);
+
+            }
+        });
+    }
 }
 
 router.get('/search', function (req, res, next) {
@@ -106,6 +182,19 @@ router.get('/search', function (req, res, next) {
         doBusinessSearch(req, res, next);
     }
 });
+
+//add review
+router.post('/addreview/:business_id', function (req, res, next){
+   if(req.params.business_id == undefined) {
+       console.log("/:business_id: business_id == undefined");
+       next(new Error(404));
+   }
+   else{
+       console.log("add review");
+       addReview(req, res, next);
+   }
+});
+
 
 //do follow
 router.post('/follow/:business_id', function (req, res, next) {
