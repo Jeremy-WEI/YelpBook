@@ -9,6 +9,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var multer  = require('multer');
 
 var routes = require('./routes/index');
 var business = require('./routes/business');
@@ -81,6 +82,22 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+//file upload package configuration
+app.use(multer({ dest: './uploads/',
+    rename: function (fieldname, filename) {
+        return filename+Date.now();
+    },
+    onFileUploadStart: function (file) {
+        console.log(file.originalname + ' is starting ...')
+    },
+    onFileUploadComplete: function (file) {
+        console.log(file.fieldname + ' uploaded to  ' + file.path)
+        done=true;
+    }
+}));
+
+
 
 
 app.use('/', routes);

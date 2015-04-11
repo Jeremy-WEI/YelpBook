@@ -8,12 +8,30 @@ var connection = mysql.createConnection({
     database : 'YelpBook'
 });
 
+function get_user(req) {
+    var fb = req.user.id;
+    var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb;
+    console.log(query_find_userid);
+    connection.query(query_find_userid, function (err, userid) {
+        if (err) {
+            return undefined;
+        } else if (userid.length != 1){
+            // use cannot be found or more than one user_id mapped to one facebook account
+            return undefined;
+        } else {
+            return userid[0];
+        }
+    });
+}
+
+//to render the user news feed page. This method gets all news feeds
 function doUserQuery(req, res, next, msg) {
-    console.log(req.params.id);
-    var user_id = req.params.id;
-    var fb_name = null;
+    console.log("req.user.id: " + req.user.id);
+    var user_id = get_user(req.user.id);
+    console.log("user_id: " + user_id);
+//    var fb_name = null;
     var uid = connection.escape(user_id);
-    console.log(uid);
+    console.log("uid: " + uid);
     var query = "(SELECT * FROM HAS_POST WHERE user_id IN"
     + "(SELECT user_id2 as user_id FROM FRIEND WHERE user_id1=" + uid + "))"
     + "UNION"
@@ -40,22 +58,29 @@ function redirectUser(res, user_id) {
 }
 
 function newPost(req, res, next) {
-    console.log(req.params.id);
-    var user_id = connection.escape(req.user);
-    var post_text = connection.escape(req.query.new_post);
-    console.log(user_id);
-    console.log(post_text);
-    var query = "INSERT INTO HAS_POST (user_id, text, datetime) VALUES (" + user_id + ", " + post_text + ", NOW())";
-    console.log(query);
-    connection.query(query, function(err, results) {
-            if (err)
-                doUserQuery(req, res, next, "The post Failed!");
-            else {
-                doUserQuery(req, res, next, "The post was sent successfully!");
+    if(done==true){
+        console.log(req.files);
+        console.log("req.user.id: " + req.user.id);
+        var user_id = get_user(req.user.id);
+        console.log("user_id: " + user_id);
+        var post_text = connection.escape(req.body.new_post);
+        console.log(user_id);
+        console.log(post_text);
+        var query = "INSERT INTO HAS_POST (user_id, text, datetime) VALUES (" + user_id + ", " + post_text + ", NOW())";
+        console.log(query);
+        connection.query(query, function(err, results) {
+                if (err)
+                    doUserQuery(req, res, next, "The post Failed!");
+                else {
+                    doUserQuery(req, res, next, "The post was sent successfully!");
+                }
             }
-        }
-    );
+        );
+    } else {
+        console.log("File not yet uploaded");
+    }
 }
+
 
 router.post('/new_post', function(req, res, next) {
     newPost(req, res, next);
