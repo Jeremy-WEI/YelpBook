@@ -85,6 +85,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/business', business);
+//app.use('/follow', business);
 app.use('/users', users);
 
 

@@ -1,70 +1,82 @@
 extends layout
 
 block content
+  form(action='/business/follow/#{business[0].business_id}', method='post')
+    input(type='submit', value='follow')
   .row
     .col-lg-12
       h1.page-header= business[0].name
   .row
-    .col-lg-3.col-md-6
-      .panel.panel-yellow
-        .panel-heading
-          .row
-            .col-xs-3
-              i.fa.fa-shopping-cart.fa-5x
-            .col-xs-9.text-right
-              .huge= business[0].city
-              div City
-        a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
-          .panel-footer
-            span.pull-left View Details
-            span.pull-right
-              i.fa.fa-arrow-circle-right
-            .clearfix
-    .col-lg-3.col-md-6
-      .panel.panel-primary
-        .panel-heading
-          .row
-            .col-xs-3
-              i.fa.fa-comments.fa-5x
-            .col-xs-9.text-right
-              .huge= business[0].review_count
-              div Total Reviews
-        a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
-          .panel-footer
-            span.pull-left View Details
-            span.pull-right
-              i.fa.fa-arrow-circle-right
-            .clearfix
-    .col-lg-3.col-md-6
-      .panel.panel-red
-        .panel-heading
-          .row
-            .col-xs-3
-              i.fa.fa-support.fa-5x
-            .col-xs-9.text-right
-              .huge= business[0].state
-              div State
-        a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
-          .panel-footer
-            span.pull-left View Details
-            span.pull-right
-              i.fa.fa-arrow-circle-right
-            .clearfix
-    .col-lg-3.col-md-6
-      .panel.panel-green
-        .panel-heading
-          .row
-            .col-xs-3
-              i.fa.fa-tasks.fa-5x
-            .col-xs-9.text-right
-              .huge= business[0].avg_stars
-              div Average Stars
-        a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
-          .panel-footer
-            span.pull-left View Details
-            span.pull-right
-              i.fa.fa-arrow-circle-right
-            .clearfix
+    .col-lg-8.col-md-12
+      .row
+        .col-lg-6.col-md-6
+          .panel.panel-yellow
+            .panel-heading
+              .row
+                .col-xs-3
+                  i.fa.fa-shopping-cart.fa-5x
+                .col-xs-9.text-right
+                  .huge= business[0].city
+                  div City
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              .panel-footer
+                span.pull-left View Details
+                span.pull-right
+                  i.fa.fa-arrow-circle-right
+                .clearfix
+        .col-lg-6.col-md-6
+          .panel.panel-primary
+            .panel-heading
+              .row
+                .col-xs-3
+                  i.fa.fa-comments.fa-5x
+                .col-xs-9.text-right
+                  .huge= business[0].review_count
+                  div Total Reviews
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              .panel-footer
+                span.pull-left View Details
+                span.pull-right
+                  i.fa.fa-arrow-circle-right
+                .clearfix
+      .row
+        .col-lg-6.col-md-6
+          .panel.panel-red
+            .panel-heading
+              .row
+                .col-xs-3
+                  i.fa.fa-support.fa-5x
+                .col-xs-9.text-right
+                  .huge= business[0].state
+                  div State
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              .panel-footer
+                span.pull-left View Details
+                span.pull-right
+                  i.fa.fa-arrow-circle-right
+                .clearfix
+        .col-lg-6.col-md-6
+          .panel.panel-green
+            .panel-heading
+              .row
+                .col-xs-3
+                  i.fa.fa-tasks.fa-5x
+                .col-xs-9.text-right
+                  .huge= business[0].avg_stars
+                  div Average Stars
+            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+              .panel-footer
+                span.pull-left View Details
+                span.pull-right
+                  i.fa.fa-arrow-circle-right
+                .clearfix
+    .col-lg-4.col-md-12
+       .panel.panel-default
+         .panel-heading
+           i.fa.fa-clock-o.fa-fw
+           |  See What Others Describe it
+         .panel-body
+           canvas#canvas.canvas
   .row
     .panel-body
   .panel.panel-default
@@ -76,7 +88,7 @@ block content
         each review, index in reviews
           if (index % 2 == 0)
             li.timeline-inverted
-              .timeline-badge(class="#{index%4==0 ? 'danger' : 'info'}")
+              .timeline-badge(class="#{index % 4 == 0 ? 'danger' : 'info'}")
                 i.fa.fa-check
               .timeline-panel
                 .timeline-heading
@@ -88,7 +100,7 @@ block content
                   p= review.text
           else
             li
-              .timeline-badge(class="#{index%3==0 ? 'warn' : 'success'}")
+              .timeline-badge(class="#{index % 3 == 0 ? 'warn' : 'success'}")
                 i.fa.fa-credit-card
               .timeline-panel
                 .timeline-heading
@@ -179,5 +191,12 @@ block content
         //    .timeline-body
         //      p
         //        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati, quaerat tempore officia voluptas debitis consectetur culpa amet, accusamus dolorum fugiat, animi dicta aperiam, enim incidunt quisquam maxime neque eaque.
+
+  script.
+    var canvas = document.getElementById('canvas')
+    canvas.width = 300
+    canvas.height = 220
+    list = [['foo', 10], ['bar', 6], ['asd', 1], ['as2d', 0.5]]
+    WordCloud(canvas, {list: list, fontWeight: 600, weightFactor: 10})
 
 

@@ -3,6 +3,7 @@ extends layout
 block content
   h1= user_id
   p Welcome to #{user_id}
+  h2(style='color:red') #{message}
   h1 News Feeds From Friends
   .row
     .col-md-8
@@ -18,7 +19,7 @@ block content
             .row
               .col-md-8
                 p Posted on: #{post.datetime}
-  form(action='new_post', method='POST')
+  form(action='/users/new_post', method='POST')
     .form-group
       .row
         .col-md-8
