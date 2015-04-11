@@ -9,15 +9,27 @@ html
     link(rel='stylesheet', href='/stylesheets/timeline.css')
     link(rel='stylesheet', href='/stylesheets/sb-admin-2.css')
     link(rel='stylesheet', href='/stylesheets/morris.css')
+    script(src='https://maps.googleapis.com/maps/api/js?v=3.exp')
+    script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
     script(src="/scripts/bootstrap.min.js")
-    script(src="/scripts/jquery.min.js")
     script(src="/scripts/metisMenu.min.js")
-    script(src="/scripts/morris-data.js")
-    script(src="/scripts/morris.min.js")
     script(src="/scripts/raphael-min.js")
     script(src="/scripts/sb-admin-2.js")
     script(src="/scripts/wordcloud2.js")
   body
+    style.
+      html, body {
+        height: 90%;
+        margin: 10px;
+        padding: 10px
+      }
+      #map_canvas {
+        width: 100%;
+        height: 300px;
+      }
+      .hidden {
+        display: none;
+      }
     form(action='/business/search', method='GET')
       .form-group
         .row
@@ -26,3 +38,6 @@ html
           .col-md-4
             input(type='submit', value='Search For Businesses')
     block content
+    hr
+    br
+    br

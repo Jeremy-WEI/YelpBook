@@ -32,6 +32,55 @@ function doUserQuery(req, res, next, msg) {
     );
 }
 
+
+
+function doFollowsQuery(req, res, id, friendInfo, ownposts, next) {
+    connection.query('SELECT B.name FROM BUSINESS B INNER JOIN FOLLOWS ON B.business_id = F.business_id WHERE  =' + id,
+        function (err, follows) {
+            if (!err)
+                res.render('userpage', {
+                    friends: friendInfo,
+                    posts: ownposts,
+                    follows: follows
+
+                });
+            else
+                next(new Error(500));
+        });
+}
+
+    function doPostQuery(req, res, id, friendInfo, next) {
+        connection.query('SELECT H.text FROM HAS_POST H WHERE H.user_id =' + id,
+            function (err, ownposts) {
+                if (!err)
+                    doFollowsQuery(req, res, id, friendInfo, ownposts, next)
+                else
+                    next(new Error(500));
+            });
+    }
+
+    function doFriendQuery(req, res, id, next) {
+
+        // connection.connect();
+        connection.query('SELECT U.fb_name FROM FRIEND F INNER JOIN ON F.user_id2 = U.user_id WHERE F.user_id1 =' + id,
+            function (err, friendInfo) {
+                if (!err) {
+                    doPostQuery(req, res, uid, friendInfo, next);
+                } else
+                    next(new Error(500));
+            });
+    }
+
+function getIdQuery(req, res, id, friendInfo, next) {
+    connection.query('SELECT H.text FROM HAS_POST H WHERE H.user_id =' + id,
+        function (err, ownposts) {
+            if (!err)
+                doFollowsQuery(req, res, id, friendInfo, ownposts, next)
+            else
+                next(new Error(500));
+        });
+}
+
 function redirectUser(res, user_id) {
     res.writeHead(302, {
         'Location': '/user/' + user_id
@@ -40,21 +89,13 @@ function redirectUser(res, user_id) {
 }
 
 function newPost(req, res, next) {
-    console.log(req.params.id);
-    var user_id = connection.escape(req.user);
-    var post_text = connection.escape(req.query.new_post);
-    console.log(user_id);
-    console.log(post_text);
-    var query = "INSERT INTO HAS_POST (user_id, text, datetime) VALUES (" + user_id + ", " + post_text + ", NOW())";
-    console.log(query);
-    connection.query(query, function(err, results) {
-            if (err)
-                doUserQuery(req, res, next, "The post Failed!");
-            else {
-                doUserQuery(req, res, next, "The post was sent successfully!");
-            }
-        }
-    );
+    connection.query('SELECT user_id FROM USER WHERE fb_account ="' + request.user.id + '"',
+        function (err, id) {
+            if (!err)
+                return id[0];
+            else
+                next(new Error(500));
+        });
 }
 
 router.post('/new_post', function(req, res, next) {
@@ -69,6 +110,11 @@ router.get('/:id', function(req, res, next) {
     doUserQuery(req, res, next, "");
 });
 
+/* Get user's homepage.*/
+router.get('/homepage', function(req, res, next) {
+    var id = getIdQuery(req, res, next);
+    doFriendQuery(req, res, id, next);
+})
 
 
 

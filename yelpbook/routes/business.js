@@ -75,6 +75,15 @@ function doBusinessSearch(req, res, next) {
     });
 }
 
+router.get('/', function (req, res, next) {
+    //res.render('test', {
+    //});
+    if (req.query.business_id == undefined)
+        next(new Error(404));
+    else
+        doBusinessQuery(req, res, next);
+});
+
 function redirectBusiness(res, business_id) {
     res.writeHead(302, {
         'Location': '/business?business_id=' + business_id
