@@ -14,6 +14,7 @@ var multer  = require('multer');
 var routes = require('./routes/index');
 var business = require('./routes/business');
 var users = require('./routes/users');
+var homepage = require('./routes/homepage');
 
 
 var FACEBOOK_APP_ID = "1423345787976364"
@@ -104,6 +105,7 @@ app.use('/', routes);
 app.use('/business', business);
 //app.use('/follow', business);
 app.use('/users', users);
+app.use('/homepage', homepage);
 
 
 app.get('/', function(req, res){
@@ -119,6 +121,8 @@ app.get('/account', ensureAuthenticated, function(req, res){
 app.get('/login', function(req, res){
     res.render('login', { user: req.user });
 });
+
+
 
 // GET /auth/facebook
 //   Use passport.authenticate() as route middleware to authenticate the

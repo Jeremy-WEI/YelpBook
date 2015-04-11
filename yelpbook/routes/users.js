@@ -16,6 +16,55 @@ function redirectLogin(res) {
     res.end();
 }
 
+
+
+function doFollowsQuery(req, res, id, friendInfo, ownposts, next) {
+    connection.query('SELECT B.name FROM BUSINESS B INNER JOIN FOLLOWS ON B.business_id = F.business_id WHERE  =' + id,
+        function (err, follows) {
+            if (!err)
+                res.render('userpage', {
+                    friends: friendInfo,
+                    posts: ownposts,
+                    follows: follows
+
+                });
+            else
+                next(new Error(500));
+        });
+}
+
+    function doPostQuery(req, res, id, friendInfo, next) {
+        connection.query('SELECT H.text FROM HAS_POST H WHERE H.user_id =' + id,
+            function (err, ownposts) {
+                if (!err)
+                    doFollowsQuery(req, res, id, friendInfo, ownposts, next)
+                else
+                    next(new Error(500));
+            });
+    }
+
+    function doFriendQuery(req, res, id, next) {
+
+        // connection.connect();
+        connection.query('SELECT U.fb_name FROM FRIEND F INNER JOIN ON F.user_id2 = U.user_id WHERE F.user_id1 =' + id,
+            function (err, friendInfo) {
+                if (!err) {
+                    doPostQuery(req, res, uid, friendInfo, next);
+                } else
+                    next(new Error(500));
+            });
+    }
+
+function getIdQuery(req, res, id, friendInfo, next) {
+    connection.query('SELECT H.text FROM HAS_POST H WHERE H.user_id =' + id,
+        function (err, ownposts) {
+            if (!err)
+                doFollowsQuery(req, res, id, friendInfo, ownposts, next)
+            else
+                next(new Error(500));
+        });
+}
+
 function redirectUser(res, user_id) {
     res.writeHead(302, {
         'Location': '/user/' + user_id
@@ -100,6 +149,16 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
     );
 }
 
+function newPost(req, res, next) {
+    connection.query('SELECT user_id FROM USER WHERE fb_account ="' + request.user.id + '"',
+        function (err, id) {
+            if (!err)
+                return id[0];
+            else
+                next(new Error(500));
+        });
+}
+
 
 
 
@@ -123,6 +182,11 @@ router.get('/:id', function(req, res, next) {
     getUserQuery(req, res, next, "");
 });
 
+/* Get user's homepage.*/
+router.get('/homepage', function(req, res, next) {
+    var id = getIdQuery(req, res, next);
+    doFriendQuery(req, res, id, next);
+})
 
 
 module.exports = router;
