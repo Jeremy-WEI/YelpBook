@@ -1,6 +1,10 @@
 extends layout
 
 block content
+  p Bing Search
+    br
+    a(href='/business/bing/#{business[0].name}/#{business[0].business_id}') Bing
+
   form(action='/business/addreview/#{business[0].business_id}', method='post')
     textarea(name="review", cols="40", rows="5")
     br
