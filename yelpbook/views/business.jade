@@ -16,6 +16,13 @@ block content
     | 5
     br
     input(type="submit", value="Add Review")
+
+  // add rating trend chart
+  //#line_top_x(style='width:1000px; height:1000px;')
+  #classic(style='width:1000px; height:1000px;')
+  each rate, index in rating
+    h6.rating= rate.date + '\t' + rate.stars
+
   //h1= Object.keys(wordCounts).length
   //h1#testing asd
   each word, index in wordCounts
@@ -93,21 +100,21 @@ block content
       .panel.panel-default
         .panel-heading
           i.fa.fa-clock-o.fa-fw
-          |  See What Others Describe it
+          | See What Others Describe it
         .panel-body
           canvas#wordle_canvas.canvas
   hr
   .panel.panel-default
     .panel-heading
       i.fa.fa-clock-o.fa-fw
-      |  Nearby Business
+      | Nearby Business
     .panel-body
       #map_canvas
   hr
   .panel.panel-default
     .panel-heading
       i.fa.fa-clock-o.fa-fw
-      |  Latest Reviews
+      | Latest Reviews
     .panel-body
       ul.timeline
         each review, index in reviews
@@ -238,4 +245,88 @@ block content
               mapOptions);
     }
     google.maps.event.addDomListener(window, 'load', initialize);
+
+    google.load('visualization', '1.1', {packages: ['line', 'corechart']});
+    google.setOnLoadCallback(drawChart);
+
+
+    var ratings = [];
+    $(".rating").each(function (){
+      var rate = $(this).text().split("\t");
+      var date = new Date(rate[0]);
+      var star = parseInt(rate[1]);
+      var newrate = [date, star];
+      ratings.push(newrate);
+    });
+
+    var hash = {};
+    for(var i=0;i<ratings.length;i++){
+      var d = ratings[i][0];
+      var month = d.getMonth();
+      var year = d.getFullYear();
+      var newdate = new Date(year, month);
+      if(hash[newdate] == undefined){
+        hash[newdate] = [];
+        hash[newdate].push(ratings[i][1]);
+      }
+      else{
+        hash[newdate].push(ratings[i][1]);
+      }
+    }
+
+    var dates = Object.keys(hash);
+    var keyset = [];
+    var results = [];
+    for(var i=0;i<dates.length;i++){
+      var sum = hash[dates[i]].reduce(function(a, b) { return a + b; });
+      var avg = sum/hash[dates[i]].length;
+      var dd = new Date(dates[i]);
+      var newdd = new Date(dd.getFullYear(), dd.getMonth());
+      keyset.push(newdd);
+      results.push([newdd, avg]);
+    }
+
+
+
+    function drawChart() {
+
+        var classicChart;
+        var classicDiv = document.getElementById('classic');
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('date', 'Month');
+        data.addColumn('number', "Monthly Rating");
+
+        data.addRows(results);
+
+        var classicOptions = {
+            title: 'Monthly Rating Trend',
+            width: 900,
+            height: 500,
+            // Gives each series an axis that matches the vAxes number below.
+            series: {
+                0: {targetAxisIndex: 0},
+                1: {targetAxisIndex: 1}
+            },
+            vAxes: {
+                // Adds titles to each axis.
+                0: {title: 'Rating'},
+                1: {title: 'Daylight'}
+            },
+            hAxis: {
+                ticks: keyset
+            },
+            vAxis: {
+                viewWindow: {
+                    max: 5,
+                    min: 0
+                }
+            }
+        };
+        classicChart = new google.visualization.LineChart(classicDiv);
+
+        classicChart.draw(data, classicOptions);
+    }
+
+
 
