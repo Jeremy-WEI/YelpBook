@@ -32,6 +32,8 @@ html
       .col-md-1
         form(action='/users/my_feed', method='GET')
           input(type='submit', value='news feed')
+      .col-md-2
+        a(href='/logout') logout
     br
     form(action='/business/search', method='GET')
       .form-group

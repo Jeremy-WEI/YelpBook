@@ -13,8 +13,8 @@ var connection = mysql.createConnection({
 function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
     connection.query('SELECT * FROM WORD_STATISTICS WHERE business_id = "' + req.query.business_id + '"',
         function (err, wordCounts) {
-            if (!err) {
-                var query_rating = 'SELECT date, avg(stars) as stars FROM REVIEW WHERE business_id="' + req.query.business_id + '" GROUP BY date ORDER BY date DESC LIMIT 50';
+            if (!err){
+                var query_rating = 'SELECT date, avg(stars) as stars FROM REVIEW WHERE business_id="'+req.query.business_id+'" GROUP BY date ORDER BY date DESC';
                 connection.query(query_rating,
                     function (err, rating) {
                         if (!err) {
@@ -23,7 +23,8 @@ function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
                                 categories: categories,
                                 reviews: reviews,
                                 wordCounts: wordCounts,
-                                rating: rating
+                                rating: rating,
+                                msg: req.query.msg
                             });
                             console.log(rating);
                         }
@@ -98,9 +99,9 @@ router.get('/', function (req, res, next) {
         doBusinessQuery(req, res, next);
 });
 
-function redirectBusiness(res, business_id) {
+function redirectBusiness(res, business_id, msg) {
     res.writeHead(302, {
-        'Location': '/business?business_id=' + business_id
+        'Location': '/business?business_id=' + business_id + '&msg=' + msg
     });
     res.end();
 }
@@ -133,7 +134,7 @@ function addReview(req, res, next) {
                         next(new Error(500));
                     }
                     // successfully add review
-                    redirectBusiness(res, business_id);
+                    redirectBusiness(res, business_id, "The review was added!");
                 });
             }
         });
@@ -166,7 +167,7 @@ function doFollow(req, res, next) {
                     }
                     else if (exist.length == 0) {
                         // follow does not exist
-                        var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id) VALUES (\"" + business_id + "\", " + user_id + ")";
+                        var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id, time) VALUES (\""+business_id+"\", "+user_id+", now())";
                         console.log(query_add_follow);
                         connection.query(query_add_follow, function (err, follow) {
                             if (err) {
@@ -181,7 +182,7 @@ function doFollow(req, res, next) {
                         req.session.follow = 'exist';
                     }
                 });
-                redirectBusiness(res, business_id);
+                redirectBusiness(res, business_id, "You've followed the business!");
 
             }
         });
