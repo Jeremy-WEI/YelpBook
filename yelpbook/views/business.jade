@@ -5,6 +5,10 @@ block content
     br
     a(href='/business/bing/#{business[0].name}/#{business[0].business_id}') Bing
 
+  p Group
+    br
+    a(href='/group/#{business[0].business_id}') Go
+
   form(action='/business/addreview/#{business[0].business_id}', method='post')
     textarea(name="review", cols="40", rows="5")
     br
