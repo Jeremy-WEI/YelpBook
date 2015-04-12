@@ -9,7 +9,8 @@ block content
                     for friend in friends
                         .row
                             .col-md-8
-                                p friend name: #{friend.fb_name}
+                              p
+                                a(href='/homepage/#{friend.user_id}') friend name: #{friend.fb_name}
 
     h1 Posts Lists
     .row
@@ -20,6 +21,10 @@ block content
                         .row
                             .col-md-8
                                 p post: #{post.text}
+                        .row
+                            .col-md-8
+                                if post.photo_name != 'NULL'
+                                    img(src='/users/images/#{post.photo_name}', alt='Photo missing')
 
 
     h1 Following Business
