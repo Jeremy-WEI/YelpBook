@@ -1,6 +1,13 @@
 extends layout
 
 block content
+  p Bing Search
+    br
+    a(href='/business/bing/#{business[0].name}/#{business[0].business_id}') Bing
+
+  p Group
+    br
+    a(href='/group/#{business[0].business_id}') Go
   //h1= Object.keys(wordCounts).length
   style.
     #map_canvas, #route_div, #street_view, #chart1, #chart2 {

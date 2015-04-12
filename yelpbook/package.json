@@ -23,7 +23,8 @@
         "gridfs-stream": "^1.1.0",
         "moment": "~2.10.2",
         "mime":  "~1.3.4",
-        "multer": "~0.1.6"
+        "multer": "~0.1.6",
+        "node-bing-api": ">=0.0.0"
     }
 }
 

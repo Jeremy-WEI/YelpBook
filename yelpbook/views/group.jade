@@ -1,0 +1,11 @@
+block content
+    h1 Members
+    .row
+        .col-md-8
+            section.content-wrapper
+                .content-box
+                    for mem in members
+                        .row
+                            .col-md-8
+                                p
+                                    a(href='/homepage/#{mem.user_id}') #{mem.fb_name}s

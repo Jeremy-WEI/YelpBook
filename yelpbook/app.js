@@ -9,6 +9,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
+var Bing = require('node-bing-api')({accKey:"NI7NeDBXR06vWzeRY1eRXUYG+J42BnjVZe2TNCaxtlU"})
 //var mongo = require('mongodb');
 
 var expressSession = require('express-session');
@@ -17,7 +18,7 @@ var routes = require('./routes/index');
 var business = require('./routes/business');
 var users = require('./routes/users');
 var homepage = require('./routes/homepage');
-
+var group = require('./routes/group')
 
 var FACEBOOK_APP_ID = "1423345787976364";
 var FACEBOOK_APP_SECRET = "02b611212b606a730589d2dbf4ef5497";
@@ -125,7 +126,7 @@ app.use('/business', business);
 //app.use('/follow', business);
 app.use('/users', users);
 app.use('/homepage', homepage);
-
+app.use('/group', group);
 
 app.get('/', function(req, res){
 //    res.render('index', { user: req.user });
@@ -151,6 +152,8 @@ app.get('/login', function(req, res){
 app.get('/auth/facebook',
     passport.authenticate('facebook'),
     function(req, res){
+        console.log("/auth/facebook callback");
+        console.log(req.session.returnTo);
         // The request will be redirected to Facebook for authentication, so this
         // function will not be called.
     });
@@ -163,7 +166,9 @@ app.get('/auth/facebook',
 app.get('/auth/facebook/callback',
     passport.authenticate('facebook', { failureRedirect: '/login' }),
     function(req, res) {
-        res.redirect('/');
+//        console.log(("req.session: ") + JSON.stringify(req.session));
+        res.redirect('/users/my_feed');
+//        res.redirect('/');
     });
 
 app.get('/logout', function(req, res){
@@ -179,7 +184,9 @@ app.get('/logout', function(req, res){
 //   login page.
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
-    res.redirect('/login')
+    req.session.returnTo = req.path;
+    console.log(("ensureAuthenticated req.session: ") + JSON.stringify(req.session));
+    res.redirect('/login');
 }
 
 

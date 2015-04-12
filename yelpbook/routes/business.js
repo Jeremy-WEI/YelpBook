@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var Bing = require('node-bing-api')({accKey:"NI7NeDBXR06vWzeRY1eRXUYG+J42BnjVZe2TNCaxtlU"})
 var moment = require('moment')
-
 var connection = mysql.createConnection({
     host: 'mydatabase.cfxag8k1xo7h.us-east-1.rds.amazonaws.com',
     user: 'linjie',
@@ -117,9 +117,9 @@ router.get('/', function (req, res, next) {
         doBusinessQuery(req, res, next);
 });
 
-function redirectBusiness(res, business_id) {
+function redirectBusiness(res, business_id, msg) {
     res.writeHead(302, {
-        'Location': '/business?business_id=' + business_id
+        'Location': '/business?business_id=' + business_id + '&msg=' + msg
     });
     res.end();
 }
@@ -152,7 +152,7 @@ function addReview(req, res, next) {
                         next(new Error(500));
                     }
                     // successfully add review
-                    redirectBusiness(res, business_id);
+                    redirectBusiness(res, business_id, "The review was added!");
                 });
             }
         });
@@ -185,7 +185,7 @@ function doFollow(req, res, next) {
                     }
                     else if (exist.length == 0) {
                         // follow does not exist
-                        var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id) VALUES (\"" + business_id + "\", " + user_id + ")";
+                        var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id, time) VALUES (\""+business_id+"\", "+user_id+", now())";
                         //console.log(query_add_follow);
                         connection.query(query_add_follow, function (err, follow) {
                             if (err) {
@@ -200,7 +200,7 @@ function doFollow(req, res, next) {
                         req.session.follow = 'exist';
                     }
                 });
-                redirectBusiness(res, business_id);
+                redirectBusiness(res, business_id, "You've followed the business!");
 
             }
         });
@@ -224,6 +224,34 @@ router.post('/addreview/:business_id', function (req, res, next) {
     else {
         //console.log("add review");
         addReview(req, res, next);
+    }
+});
+
+
+//function callBing(res, body) {
+//
+//}
+
+
+//do bing search
+router.get('/bing/:name/:id', function (req, res, next){
+    if(req.params.name === undefined) {
+        console.log("can't use bing");
+        next(new Error(404));
+    }
+    else{
+        console.log("add review");
+        console.log(req.params.name);
+        Bing.web(req.params.name, function(error, ress, body){
+            console.log(body.d.results);
+            res.render('bingresult', {
+                bodyresults: body.d.results,
+                b_id: req.params.id
+            });
+        }, {
+            top:10, //number of results(max 50)
+            skip:0 // skip first 0 results
+        })
     }
 });
 
