@@ -12,7 +12,7 @@ function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
     connection.query('SELECT * FROM WORD_STATISTICS WHERE business_id = "' + req.query.business_id + '"',
         function (err, wordCounts) {
             if (!err){
-                var query_rating = 'SELECT date, avg(stars) as stars FROM REVIEW WHERE business_id="'+req.query.business_id+'" GROUP BY date ORDER BY date DESC LIMIT 50';
+                var query_rating = 'SELECT date, avg(stars) as stars FROM REVIEW WHERE business_id="'+req.query.business_id+'" GROUP BY date ORDER BY date DESC';
                 connection.query(query_rating,
                     function (err, rating) {
                         if (!err){
@@ -161,7 +161,7 @@ function doFollow(req, res, next) {
                     else if(exist.length == 0)
                     {
                         // follow does not exist
-                        var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id) VALUES (\""+business_id+"\", "+user_id+")";
+                        var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id, time) VALUES (\""+business_id+"\", "+user_id+", now())";
                         console.log(query_add_follow);
                         connection.query(query_add_follow, function (err, follow) {
                             if (err) {
