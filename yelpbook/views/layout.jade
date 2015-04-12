@@ -25,22 +25,21 @@ html
         margin: 10px;
         padding: 10px
       }
-    .row
-      .col-md-1
-        form(action='/homepage', method='GET')
-          input(type='submit', value='homepage')
-      .col-md-1
-        form(action='/users/my_feed', method='GET')
-          input(type='submit', value='news feed')
+    nav.navbar.navbar-inverse.navbar-fixed-top.sticky(role='navigation')
+      .container
+        ul.nav.navbar-nav.nav.pull-right(style="text-align: center;")
+          li
+            a(href='/homepage') HomePage
+          li
+            a(href='/users/my_feed') News Feed
     br
-    form(action='/business/search', method='GET')
+    br
+    form.form-horizontal(action='/business/search', method='GET')
       .form-group
-        .row
-          .col-md-8
-            input#search.form-control(name='search', placeholder='Search for business', type='text')
-          .col-md-4
-            input(type='submit', value='Search For Businesses')
+        .col-lg-11.col-md-11
+          input.form-control(name='search', type='text', placeholder='Search for Business')
+        .col-lg-1.col-md-1.form-group(align='right')
+          button.btn.btn-info.btn-sm(type='submit') Search
     block content
     hr
-    br
     br

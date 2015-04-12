@@ -1,49 +1,29 @@
 extends layout
 
 block content
-  form(action='/business/addreview/#{business[0].business_id}', method='post')
-    textarea(name="review", cols="40", rows="5")
-    br
-    input(type="radio", name="rating", value="1")
-    | 1
-    input(type="radio", name="rating", value="2")
-    | 2
-    input(type="radio", name="rating", value="3")
-    | 3
-    input(type="radio", name="rating", value="4")
-    | 4
-    input(type="radio", name="rating", value="5")
-    | 5
-    br
-    input(type="submit", value="Add Review")
-
-  // add rating trend chart
-  //#line_top_x(style='width:1000px; height:1000px;')
-  #classic(style='width:1000px; height:1000px;')
-  each rate, index in rating
-    h6.rating= rate.date + '\t' + rate.stars
-
   //h1= Object.keys(wordCounts).length
   style.
-    #map_canvas, #route_div, #street_view {
+    #map_canvas, #route_div, #street_view, #chart1, #chart2 {
       width: 100%;
       height: 350px;
       overflow: scroll;
     }
-
     .hidden_word {
       display: none;
     }
-
-  form(action='/business/follow/#{business[0].business_id}', method='post')
-    input(type='submit', value='follow')
+  each rate, index in ratingStatistic
+    h6.rating1.hide= rate.stars + '\t' + rate.count
+  each rate, index in ratingTrend
+    h6.rating2.hide= rate.date + '\t' + rate.stars
   each word, index in wordCounts
     h6.hidden_word= word.WORD + ' ' + word.COUNT
   h6.hide#longitude= business[0].longitude
   h6.hide#latitude= business[0].latitude
-  .row
-    .col-lg-12
-      h1.page-header= business[0].name
+  form.form-inline(action='/business/follow/#{business[0].business_id}', method='post')
+    .form-group
+      label
+        h1 #{business[0].name}&nbsp&nbsp&nbsp&nbsp
+    button.label.label-primary(type='submit') Follow
   .row
     .col-lg-8.col-md-12
       .row
@@ -56,7 +36,7 @@ block content
                 .col-xs-9.text-right
                   .huge= business[0].city
                   div City
-            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+            a(href='#')
               .panel-footer
                 span.pull-left View Details
                 span.pull-right
@@ -71,7 +51,7 @@ block content
                 .col-xs-9.text-right
                   .huge= business[0].review_count
                   div Total Reviews
-            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+            a(href='#')
               .panel-footer
                 span.pull-left View Details
                 span.pull-right
@@ -87,7 +67,7 @@ block content
                 .col-xs-9.text-right
                   .huge= business[0].state
                   div State
-            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+            a(href='#')
               .panel-footer
                 span.pull-left View Details
                 span.pull-right
@@ -102,7 +82,7 @@ block content
                 .col-xs-9.text-right
                   .huge= business[0].avg_stars
                   div Average Stars
-            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#')
+            a(href='#')
               .panel-footer
                 span.pull-left View Details
                 span.pull-right
@@ -136,119 +116,102 @@ block content
           |  StreetView
         .panel-body#street_view
   hr
-  .panel.panel-default
-    .panel-heading
-      i.fa.fa-clock-o.fa-fw
-      | Latest Reviews
-    .panel-body
-      ul.timeline
-        each review, index in reviews
-          if (index % 2 == 0)
-            li.timeline-inverted
-              .timeline-badge(class="#{index % 4 == 0 ? 'danger' : 'info'}")
-                i.fa.fa-check
-              .timeline-panel
-                .timeline-heading
-                  h3.timeline-title= review.fb_name
-                  p
-                    small.text-muted
-                      i.fa.fa-clock-o= review.date
-                .timeline-body
-                  p= review.text
-          else
-            li
-              .timeline-badge(class="#{index % 3 == 0 ? 'warn' : 'success'}")
-                i.fa.fa-credit-card
-              .timeline-panel
-                .timeline-heading
-                  h3.timeline-title= review.fb_name
-                  p
-                    small.text-muted
-                      i.fa.fa-clock-o= review.date
-                .timeline-body
-                  p= review.text
-    // /.panel-footer
-      //li
-        //  .timeline-badge
-        //    i.fa.fa-check
-        //  .timeline-panel
-        //    .timeline-heading
-        //      h4.timeline-title Lorem ipsum dolor
-        //      p
-        //        small.text-muted
-        //          i.fa.fa-clock-o
-        //          |  11 hours ago via Twitter
-        //    .timeline-body
-        //      p
-        //        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero laboriosam dolor perspiciatis omnis exercitationem. Beatae, officia pariatur? Est cum veniam excepturi. Maiores praesentium, porro voluptas suscipit facere rem dicta, debitis.
-        //li.timeline-inverted
-        //  .timeline-badge.warning
-        //    i.fa.fa-credit-card
-        //  .timeline-panel
-        //    .timeline-heading
-        //      h4.timeline-title Lorem ipsum dolor
-        //    .timeline-body
-        //      p
-        //        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem dolorem quibusdam, tenetur commodi provident cumque magni voluptatem libero, quis rerum. Fugiat esse debitis optio, tempore. Animi officiis alias, officia repellendus.
-        //      p
-        //        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium maiores odit qui est tempora eos, nostrum provident explicabo dignissimos debitis vel! Adipisci eius voluptates, ad aut recusandae minus eaque facere.
-        //li
-        //  .timeline-badge.danger
-        //    i.fa.fa-bomb
-        //  .timeline-panel
-        //    .timeline-heading
-        //      h4.timeline-title Lorem ipsum dolor
-        //    .timeline-body
-        //      p
-        //        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellendus numquam facilis enim eaque, tenetur nam id qui vel velit similique nihil iure molestias aliquam, voluptatem totam quaerat, magni commodi quisquam.
-        //li.timeline-inverted
-        //  .timeline-panel
-        //    .timeline-heading
-        //      h4.timeline-title Lorem ipsum dolor
-        //    .timeline-body
-        //      p
-        //        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates est quaerat asperiores sapiente, eligendi, nihil. Itaque quos, alias sapiente rerum quas odit! Aperiam officiis quidem delectus libero, omnis ut debitis!
-        //li
-        //  .timeline-badge.info
-        //    i.fa.fa-save
-        //  .timeline-panel
-        //    .timeline-heading
-        //      h4.timeline-title Lorem ipsum dolor
-        //    .timeline-body
-        //      p
-        //        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nobis minus modi quam ipsum alias at est molestiae excepturi delectus nesciunt, quibusdam debitis amet, beatae consequuntur impedit nulla qui! Laborum, atque.
-        //      hr
-        //      .btn-group
-        //        button.btn.btn-primary.btn-sm.dropdown-toggle(type='button', data-toggle='dropdown')
-        //          i.fa.fa-gear
-        //          span.caret
-        //        ul.dropdown-menu(role='menu')
-        //          li
-        //            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Action
-        //          li
-        //            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Another action
-        //          li
-        //            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Something else here
-        //          li.divider
-        //          li
-        //            a(href='http://ironsummitmedia.github.io/startbootstrap-sb-admin-2/pages/index.html#') Separated link
-        //li
-        //  .timeline-panel
-        //    .timeline-heading
-        //      h4.timeline-title Lorem ipsum dolor
-        //    .timeline-body
-        //      p
-        //        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi fuga odio quibusdam. Iure expedita, incidunt unde quis nam! Quod, quisquam. Officia quam qui adipisci quas consequuntur nostrum sequi. Consequuntur, commodi.
-        //li.timeline-inverted
-        //  .timeline-badge.success
-        //    i.fa.fa-graduation-cap
-        //  .timeline-panel
-        //    .timeline-heading
-        //      h4.timeline-title Lorem ipsum dolor
-        //    .timeline-body
-        //      p
-        //        | Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt obcaecati, quaerat tempore officia voluptas debitis consectetur culpa amet, accusamus dolorum fugiat, animi dicta aperiam, enim incidunt quisquam maxime neque eaque.
-
+  .row
+    .col-lg-8.col-md-12
+      .panel.panel-default
+        .panel-heading
+          i.fa.fa-clock-o.fa-fw
+          | Latest Reviews
+        .panel-body
+          ul.timeline
+            each review, index in reviews
+              if (index % 2 == 0)
+                li.timeline-inverted
+                  .timeline-badge(class="#{index % 4 == 0 ? 'danger' : 'info'}")
+                    i.fa.fa-check
+                  .timeline-panel
+                    .timeline-heading
+                      .row
+                        .col-md-4
+                          h4= review.fb_name
+                        .col-md-4
+                          h5(align="right")
+                            if parseInt(review.stars) == 1
+                              | &#9733&#9734&#9734&#9734&#9734
+                            if parseInt(review.stars) == 2
+                              | &#9733&#9733&#9734&#9734&#9734
+                            if parseInt(review.stars) == 3
+                              | &#9733&#9733&#9733&#9734&#9734
+                            if parseInt(review.stars) == 4
+                              | &#9733&#9733&#9733&#9733&#9734
+                            if parseInt(review.stars) == 5
+                              | &#9733&#9733&#9733&#9733&#9733
+                        .col-md-4
+                          h6(align="right")= review.date
+                    .timeline-body
+                      p= review.text
+              else
+                li
+                  .timeline-badge(class="#{index % 3 == 0 ? 'warn' : 'success'}")
+                    i.fa.fa-credit-card
+                  .timeline-panel
+                    .timeline-heading
+                      .row
+                        .col-md-4
+                          h4= review.fb_name
+                        .col-md-4
+                          h5(align="right")
+                            if parseInt(review.stars) == 1
+                              | &#9733&#9734&#9734&#9734&#9734
+                            else if parseInt(review.stars) == 2
+                              | &#9733&#9733&#9734&#9734&#9734
+                            else if parseInt(review.stars) == 3
+                              | &#9733&#9733&#9733&#9734&#9734
+                            else if parseInt(review.stars) == 4
+                              | &#9733&#9733&#9733&#9733&#9734
+                            else if parseInt(review.stars) == 5
+                              | &#9733&#9733&#9733&#9733&#9733
+                        .col-md-4
+                          h6(align="right")= review.date
+                    .timeline-body
+                      p= review.text
+          .row(style="padding:20px")
+            .col-lg-12.col-md-12
+              form.form-horizontal(action='/business/addreview/#{business[0].business_id}', method='post')
+                .form-group
+                  textarea.form-control(type='text', placeholder='Type your Review here...', rows='5', name='review')
+                .row.form-group
+                  .col-lg-10.col-md-10
+                    label.radio-inline
+                      input(type="radio", name="rating", value="1")
+                      | &#9733
+                    label.radio-inline
+                      input(type="radio", name="rating", value="2")
+                      | &#9733&#9733
+                    label.radio-inline
+                      input(type="radio", name="rating", value="3")
+                      | &#9733&#9733&#9733
+                    label.radio-inline
+                      input(type="radio", name="rating", value="4")
+                      | &#9733&#9733&#9733&#9733
+                    label.radio-inline
+                      input(type="radio", name="rating", value="5")
+                      | &#9733&#9733&#9733&#9733&#9733
+                  .col-lg-2.col-md-2.form-group(align='right')
+                    button.btn.btn-warning.btn-sm(type='submit') Submit
+    .col-lg-4.col-md-12
+      .row
+        .panel.panel-default
+          .panel-heading
+            i.fa.fa-clock-o.fa-fw
+            | Rating Statistics
+          .panel-body#chart1
+      .row
+        .panel.panel-default
+          .panel-heading
+            i.fa.fa-clock-o.fa-fw
+            | Rating Trend
+          .panel-body#chart2
   script.
     var wordle_canvas = document.getElementById('wordle_canvas')
     wordle_canvas.width = 320
@@ -348,88 +311,103 @@ block content
 
     initialize()
 
-
-    google.load('visualization', '1.1', {packages: ['line', 'corechart']});
+    google.load("visualization", "1", {packages: ["corechart"]});
     google.setOnLoadCallback(drawChart);
 
-
-    var ratings = [];
-    $(".rating").each(function (){
+    var ratings1 = [['Stars', 'Count']];
+    $(".rating1").each(function () {
       var rate = $(this).text().split("\t");
-      var date = new Date(rate[0]);
-      var star = parseInt(rate[1]);
-      var newrate = [date, star];
-      ratings.push(newrate);
+      var stars
+      if (rate[0] == '1')
+        stars = rate[0] + ' Star';
+      else
+        stars = rate[0] + ' Stars';
+      var count = parseInt(rate[1]);
+      ratings1.push([stars, count]);
     });
 
+    var ratings2 = [];
+    $(".rating2").each(function () {
+      var rate = $(this).text().split("\t");
+      var date = new Date(rate[0]);
+      var star = parseFloat(rate[1]);
+      var newrate = [date, star];
+      ratings2.push(newrate);
+    });
     var hash = {};
-    for(var i=0;i<ratings.length;i++){
-      var d = ratings[i][0];
+    for (var i = 0; i < ratings2.length; i++) {
+      var d = ratings2[i][0];
       var month = d.getMonth();
       var year = d.getFullYear();
       var newdate = new Date(year, month);
-      if(hash[newdate] == undefined){
+      if (hash[newdate] == undefined) {
         hash[newdate] = [];
-        hash[newdate].push(ratings[i][1]);
+        hash[newdate].push(ratings2[i][1]);
       }
-      else{
-        hash[newdate].push(ratings[i][1]);
+      else {
+        hash[newdate].push(ratings2[i][1]);
       }
     }
 
     var dates = Object.keys(hash);
     var keyset = [];
     var results = [];
-    for(var i=0;i<dates.length;i++){
-      var sum = hash[dates[i]].reduce(function(a, b) { return a + b; });
-      var avg = sum/hash[dates[i]].length;
+    for (var i = 0; i < dates.length; i++) {
+      var sum = hash[dates[i]].reduce(function (a, b) {
+        return a + b;
+      });
+      var avg = sum / hash[dates[i]].length;
       var dd = new Date(dates[i]);
       var newdd = new Date(dd.getFullYear(), dd.getMonth());
       keyset.push(newdd);
       results.push([newdd, avg]);
     }
 
-
-
     function drawChart() {
+      var data1 = google.visualization.arrayToDataTable(ratings1);
 
-        var classicChart;
-        var classicDiv = document.getElementById('classic');
+      var options = {
+        title: 'Rating Statistics',
+        pieHole: 0.2,
+        legend: 'none',
+        pieSliceText: 'label',
+        pieStartAngle: 100,
+        is3D: true
+      };
 
-        var data = new google.visualization.DataTable();
-        data.addColumn('date', 'Month');
-        data.addColumn('number', "Monthly Rating");
+      var chart = new google.visualization.PieChart(document.getElementById('chart1'));
+      chart.draw(data1, options);
 
-        data.addRows(results);
-
-        var classicOptions = {
-            title: 'Monthly Rating Trend',
-            width: 900,
-            height: 500,
-            // Gives each series an axis that matches the vAxes number below.
-            series: {
-                0: {targetAxisIndex: 0},
-                1: {targetAxisIndex: 1}
-            },
-            vAxes: {
-                // Adds titles to each axis.
-                0: {title: 'Rating'},
-                1: {title: 'Daylight'}
-            },
-            hAxis: {
-                ticks: keyset
-            },
-            vAxis: {
-                viewWindow: {
-                    max: 5,
-                    min: 0
-                }
-            }
-        };
-        classicChart = new google.visualization.LineChart(classicDiv);
-
-        classicChart.draw(data, classicOptions);
+      var classicChart;
+      var classicDiv = document.getElementById('chart2');
+      var data2 = new google.visualization.DataTable();
+      data2.addColumn('date', 'Month');
+      data2.addColumn('number', "");
+      data2.addRows(results);
+      var classicOptions = {
+        title: 'Rating Trend',
+        // Gives each series an axis that matches the vAxes number below.
+        series: {
+          0: {targetAxisIndex: 0},
+          1: {targetAxisIndex: 1}
+        },
+        vAxes: {
+          // Adds titles to each axis.
+          0: {},
+          1: {}
+        },
+        hAxis: {
+          ticks: keyset
+        },
+        vAxis: {
+          viewWindow: {
+            max: 6,
+            min: 0
+          }
+        }
+      };
+      classicChart = new google.visualization.LineChart(classicDiv);
+      classicChart.draw(data2, classicOptions);
     }
-
 
 
