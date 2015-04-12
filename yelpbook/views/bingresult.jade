@@ -1,0 +1,11 @@
+extends layout
+block content
+
+    a(href='/business?business_id=#{b_id}') Back
+    table
+        for b in bodyresults
+            tr
+                td
+                    a(href=b.Url) #{b.Title}
+                    p #{b.Description}
+

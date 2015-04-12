@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var Bing = require('node-bing-api')({accKey:"NI7NeDBXR06vWzeRY1eRXUYG+J42BnjVZe2TNCaxtlU"})
 var moment = require('moment')
-
 var connection = mysql.createConnection({
     host: 'mydatabase.cfxag8k1xo7h.us-east-1.rds.amazonaws.com',
     user: 'linjie',
@@ -206,6 +206,34 @@ router.post('/addreview/:business_id', function (req, res, next) {
     else {
         console.log("add review");
         addReview(req, res, next);
+    }
+});
+
+
+//function callBing(res, body) {
+//
+//}
+
+
+//do bing search
+router.get('/bing/:name/:id', function (req, res, next){
+    if(req.params.name === undefined) {
+        console.log("can't use bing");
+        next(new Error(404));
+    }
+    else{
+        console.log("add review");
+        console.log(req.params.name);
+        Bing.web(req.params.name, function(error, ress, body){
+            console.log(body.d.results);
+            res.render('bingresult', {
+                bodyresults: body.d.results,
+                b_id: req.params.id
+            });
+        }, {
+            top:10, //number of results(max 50)
+            skip:0 // skip first 0 results
+        })
     }
 });
 
