@@ -69,7 +69,7 @@ function doFollowsQuery(req, res, id, friendInfo, ownposts, next) {
 }
 
     function doPostQuery(req, res, id, friendInfo, next) {
-        connection.query('SELECT H.text FROM HAS_POST H WHERE H.user_id =' + id,
+        connection.query('SELECT P.text FROM POST P WHERE P.user_id =' + id,
             function (err, ownposts) {
                 if (!err)
                     doFollowsQuery(req, res, id, friendInfo, ownposts, next)
@@ -108,8 +108,8 @@ function redirectUser(res, user_id) {
 }
 //call back function to show my news feed
 function myFeed(req, res, next, err, userid, msg) {
-    console.log("myFeed callback found userid: " + userid[0].user_id);
-    getPostsQuery(req, res, next, err, userid[0].user_id, msg);
+    console.log("myFeed callback found userid: " + userid);
+    getPostsQuery(req, res, next, err, userid, msg);
 }
 
 
@@ -174,7 +174,7 @@ function getUserQuery(req, res, next, msg, callBack) {
         } else if (userid.length != 1){
             redirectLogin(res);
         } else {
-            callBack(req, res, next, err, userid, msg);
+            callBack(req, res, next, err, userid[0].user_id, msg);
         }
     });
 }
@@ -269,10 +269,10 @@ router.get('/my_feed', function(req, res, next) {
     getUserQuery(req, res, next, "", myFeed);
 });
 
-/* GET users listing. */
-router.get('/:id', function(req, res, next) {
-	getUserQuery(req, res, next, "", myFeed());
-});
+///* GET users listing for another user. */
+//router.get('/:id', function(req, res, next) {
+//	myFeed(req, res, next, null, req.params.id, "get /users/:id");
+//});
 
 /* Get user's homepage.*/
 router.get('/homepage', function(req, res, next) {
@@ -283,7 +283,7 @@ router.get('/homepage', function(req, res, next) {
 
 router.get('/images/:id', function(req, res, next) {
     console.log("/images/:id");
-    getPhotoQuery(req, res,next);
+    getPhotoQuery(req, res, next);
 });
 
 

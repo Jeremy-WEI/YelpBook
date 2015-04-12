@@ -27,7 +27,7 @@ block content
     .hidden_word, .hidden {
       display: none;
     }
-
+  p= msg
   form(action='/business/follow/#{business[0].business_id}', method='post')
     input(type='submit', value='follow')
   each word, index in wordCounts

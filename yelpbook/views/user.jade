@@ -12,7 +12,8 @@ block content
           for post in results
             .row
               .col-md-8
-                p user name: #{post.fb_name}
+                p
+                  a(href='/homepage/#{post.user_id}') user name: #{post.fb_name}
             .row
               .col-md-8
                 p #{post.text}

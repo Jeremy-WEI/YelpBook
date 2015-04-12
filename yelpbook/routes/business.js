@@ -19,7 +19,8 @@ function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
                     categories: categories,
                     reviews: reviews,
                     wordCounts: wordCounts,
-                    follow: follow
+                    follow: follow,
+                    msg: req.query.msg
                 });
                 req.session.follow = null;
             }
@@ -84,9 +85,9 @@ router.get('/', function (req, res, next) {
         doBusinessQuery(req, res, next);
 });
 
-function redirectBusiness(res, business_id) {
+function redirectBusiness(res, business_id, msg) {
     res.writeHead(302, {
-        'Location': '/business?business_id=' + business_id
+        'Location': '/business?business_id=' + business_id + '&msg=' + msg
     });
     res.end();
 }
@@ -119,7 +120,7 @@ function addReview(req, res, next){
                         next(new Error(500));
                     }
                     // successfully add review
-                    redirectBusiness(res, business_id);
+                    redirectBusiness(res, business_id, "The review was added!");
                 });
             }
         });
@@ -168,7 +169,7 @@ function doFollow(req, res, next) {
                         req.session.follow = 'exist';
                     }
                 });
-                redirectBusiness(res, business_id);
+                redirectBusiness(res, business_id, "You've followed the business!");
 
             }
         });
