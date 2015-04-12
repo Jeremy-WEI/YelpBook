@@ -1,6 +1,21 @@
 extends layout
 
 block content
+  form(action='/business/addreview/#{business[0].business_id}', method='post')
+    textarea(name="review", cols="40", rows="5")
+    br
+    input(type="radio", name="rating", value="1")
+    | 1
+    input(type="radio", name="rating", value="2")
+    | 2
+    input(type="radio", name="rating", value="3")
+    | 3
+    input(type="radio", name="rating", value="4")
+    | 4
+    input(type="radio", name="rating", value="5")
+    | 5
+    br
+    input(type="submit", value="Add Review")
   //h1= Object.keys(wordCounts).length
   h1#testing asd
   style.

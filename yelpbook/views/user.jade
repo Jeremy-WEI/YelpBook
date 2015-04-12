@@ -12,17 +12,24 @@ block content
           for post in results
             .row
               .col-md-8
-                p user name: #{post.user_id}
+                p user name: #{post.fb_name}
             .row
               .col-md-8
                 p #{post.text}
             .row
               .col-md-8
+                if post.photo_name != 'NULL'
+                  img(src='/users/images/#{post.photo_name}', alt='Photo missing')
+            .row
+              .col-md-8
                 p Posted on: #{post.datetime}
-  form(action='/users/new_post', method='POST')
+  form(enctype='multipart/form-data', action='/users/new_post', method='POST')
     .form-group
       .row
         .col-md-8
           input#new_post.form-control(name='new_post', placeholder='New Post', type='textarea', rows='4', cols='50')
         .col-md-4
           input(type='submit', value='Post')
+      .row
+        .col-md-8
+          input(type='file', name='photo', accept="image/*")
