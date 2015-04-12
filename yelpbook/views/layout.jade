@@ -16,6 +16,8 @@ html
     script(src="/scripts/raphael-min.js")
     script(src="/scripts/sb-admin-2.js")
     script(src="/scripts/wordcloud2.js")
+    script(type="text/javascript", src="https://www.google.com/jsapi?autoload={'modules':[{'name':'visualization','version':'1.1','packages':['line', 'corechart']}]}")
+
   body
     style.
       html, body {
@@ -23,7 +25,14 @@ html
         margin: 10px;
         padding: 10px
       }
-
+    .row
+      .col-md-1
+        form(action='/homepage', method='GET')
+          input(type='submit', value='homepage')
+      .col-md-1
+        form(action='/users/my_feed', method='GET')
+          input(type='submit', value='news feed')
+    br
     form(action='/business/search', method='GET')
       .form-group
         .row

@@ -14,22 +14,29 @@ function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
     connection.query('SELECT * FROM WORD_STATISTICS WHERE business_id = "' + req.query.business_id + '"',
         function (err, wordCounts) {
             if (!err) {
-                var follow = req.session.follow;
-                console.log(follow);
-                res.render('business', {
-                    business: busInfo,
-                    categories: categories,
-                    reviews: reviews,
-                    wordCounts: wordCounts,
-                    follow: follow
-                });
-                req.session.follow = null;
+                var query_rating = 'SELECT date, avg(stars) as stars FROM REVIEW WHERE business_id="' + req.query.business_id + '" GROUP BY date ORDER BY date DESC LIMIT 50';
+                connection.query(query_rating,
+                    function (err, rating) {
+                        if (!err) {
+                            res.render('business', {
+                                business: busInfo,
+                                categories: categories,
+                                reviews: reviews,
+                                wordCounts: wordCounts,
+                                rating: rating
+                            });
+                            console.log(rating);
+                        }
+                        else
+                            next(new Error(500));
+                    });
             }
-
             else
                 next(new Error(500));
         });
 }
+
+
 function doReviewQuery(req, res, busInfo, categories, next) {
     connection.query('SELECT * FROM REVIEW INNER JOIN USER ON REVIEW.user_id = USER.user_id WHERE REVIEW.business_id = "' + req.query.business_id + '" ORDER BY date DESC',
         function (err, reviews) {
