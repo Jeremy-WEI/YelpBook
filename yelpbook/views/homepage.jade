@@ -19,6 +19,10 @@ block content
                 .content-box
                     for post in posts
                         .row
+                          .col-md-8
+                            p
+                              a(href='/homepage/#{post.user_id}') user name: #{post.fb_name}
+                        .row
                             .col-md-8
                                 p post: #{post.text}
                         .row
@@ -35,4 +39,5 @@ block content
                     for follow in follows
                         .row
                             .col-md-8
-                                p business name: #{follow.name}
+                                p
+                                  a(href='/business?business_id=#{follow.business_id}') business name: #{follow.name}

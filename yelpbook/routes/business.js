@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var Bing = require('node-bing-api')({accKey:"NI7NeDBXR06vWzeRY1eRXUYG+J42BnjVZe2TNCaxtlU"})
+var moment = require('moment')
 var connection = mysql.createConnection({
     host: 'mydatabase.cfxag8k1xo7h.us-east-1.rds.amazonaws.com',
     user: 'linjie',
@@ -15,13 +17,14 @@ function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
                 var query_rating = 'SELECT date, avg(stars) as stars FROM REVIEW WHERE business_id="'+req.query.business_id+'" GROUP BY date ORDER BY date DESC';
                 connection.query(query_rating,
                     function (err, rating) {
-                        if (!err){
+                        if (!err) {
                             res.render('business', {
                                 business: busInfo,
                                 categories: categories,
                                 reviews: reviews,
                                 wordCounts: wordCounts,
-                                rating: rating
+                                rating: rating,
+                                msg: req.query.msg
                             });
                             console.log(rating);
                         }
@@ -29,7 +32,6 @@ function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
                             next(new Error(500));
                     });
             }
-
             else
                 next(new Error(500));
         });
@@ -37,10 +39,15 @@ function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
 
 
 function doReviewQuery(req, res, busInfo, categories, next) {
-    connection.query('SELECT * FROM REVIEW INNER JOIN USER ON REVIEW.user_id = USER.user_id WHERE REVIEW.business_id = "' + req.query.business_id + '"',
+    connection.query('SELECT * FROM REVIEW INNER JOIN USER ON REVIEW.user_id = USER.user_id WHERE REVIEW.business_id = "' + req.query.business_id + '" ORDER BY date DESC',
         function (err, reviews) {
-            if (!err)
+            if (!err) {
+                for (var i = 0; i < reviews.length; i++) {
+                    console.log(reviews[i])
+                    reviews[i].date = moment(reviews[i].date).format(' MM-DD-YYYY')
+                }
                 doWordCountQuery(req, res, busInfo, categories, reviews, next)
+            }
             else
                 next(new Error(500));
         });
@@ -73,7 +80,7 @@ function doBusinessQuery(req, res, next) {
 function doBusinessSearch(req, res, next) {
     var query_string = req.query.search;
     console.log(query_string);
-    var query = "SELECT * FROM BUSINESS WHERE name LIKE \"%" + query_string + "%\" LIMIT 50";
+    var query = "SELECT * FROM BUSINESS WHERE upper(name) LIKE \"" + query_string.toUpperCase() + "%\" LIMIT 50";
     connection.query(query, function (err, results) {
         if (err) {
             next(new Error(500));
@@ -92,20 +99,20 @@ router.get('/', function (req, res, next) {
         doBusinessQuery(req, res, next);
 });
 
-function redirectBusiness(res, business_id) {
+function redirectBusiness(res, business_id, msg) {
     res.writeHead(302, {
-        'Location': '/business?business_id=' + business_id
+        'Location': '/business?business_id=' + business_id + '&msg=' + msg
     });
     res.end();
 }
 
-function addReview(req, res, next){
-    if(!req.user){
+function addReview(req, res, next) {
+    if (!req.user) {
         // user doesn't login
         // redirect to login page
         res.render('index', {user: req.user});
     }
-    else{
+    else {
         var fb_account = req.user.id;
         var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb_account;
         connection.query(query_find_userid, function (err, userid) {
@@ -120,14 +127,14 @@ function addReview(req, res, next){
                 var date = new Date();
                 var nowdate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
                 console.log(rating);
-                var query_add_review = "INSERT INTO REVIEW (business_id, user_id, text, stars, date) VALUES (\""+business_id+"\", "+user_id
-                    +", \""+review+"\", "+rating+", \""+nowdate+"\")";
+                var query_add_review = "INSERT INTO REVIEW (business_id, user_id, text, stars, date) VALUES (\"" + business_id + "\", " + user_id
+                    + ", \"" + review + "\", " + rating + ", \"" + nowdate + "\")";
                 connection.query(query_add_review, function (err, review) {
                     if (err) {
                         next(new Error(500));
                     }
                     // successfully add review
-                    redirectBusiness(res, business_id);
+                    redirectBusiness(res, business_id, "The review was added!");
                 });
             }
         });
@@ -137,12 +144,12 @@ function addReview(req, res, next){
 
 function doFollow(req, res, next) {
     var business_id = req.params.business_id;
-    if(!req.user){
+    if (!req.user) {
         // user doesn't login
         // redirect to login page
         res.render('index', {user: req.user});
     }
-    else{
+    else {
         var fb_account = req.user.id;
         var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb_account;
         connection.query(query_find_userid, function (err, userid) {
@@ -158,8 +165,7 @@ function doFollow(req, res, next) {
                     if (err) {
                         next(new Error(400));
                     }
-                    else if(exist.length == 0)
-                    {
+                    else if (exist.length == 0) {
                         // follow does not exist
                         var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id, time) VALUES (\""+business_id+"\", "+user_id+", now())";
                         console.log(query_add_follow);
@@ -171,12 +177,12 @@ function doFollow(req, res, next) {
                             req.session.follow = 'succ';
                         });
                     }
-                    else if(exist.length != 0){
+                    else if (exist.length != 0) {
                         console.log("exists!!!!!")
                         req.session.follow = 'exist';
                     }
                 });
-                redirectBusiness(res, business_id);
+                redirectBusiness(res, business_id, "You've followed the business!");
 
             }
         });
@@ -192,15 +198,43 @@ router.get('/search', function (req, res, next) {
 });
 
 //add review
-router.post('/addreview/:business_id', function (req, res, next){
-   if(req.params.business_id == undefined) {
-       console.log("/:business_id: business_id == undefined");
-       next(new Error(404));
-   }
-   else{
-       console.log("add review");
-       addReview(req, res, next);
-   }
+router.post('/addreview/:business_id', function (req, res, next) {
+    if (req.params.business_id == undefined) {
+        console.log("/:business_id: business_id == undefined");
+        next(new Error(404));
+    }
+    else {
+        console.log("add review");
+        addReview(req, res, next);
+    }
+});
+
+
+//function callBing(res, body) {
+//
+//}
+
+
+//do bing search
+router.get('/bing/:name/:id', function (req, res, next){
+    if(req.params.name === undefined) {
+        console.log("can't use bing");
+        next(new Error(404));
+    }
+    else{
+        console.log("add review");
+        console.log(req.params.name);
+        Bing.web(req.params.name, function(error, ress, body){
+            console.log(body.d.results);
+            res.render('bingresult', {
+                bodyresults: body.d.results,
+                b_id: req.params.id
+            });
+        }, {
+            top:10, //number of results(max 50)
+            skip:0 // skip first 0 results
+        })
+    }
 });
 
 
