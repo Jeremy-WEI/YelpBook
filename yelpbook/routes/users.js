@@ -118,7 +118,7 @@ function newPost(req, res, next, err, userid, msg) {
     if (!undefined(global.done) && global.done != true) { //file upload not done
         console.log("File uploaded done==false");
     } else {
-        var uid = userid[0].user_id;
+        var uid = userid;
         var post_text = req.body.new_post;
         var datetime = moment().format('YYYY-MM-DD HH:mm:ss');
         var file = req.file;
