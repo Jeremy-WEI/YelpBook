@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1265.21">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.0px Verdana}
+    p.p4 {margin: 0.0px 0.0px 0.0px 0.0px; text-align: right; font: 10.0px Verdana}
+    span.s1 {letter-spacing: 0.0px}
+    table.t1 {border-collapse: collapse}
+    td.td1 {width: 43.0px; height: 12.0px; border-style: solid; border-width: 1.0px 1.0px 1.0px 1.0px; border-color: #aaaaaa #aaaaaa #aaaaaa #aaaaaa; padding: 2.0px 2.0px 2.0px 2.0px}
+  </style>
+</head>
+<body>
+<p class="p1"><br></p>
+<p class="p2">Apache bench result: We have benchmarked our webpage using Apache Bench. The benchmark send concurrent reuqests to the server (1000 requests in total, 10 requests each time concurrently), the average response rate of server is tested.<span class="Apple-converted-space"> </span></p>
+<p class="p2">The most important factor we look for are requests per second and transfer rate (KB/sec). Several factors that affects the efficiency has been revealed. First, the loading of blank page (renders layout page) gives 124.54 kb/sec, while loading of a page with a typical MySQL query gives slower speed (going down from 59.44 requests/sec to less than 20 requests/sec. This shows that by executing sql queries, the speed of responding is affected.</p>
+<p class="p1"><br></p>
+<p class="p2">Meanwhile, the loading speed from MongoDB (DB server is on mongoLab.com) is very fast. The speed for retrieving 1000 image files from MongoLab is 1395.24 KB/sec, vs about 100KB/sec for loading the node.JS website. This indicates that MongoDB is<span class="Apple-converted-space"> </span></p>
+<p class="p2">not a performance bottleneck for our website.</p>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+<table cellspacing="0" cellpadding="0" class="t1">
+  <tbody>
+    <tr>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">name</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">url</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">#requests</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">#concurrent requests</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">Requests per second (mean) [#/sec]</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">Time per request (mean) [ms]</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">Transfer rate<span class="Apple-converted-space">  </span>[Kbytes/sec]</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">render a user's hompage</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">/homepage/8</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">1000</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">10</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">18.24</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">548.189</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">93.89</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">render searching results</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">/business/search?search=bank</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">1000</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">10</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">13.51</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">740.432</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">132.85</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">render business page</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">/business?business_id=--sSW-WY3vyASh_eVPGUAw</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">1000</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">10</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">6.12</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">1,634.947</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">139.39</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">bing search</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">/business/bing/Bank%20of%20America/--sSW-WY3vyASh_eVPGUAw</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">1000</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">10</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">17.65</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">566.517</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">87.03</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">Image loading from mongoDB</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">/users/images/6_photocat1428866705413.png</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">1000</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">10</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">228.5</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">43.764</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">1,395.24</span></p>
+      </td>
+    </tr>
+    <tr>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">blank page</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p3"><span class="s1">/ab</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">1000</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">10</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">59.44</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">168.237</span></p>
+      </td>
+      <td valign="bottom" class="td1">
+        <p class="p4"><span class="s1">124.54</span></p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p class="p1"><br></p>
+<p class="p1"><br></p>
+</body>
+</html>

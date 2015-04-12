@@ -27,7 +27,7 @@ function doFollowsQuery(req, res, id, friendInfo, ownposts, next) {
 }
 
 function doPostQuery(req, res, id, friendInfo, next) {
-    connection.query('SELECT * FROM POST H WHERE H.user_id =' + id,
+    connection.query('SELECT * FROM POST P WHERE P.user_id =' + id,
         function (err, ownposts) {
             if (!err)
                 doFollowsQuery(req, res, id, friendInfo, ownposts, next)

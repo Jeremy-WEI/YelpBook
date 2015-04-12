@@ -12,23 +12,19 @@ block content
                               p
                                 a(href='/homepage/#{friend.user_id}') friend name: #{friend.fb_name}
 
-    h1 Posts Lists
+    h1 My Posts
     .row
-        .col-md-8
-            section.content-wrapper
-                .content-box
-                    for post in posts
-                        .row
-                          .col-md-8
-                            p
-                              a(href='/homepage/#{post.user_id}') user name: #{post.fb_name}
-                        .row
-                            .col-md-8
-                                p post: #{post.text}
-                        .row
-                            .col-md-8
-                                if post.photo_name != 'NULL'
-                                    img(src='/users/images/#{post.photo_name}', alt='Photo missing')
+      .col-md-8
+        section.content-wrapper
+          .content-box
+            for post in posts
+              .row
+                .col-md-8
+                  p post: #{post.text}
+              .row
+                .col-md-8
+                  if post.photo_name != 'NULL'
+                    img(src='/users/images/#{post.photo_name}', alt='Photo missing')
 
 
     h1 Following Business

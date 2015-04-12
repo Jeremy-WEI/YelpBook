@@ -26,7 +26,7 @@ function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
                                 rating: rating,
                                 msg: req.query.msg
                             });
-                            console.log(rating);
+//                            console.log(rating);
                         }
                         else
                             next(new Error(500));
@@ -43,7 +43,7 @@ function doReviewQuery(req, res, busInfo, categories, next) {
         function (err, reviews) {
             if (!err) {
                 for (var i = 0; i < reviews.length; i++) {
-                    console.log(reviews[i])
+//                    console.log(reviews[i])
                     reviews[i].date = moment(reviews[i].date).format(' MM-DD-YYYY')
                 }
                 doWordCountQuery(req, res, busInfo, categories, reviews, next)
@@ -79,7 +79,7 @@ function doBusinessQuery(req, res, next) {
 
 function doBusinessSearch(req, res, next) {
     var query_string = req.query.search;
-    console.log(query_string);
+//    console.log(query_string);
     var query = "SELECT * FROM BUSINESS WHERE upper(name) LIKE \"" + query_string.toUpperCase() + "%\" LIMIT 50";
     connection.query(query, function (err, results) {
         if (err) {
@@ -126,7 +126,7 @@ function addReview(req, res, next) {
                 var rating = req.body.rating;
                 var date = new Date();
                 var nowdate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-                console.log(rating);
+//                console.log(rating);
                 var query_add_review = "INSERT INTO REVIEW (business_id, user_id, text, stars, date) VALUES (\"" + business_id + "\", " + user_id
                     + ", \"" + review + "\", " + rating + ", \"" + nowdate + "\")";
                 connection.query(query_add_review, function (err, review) {
@@ -158,9 +158,9 @@ function doFollow(req, res, next) {
             }
             else if (userid.length != 0) {
                 var user_id = userid[0].user_id;
-                console.log(user_id);
+//                console.log(user_id);
                 var query_check_exist = "SELECT * FROM FOLLOWS WHERE business_id=\"" + business_id + "\" AND user_id=" + user_id;
-                console.log(query_check_exist);
+//                console.log(query_check_exist);
                 connection.query(query_check_exist, function (err, exist) {
                     if (err) {
                         next(new Error(400));
@@ -168,7 +168,7 @@ function doFollow(req, res, next) {
                     else if (exist.length == 0) {
                         // follow does not exist
                         var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id) VALUES (\"" + business_id + "\", " + user_id + ")";
-                        console.log(query_add_follow);
+//                        console.log(query_add_follow);
                         connection.query(query_add_follow, function (err, follow) {
                             if (err) {
                                 next(new Error(500));
@@ -178,7 +178,7 @@ function doFollow(req, res, next) {
                         });
                     }
                     else if (exist.length != 0) {
-                        console.log("exists!!!!!")
+//                        console.log("exists!!!!!")
                         req.session.follow = 'exist';
                     }
                 });
@@ -200,11 +200,11 @@ router.get('/search', function (req, res, next) {
 //add review
 router.post('/addreview/:business_id', function (req, res, next) {
     if (req.params.business_id == undefined) {
-        console.log("/:business_id: business_id == undefined");
+//        console.log("/:business_id: business_id == undefined");
         next(new Error(404));
     }
     else {
-        console.log("add review");
+//        console.log("add review");
         addReview(req, res, next);
     }
 });
@@ -218,14 +218,14 @@ router.post('/addreview/:business_id', function (req, res, next) {
 //do bing search
 router.get('/bing/:name/:id', function (req, res, next){
     if(req.params.name === undefined) {
-        console.log("can't use bing");
+//        console.log("can't use bing");
         next(new Error(404));
     }
     else{
-        console.log("add review");
-        console.log(req.params.name);
+//        console.log("add review");
+//        console.log(req.params.name);
         Bing.web(req.params.name, function(error, ress, body){
-            console.log(body.d.results);
+//            console.log(body.d.results);
             res.render('bingresult', {
                 bodyresults: body.d.results,
                 b_id: req.params.id
@@ -241,21 +241,21 @@ router.get('/bing/:name/:id', function (req, res, next){
 //do follow
 router.post('/follow/:business_id', function (req, res, next) {
     if (req.params.business_id == undefined) {
-        console.log("/:business_id: business_id == undefined");
+//        console.log("/:business_id: business_id == undefined");
         next(new Error(404));
     } else {
-        console.log("/post/:business_id: doFollow");
+//        console.log("/post/:business_id: doFollow");
         doFollow(req, res, next);
     }
 });
 
 router.post('/', function (req, res, next) {
-    console.log("POST /business/");
+//    console.log("POST /business/");
     next(new Error(404));
 });
 
 router.get('/', function (req, res, next) {
-    console.log("/business/");
+//    console.log("/business/");
     if (req.query.business_id == undefined)
         next(new Error(404));
     else
