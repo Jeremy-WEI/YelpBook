@@ -9,7 +9,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
-var multer  = require('multer');
+//var mongo = require('mongodb');
 
 var expressSession = require('express-session');
 
@@ -19,7 +19,7 @@ var users = require('./routes/users');
 var homepage = require('./routes/homepage');
 
 
-var FACEBOOK_APP_ID = "1423345787976364"
+var FACEBOOK_APP_ID = "1423345787976364";
 var FACEBOOK_APP_SECRET = "02b611212b606a730589d2dbf4ef5497";
 
 
@@ -87,7 +87,14 @@ app.use(passport.session());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+//var mongoose = require('mongoose'); //mongo driver
+//var connection = require("./business");
+var multer  = require('multer');
+var done;
 //file upload package configuration
+app.use('/uploads', express.static(__dirname + "/uploads"));
 app.use(multer({ dest: './uploads/',
     rename: function (fieldname, filename, req, res) {
         return fieldname + filename + Date.now();
@@ -95,13 +102,22 @@ app.use(multer({ dest: './uploads/',
     onFileUploadStart: function (file) {
         console.log(file.originalname + ' is starting ...')
     },
-    onFileUploadComplete: function (file) {
-        console.log(file.name + ' uploaded to  ' + file.path)
+    onFileUploadComplete: function (file, req, res) {
+        console.log(file.name + ' uploaded to  ' + file.path);
+        req.file = file;
         done=true;
     }
 }));
 
 
+//// Set up MongoDB database connection
+//var Db = mongo.Db;
+//var Server = mongo.Server;
+//var db = new Db('yelpbook_mongo',
+//    new Server('localhost', '27017', {auto_reconnect: true}, {}),
+//    {safe: true}
+//);
+//db.open(function(){});
 
 
 app.use('/', routes);
@@ -197,6 +213,9 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+
+
 
 
 module.exports = app;

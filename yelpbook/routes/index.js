@@ -7,6 +7,7 @@ var connection = mysql.createConnection({
     password: '5data5base0',
     database: 'YelpBook'
 });
+//var connection = require("./business");
 
 function insertUser(req, res, next) {
     if(!req.user){
