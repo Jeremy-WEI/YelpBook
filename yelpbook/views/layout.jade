@@ -99,7 +99,10 @@ html
         form(action='/users/my_feed', method='GET')
           input(type='submit', value='news feed')
       .col-md-2
-        a(href='/logout') logout
+        if _user
+          a(href='/logout') logout
+        else
+          a(href='/login') login
       .table td, th{
         text-align: center;
       }
