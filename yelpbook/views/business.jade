@@ -20,9 +20,9 @@ block content
     h6.rating2.hide= rate.date + '\t' + rate.stars
   each word, index in wordCounts
     h6.hidden_word= word.WORD + ' ' + word.COUNT
-      h6.hide#longitude= business[0].longitude
+  h6.hide#longitude= business[0].longitude
   h6.hide#latitude= business[0].latitude
-    form.form-inline(action='/business/follow/#{business[0].business_id}', method='post')
+  form.form-inline(action='/business/follow/#{business[0].business_id}', method='post')
     .form-group
       label
         h1 #{business[0].name}&nbsp&nbsp&nbsp&nbsp
