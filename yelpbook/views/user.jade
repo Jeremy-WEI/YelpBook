@@ -85,10 +85,11 @@ block content
             dd
               .mutliSelect
                 ul
-                  each friend in friends
-                    li
-                      input(name='friend', type='checkbox', value=friend.user_id)
-                      =friend.fb_name
+                  if friends
+                    each friend in friends
+                      li
+                        input(name='friend', type='checkbox', value=friend.user_id)
+                        =friend.fb_name
       .row
         .col-md-4
           input(type='submit', value='Post')
