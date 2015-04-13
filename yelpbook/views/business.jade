@@ -1,8 +1,5 @@
 extends layout
 block content
-  p Group
-    br
-    a(href='/group/#{business[0].business_id}') Go
   p(style='color:red')= msg
   //h1= Object.keys(wordCounts).length
   style.
@@ -27,6 +24,8 @@ block content
       label
         h1 #{business[0].name}&nbsp&nbsp&nbsp&nbsp
     button.label.label-primary(type='submit') Follow
+    button.label
+      a(href='/group/#{business[0].business_id}') Group
     button.label.label-info
       a(href='/business/bing/#{business[0].name}/#{business[0].business_id}') Bing
   .row
