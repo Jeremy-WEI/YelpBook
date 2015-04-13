@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-var Bing = require('node-bing-api')({accKey:"NI7NeDBXR06vWzeRY1eRXUYG+J42BnjVZe2TNCaxtlU"})
+var Bing = require('node-bing-api')({accKey: "NI7NeDBXR06vWzeRY1eRXUYG+J42BnjVZe2TNCaxtlU"})
 var moment = require('moment')
 var connection = mysql.createConnection({
     host: 'mydatabase.cfxag8k1xo7h.us-east-1.rds.amazonaws.com',
@@ -10,10 +10,10 @@ var connection = mysql.createConnection({
     database: 'YelpBook'
 });
 
-function doRatingQuery2(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic, next) {
-    var queryRating2 = 'SELECT date, avg(stars) as stars FROM REVIEW WHERE business_id="' + req.query.business_id + '" GROUP BY date ORDER BY date DESC';
-    connection.query(queryRating2,
-        function (err, ratingTrend) {
+function doFollowingQuery(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic, ratingTrend, next) {
+    var query = 'SELECT fb_name, time FROM FOLLOWS INNER JOIN USER ON FOLLOWS.user_id = USER.user_id WHERE business_id = "' + req.query.business_id + '" ORDER BY time DESC';
+    connection.query(query,
+        function (err, follows) {
             if (!err) {
                 res.render('business', {
                     business: busInfo,
@@ -21,7 +21,8 @@ function doRatingQuery2(req, res, busInfo, categories, reviews, wordCounts, rati
                     reviews: reviews,
                     wordCounts: wordCounts,
                     ratingStatistic: ratingStatistic,
-                    ratingTrend: ratingTrend
+                    ratingTrend: ratingTrend,
+                    follows: follows
                 })
             }
             else
@@ -29,9 +30,21 @@ function doRatingQuery2(req, res, busInfo, categories, reviews, wordCounts, rati
         })
 }
 
+function doRatingQuery2(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic, next) {
+    var query = 'SELECT date, avg(stars) as stars FROM REVIEW WHERE business_id="' + req.query.business_id + '" GROUP BY date ORDER BY date DESC';
+    connection.query(query,
+        function (err, ratingTrend) {
+            if (!err) {
+                doFollowingQuery(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic, ratingTrend, next)
+            }
+            else
+                next(new Error(500));
+        })
+}
+
 function doRatingQuery1(req, res, busInfo, categories, reviews, wordCounts, next) {
-    var queryRating1 = 'SELECT stars, count(*) as count FROM REVIEW WHERE business_id="' + req.query.business_id + '" GROUP BY stars';
-    connection.query(queryRating1,
+    var query = 'SELECT stars, count(*) as count FROM REVIEW WHERE business_id="' + req.query.business_id + '" GROUP BY stars';
+    connection.query(query,
         function (err, ratingStatistic) {
             if (!err) {
                 doRatingQuery2(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic)
@@ -47,8 +60,6 @@ function doWordCountQuery(req, res, busInfo, categories, reviews, next) {
     connection.query('SELECT * FROM WORD_STATISTICS WHERE business_id = "' + req.query.business_id + '"',
         function (err, wordCounts) {
             if (!err) {
-                //var queryRating1 = 'SELECT stars, count(*) as count FROM REVIEW WHERE business_id="' + req.query.business_id + '" GROUP BY stars';
-                //var queryRating2 = 'SELECT date, avg(stars) as stars FROM REVIEW WHERE business_id="' + req.query.business_id + '" GROUP BY date ORDER BY date DESC';
                 doRatingQuery1(req, res, busInfo, categories, reviews, wordCounts)
             }
             else
@@ -185,7 +196,7 @@ function doFollow(req, res, next) {
                     }
                     else if (exist.length == 0) {
                         // follow does not exist
-                        var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id, time) VALUES (\""+business_id+"\", "+user_id+", now())";
+                        var query_add_follow = "INSERT INTO FOLLOWS (business_id, user_id, time) VALUES (\"" + business_id + "\", " + user_id + ", now())";
                         //console.log(query_add_follow);
                         connection.query(query_add_follow, function (err, follow) {
                             if (err) {
@@ -234,23 +245,23 @@ router.post('/addreview/:business_id', function (req, res, next) {
 
 
 //do bing search
-router.get('/bing/:name/:id', function (req, res, next){
-    if(req.params.name === undefined) {
+router.get('/bing/:name/:id', function (req, res, next) {
+    if (req.params.name === undefined) {
         console.log("can't use bing");
         next(new Error(404));
     }
-    else{
+    else {
         console.log("add review");
         console.log(req.params.name);
-        Bing.web(req.params.name, function(error, ress, body){
+        Bing.web(req.params.name, function (error, ress, body) {
             console.log(body.d.results);
             res.render('bingresult', {
                 bodyresults: body.d.results,
                 b_id: req.params.id
             });
         }, {
-            top:10, //number of results(max 50)
-            skip:0 // skip first 0 results
+            top: 10, //number of results(max 50)
+            skip: 0 // skip first 0 results
         })
     }
 });
