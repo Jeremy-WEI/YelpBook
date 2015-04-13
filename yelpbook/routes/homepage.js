@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mysql      = require('mysql');
+var moment = require('moment')
+
 var connection = mysql.createConnection({
     host     : 'mydatabase.cfxag8k1xo7h.us-east-1.rds.amazonaws.com',
     user     : 'linjie',
@@ -31,10 +33,14 @@ function doFollowsQuery(req, res, id, friendInfo, ownposts, myself, next) {
 }
 
 function doPostQuery(req, res, id, friendInfo, myself, next) {
-    connection.query('SELECT * FROM POST P WHERE P.user_id =' + id,
+    connection.query('SELECT * FROM POST P WHERE P.user_id =' + id + ' ORDER BY P.datetime DESC',
         function (err, ownposts) {
-            if (!err)
+            if (!err) {
+                for (var i = 0; i < ownposts.length; i++) {
+                    ownposts[i].datetime = moment(ownposts[i].datetime).format('MM-DD-YYYY')
+                }
                 doFollowsQuery(req, res, id, friendInfo, ownposts, myself, next)
+            }
             else
                 next(new Error(500));
         });
