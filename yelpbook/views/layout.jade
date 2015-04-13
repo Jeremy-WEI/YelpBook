@@ -28,7 +28,6 @@ html
       .table td, th{
         text-align: center;
       }
-
     nav.navbar.navbar-inverse.navbar-fixed-top.sticky(role='navigation')
       .container
         ul.nav.navbar-nav.nav.pull-right(style="text-align: center;")
@@ -37,7 +36,10 @@ html
           li
             a(href='/users/my_feed') News Feed
           li
-            a(href='/logout') LogOut
+            if _user
+              a(href='/logout') LogOut
+            else
+              a(href='/login') Login
     br
     br
     form.form-horizontal(action='/business/search', method='GET')

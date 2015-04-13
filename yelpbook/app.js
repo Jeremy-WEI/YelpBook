@@ -147,6 +147,13 @@ app.use('/users', users);
 app.use('/homepage', homepage);
 app.use('/group', group);
 
+
+app.get('*', function(req, res, next) {
+    // put user into res.locals for easy access from templates
+    res.locals.user = req.user || null;
+    next();
+});
+
 app.get('/', function(req, res){
 //    res.render('index', { user: req.user });
     res.render('index', { user: req.user});
