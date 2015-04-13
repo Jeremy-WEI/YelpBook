@@ -107,6 +107,13 @@ function redirectUser(res, user_id) {
     res.end();
 }
 
+function redirectHomepage(req, res, user_id, msg) {
+//    req.session.msg = msg;
+    res.setHeader("Location", '/homepage/' + user_id + '?msg=' + msg);
+    res.writeHead(302);
+    res.end();
+}
+
 //call back function to show my news feed
 function myFeed(req, res, next, err, userid, msg) {
     ////console.log("myFeed callback found userid: " + userid);
@@ -119,7 +126,7 @@ function newPost(req, res, next, err, userid, msg) {
     if (!undefined(global.done) && global.done != true) { //file upload not done
         //console.log("File uploaded done==false");
     } else {
-        var uid = userid[0].user_id;
+        var uid = userid;
         var post_text = req.body.new_post;
         var datetime = moment().format('YYYY-MM-DD HH:mm:ss');
         var file = req.file;
@@ -172,7 +179,8 @@ function getUserQuery(req, res, next, msg, callBack) {
     connection.query(query_find_userid, function (err, userid) {
         if (err) {
             redirectLogin(res);
-        } else if (userid.length != 1){
+        } else if (!userid || userid.length != 1 || !userid[0] || !userid[0].user_id){
+            console.log("invalid user id: " + userid[0].user_id); //userid 0 is not allowed!
             redirectLogin(res);
         } else {
             callBack(req, res, next, err, userid[0].user_id, msg);
@@ -258,6 +266,28 @@ function getPhotoQuery(req, res, next) {
     });
 }
 
+function addFriend(req, res, next, err, uid, msg) { //req, res, next, err, userid[0].user_id, msg
+    if(err) {
+        return next(new Error(404));
+    }
+    var friend_id = req.params.id;
+    if(!friend_id || !uid) {
+        return next(new Error(500));
+    }
+    if(friend_id == uid) { //return to the friend page, send message
+        redirectHomepage(req, res, friend_id, "You can't friend youself!");
+    }
+    var query = "INSERT INTO FRIEND (user_id1, user_id2) VALUES (" + uid + ", " + friend_id + "), (" + friend_id + ", " + uid + ")";
+    connection.query(query, function(err, results) {
+            if (err)
+                redirectHomepage(req, res, friend_id, "Add friend failed!");
+            else {
+                redirectHomepage(req, res, friend_id, "Add friend success");
+            }
+        }
+    );
+}
+
 
 
 //post request to create a new post
@@ -287,7 +317,10 @@ router.get('/images/:id', function(req, res, next) {
     getPhotoQuery(req, res, next);
 });
 
-
+router.get('/friend/:id', function(req, res, next) {
+    //console.log("/images/:id");
+    getUserQuery(req, res, next, "", addFriend);
+});
 
 
 module.exports = router;

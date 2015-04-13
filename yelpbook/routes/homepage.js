@@ -11,32 +11,34 @@ var connection = mysql.createConnection({
 var uid;
 var utils = require('./utils');
 
-function doFollowsQuery(req, res, id, friendInfo, ownposts, next) {
+function doFollowsQuery(req, res, id, friendInfo, ownposts, myself, next) {
     connection.query('SELECT * FROM BUSINESS B INNER JOIN FOLLOWS F ON B.business_id = F.business_id WHERE F.user_id =' + id,
         function (err, follows) {
             if (!err)
                 res.render('homepage', {
                     friends: friendInfo,
                     posts: ownposts,
-                    follows: follows
-
+                    follows: follows,
+                    myself: myself,
+                    user_id: id,
+                    msg: req.query.msg
                 });
             else
                 next(new Error(500));
         });
 }
 
-function doPostQuery(req, res, id, friendInfo, next) {
+function doPostQuery(req, res, id, friendInfo, myself, next) {
     connection.query('SELECT * FROM POST P WHERE P.user_id =' + id,
         function (err, ownposts) {
             if (!err)
-                doFollowsQuery(req, res, id, friendInfo, ownposts, next)
+                doFollowsQuery(req, res, id, friendInfo, ownposts, myself, next)
             else
                 next(new Error(500));
         });
 }
 
-function doFriendQuery(req, res, id, next) {
+function doFriendQuery(req, res, id, myself, next) {
     console.log(id);
 
     // connection.connect();
@@ -44,7 +46,7 @@ function doFriendQuery(req, res, id, next) {
         function (err, friendInfo) {
             console.log('SELECT * FROM FRIEND F INNER JOIN USER U ON F.user_id2 = U.user_id WHERE F.user_id1 =' + id);
             if (!err) {
-                doPostQuery(req, res, id, friendInfo, next);
+                doPostQuery(req, res, id, friendInfo, myself, next);
             } else
                 next(new Error(500));
         });
@@ -60,7 +62,7 @@ function getIdQuery(req, res, next) {
         function (err, id) {
             if (!err){
                 uid = id[0].user_id;
-                doFriendQuery(req, res, uid, next);
+                doFriendQuery(req, res, uid, true, next);
             }
             else
                 next(new Error(500));
@@ -79,7 +81,7 @@ router.get('/', function(req, res, next) {
 router.get('/:id', function(req, res, next) {
     console.log("get request");
     var uid = req.params.id;
-    doFriendQuery(req, res, uid, next);
+    doFriendQuery(req, res, uid, false, next);
     //
     //doFriendQuery(req, res, uid, next);
 });

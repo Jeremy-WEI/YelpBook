@@ -20,7 +20,7 @@ var routes = require('./routes/index');
 var business = require('./routes/business');
 var users = require('./routes/users');
 var homepage = require('./routes/homepage');
-
+var group = require('./routes/group')
 
 var FACEBOOK_APP_ID = "1423345787976364";
 var FACEBOOK_APP_SECRET = "02b611212b606a730589d2dbf4ef5497";
@@ -145,7 +145,7 @@ app.use('/business', business);
 //app.use('/follow', business);
 app.use('/users', users);
 app.use('/homepage', homepage);
-
+app.use('/group', group);
 
 app.get('/', function(req, res){
 //    res.render('index', { user: req.user });

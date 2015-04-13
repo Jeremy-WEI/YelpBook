@@ -1,6 +1,9 @@
 extends layout
 
 block content
+    if !myself
+      a(href='/users/friend/#{user_id}') Add Friend
+    p(style='color:red') #{msg}
     h1 Friend Lists
     .row
         .col-md-8
