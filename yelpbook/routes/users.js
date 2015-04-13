@@ -142,10 +142,12 @@ function newPost(req, res, next, err, userid, msg) {
         var query = "INSERT INTO POST (user_id, text, datetime, photo_name) VALUES ('" + uid + "', '" + post_text + "', '" + datetime + "', '" + photo_name + "')";
 
         var query_with_friend = 'INSERT INTO WITH_FRIEND (user_id, post_datetime, friend_id) VALUES ';
-        for(var i=0;i<friend_list.length;i++){
-            var tuple = "("+uid+", \""+datetime+"\", "+friend_list[i]+")";
-            if(i==0) query_with_friend = query_with_friend + tuple;
-            else query_with_friend = query_with_friend + ","+tuple;
+        if(friend_list) {
+            for(var i=0;i<friend_list.length;i++){
+                var tuple = "("+uid+", \""+datetime+"\", "+friend_list[i]+")";
+                if(i==0) query_with_friend = query_with_friend + tuple;
+                else query_with_friend = query_with_friend + ","+tuple;
+            }
         }
 
 
