@@ -261,6 +261,7 @@ function getPhotoQuery(req, res, next) {
 
 //post request to create a new post
 router.post('/new_post', function(req, res, next) {
+    console.log("##############haha");
     getUserQuery(req, res, next, "New Post", newPost);
 });
 
