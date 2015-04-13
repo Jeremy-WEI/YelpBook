@@ -244,7 +244,7 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
     var uid = user_id;
     var query = 'SELECT FF.user_id, FF.fb_name, text, datetime, photo_name, friend_id, USER.fb_name as friend_fb_name FROM (SELECT R.user_id, USER.fb_name, text, datetime, photo_name, friend_id FROM (SELECT P.user_id as user_id, P.text as text, P.datetime as datetime,'
     + 'P.photo_name as photo_name, W.friend_id as friend_id FROM (SELECT * FROM (SELECT * FROM POST WHERE POST.user_id='+uid+' OR POST.user_id IN '
-    + '(SELECT FRIEND.user_id2 FROM USER INNER JOIN FRIEND ON USER.user_id=FRIEND.user_id1)) as buffer) P '
+    + '(SELECT FRIEND.user_id2 FROM USER INNER JOIN FRIEND ON USER.user_id=FRIEND.user_id1 WHERE FRIEND.user_id1='+uid+')) as buffer) P '
     + 'LEFT OUTER JOIN WITH_FRIEND W on P.user_id=W.user_id and P.datetime=W.post_datetime) R '
     + 'INNER JOIN USER ON R.user_id = USER.user_id) FF LEFT OUTER JOIN USER on FF.friend_id = USER.user_id ORDER BY user_id, datetime';
     console.log(query);
