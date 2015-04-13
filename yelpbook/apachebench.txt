@@ -1,0 +1,209 @@
+
+
+====================render a user's hompage============================================
+ab -r -n 10000 -c 1000 http://localhost:3000/homepage/8
+Document Path:          /homepage/8
+Document Length:        4921 bytes
+
+Concurrency Level:      10
+Time taken for tests:   60.839 seconds
+Complete requests:      1000
+Failed requests:        0
+Write errors:           0
+Total transferred:      5243716 bytes
+HTML transferred:       4921000 bytes
+Requests per second:    16.44 [#/sec] (mean)
+Time per request:       608.386 [ms] (mean)
+Time per request:       60.839 [ms] (mean, across all concurrent requests)
+Transfer rate:          84.17 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       2
+Processing:   543  606  80.6    580    1425
+Waiting:      543  606  80.6    580    1425
+Total:        543  606  80.6    580    1426
+
+Percentage of the requests served within a certain time (ms)
+  50%    580
+  66%    602
+  75%    619
+  80%    632
+  90%    664
+  95%    733
+  98%    818
+  99%    896
+ 100%   1426 (longest request)
+
+=======================render searching results================================================
+ ab -r -n 1000 -c 10 http://localhost:3000/business/search?search=bank
+Document Path:          /business/search?search=bank
+Document Length:        9750 bytes
+
+Concurrency Level:      10
+Time taken for tests:   74.043 seconds
+Complete requests:      1000
+Failed requests:        0
+Write errors:           0
+Total transferred:      10072678 bytes
+HTML transferred:       9750000 bytes
+Requests per second:    13.51 [#/sec] (mean)
+Time per request:       740.432 [ms] (mean)
+Time per request:       74.043 [ms] (mean, across all concurrent requests)
+Transfer rate:          132.85 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       1
+Processing:    94  737  70.0    726    1177
+Waiting:       92  736  69.9    726    1177
+Total:         95  737  69.9    727    1178
+
+Percentage of the requests served within a certain time (ms)
+  50%    727
+  66%    738
+  75%    746
+  80%    754
+  90%    779
+  95%    805
+  98%    927
+  99%   1153
+ 100%   1178 (longest request)
+
+=======================render business page================================================
+ab -r -n 1000 -c 10 http://localhost:3000/business?business_id=--sSW-WY3vyASh_eVPGUAw
+Document Path:          /business?business_id=--sSW-WY3vyASh_eVPGUAw
+Document Length:        23013 bytes
+
+Concurrency Level:      10
+Time taken for tests:   163.495 seconds
+Complete requests:      1000
+Failed requests:        0
+Write errors:           0
+Total transferred:      23336612 bytes
+HTML transferred:       23013000 bytes
+Requests per second:    6.12 [#/sec] (mean)
+Time per request:       1634.947 [ms] (mean)
+Time per request:       163.495 [ms] (mean, across all concurrent requests)
+Transfer rate:          139.39 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       1
+Processing:  1425 1629 150.3   1595    2912
+Waiting:     1425 1629 150.3   1595    2911
+Total:       1425 1630 150.3   1596    2913
+
+Percentage of the requests served within a certain time (ms)
+  50%   1596
+  66%   1644
+  75%   1682
+  80%   1712
+  90%   1801
+  95%   1871
+  98%   1989
+  99%   2305
+ 100%   2913 (longest request)
+=======================bing search================================================
+ab -r -n 1000 -c 10 http://localhost:3000/business/bing/Bank%20of%20America/--sSW-WY3vyASh_eVPGUAw
+ Document Path:          /business/bing/Bank%20of%20America/--sSW-WY3vyASh_eVPGUAw
+ Document Length:        4721 bytes
+
+ Concurrency Level:      10
+ Time taken for tests:   56.652 seconds
+ Complete requests:      1000
+ Failed requests:        0
+ Write errors:           0
+ Total transferred:      5048577 bytes
+ HTML transferred:       4725721 bytes
+ Requests per second:    17.65 [#/sec] (mean)
+ Time per request:       566.517 [ms] (mean)
+ Time per request:       56.652 [ms] (mean, across all concurrent requests)
+ Transfer rate:          87.03 [Kbytes/sec] received
+
+ Connection Times (ms)
+               min  mean[+/-sd] median   max
+ Connect:        0    0   0.2      0       3
+ Processing:   297  564 137.9    533    1506
+ Waiting:      297  516 136.3    489    1454
+ Total:        297  564 137.9    533    1506
+
+ Percentage of the requests served within a certain time (ms)
+   50%    533
+   66%    582
+   75%    621
+   80%    639
+   90%    760
+   95%    839
+   98%    958
+   99%   1013
+  100%   1506 (longest request)
+=======================Image loading================================================
+ab -r -n 1000 -c 10 http://localhost:3000/users/images/6_photocat1428866705413.png
+Document Path:          /users/images/6_photocat1428866705413.png
+Document Length:        5981 bytes
+
+Concurrency Level:      10
+Time taken for tests:   4.376 seconds
+Complete requests:      1000
+Failed requests:        0
+Write errors:           0
+Total transferred:      6252592 bytes
+HTML transferred:       5981000 bytes
+Requests per second:    228.50 [#/sec] (mean)
+Time per request:       43.764 [ms] (mean)
+Time per request:       4.376 [ms] (mean, across all concurrent requests)
+Transfer rate:          1395.24 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.2      0       3
+Processing:    26   43  70.4     33     739
+Waiting:       25   42  70.4     32     738
+Total:         26   43  70.4     34     740
+
+Percentage of the requests served within a certain time (ms)
+  50%     34
+  66%     35
+  75%     37
+  80%     39
+  90%     45
+  95%     55
+  98%    128
+  99%    720
+ 100%    740 (longest request)
+
+ =======================Blank page================================================
+ ab -r -n 1000 -c 10 http://localhost:3000/ab
+ Document Path:          /ab
+ Document Length:        1823 bytes
+
+ Concurrency Level:      10
+ Time taken for tests:   16.824 seconds
+ Complete requests:      1000
+ Failed requests:        0
+ Write errors:           0
+ Total transferred:      2145546 bytes
+ HTML transferred:       1823000 bytes
+ Requests per second:    59.44 [#/sec] (mean)
+ Time per request:       168.237 [ms] (mean)
+ Time per request:       16.824 [ms] (mean, across all concurrent requests)
+ Transfer rate:          124.54 [Kbytes/sec] received
+
+ Connection Times (ms)
+               min  mean[+/-sd] median   max
+ Connect:        0    1   9.6      0     186
+ Processing:    46  166  54.0    157     614
+ Waiting:       14  138  49.1    138     611
+ Total:         47  167  55.0    158     614
+
+ Percentage of the requests served within a certain time (ms)
+   50%    158
+   66%    168
+   75%    179
+   80%    188
+   90%    216
+   95%    234
+   98%    289
+   99%    414
+  100%    614 (longest request)
