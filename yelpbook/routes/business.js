@@ -15,6 +15,8 @@ function doRatingQuery2(req, res, busInfo, categories, reviews, wordCounts, rati
     connection.query(queryRating2,
         function (err, ratingTrend) {
             if (!err) {
+                var msg = req.session.msg;
+                req.session.msg = undefined;
                 res.render('business', {
                     business: busInfo,
                     categories: categories,
@@ -22,7 +24,7 @@ function doRatingQuery2(req, res, busInfo, categories, reviews, wordCounts, rati
                     wordCounts: wordCounts,
                     ratingStatistic: ratingStatistic,
                     ratingTrend: ratingTrend,
-                    msg: req.query.msg
+                    msg: msg
                 })
             }
             else
@@ -117,9 +119,10 @@ router.get('/', function (req, res, next) {
         doBusinessQuery(req, res, next);
 });
 
-function redirectBusiness(res, business_id, msg) {
+function redirectBusiness(req, res, business_id, msg) {
+    req.session.msg = msg;
     res.writeHead(302, {
-        'Location': '/business?business_id=' + business_id + '&msg=' + msg
+        'Location': '/business?business_id=' + business_id
     });
     res.end();
 }
@@ -151,7 +154,7 @@ function addReview(req, res, next) {
                         next(new Error(500));
                     }
                     // successfully add review
-                    redirectBusiness(res, business_id, "The review was added!");
+                    redirectBusiness(req, res, business_id, "The review was added!");
                 });
             }
         });
@@ -199,7 +202,7 @@ function doFollow(req, res, next) {
                         req.session.follow = 'exist';
                     }
                 });
-                redirectBusiness(res, business_id, "You've followed the business!");
+                redirectBusiness(req, res, business_id, "You've followed the business!");
 
             }
         });

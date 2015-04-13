@@ -108,8 +108,8 @@ function redirectUser(res, user_id) {
 }
 
 function redirectHomepage(req, res, user_id, msg) {
-//    req.session.msg = msg;
-    res.setHeader("Location", '/homepage/' + user_id + '?msg=' + msg);
+    req.session.msg = msg;
+    res.setHeader("Location", '/homepage/' + user_id);
     res.writeHead(302);
     res.end();
 }

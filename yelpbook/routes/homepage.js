@@ -14,15 +14,17 @@ var utils = require('./utils');
 function doFollowsQuery(req, res, id, friendInfo, ownposts, myself, next) {
     connection.query('SELECT * FROM BUSINESS B INNER JOIN FOLLOWS F ON B.business_id = F.business_id WHERE F.user_id =' + id,
         function (err, follows) {
-            if (!err)
+            if (!err) {
+                var msg = req.session.msg;
+                req.session.msg = undefined;
                 res.render('homepage', {
                     friends: friendInfo,
                     posts: ownposts,
                     follows: follows,
                     myself: myself,
                     user_id: id,
-                    msg: req.query.msg
-                });
+                    msg: msg
+                });}
             else
                 next(new Error(500));
         });
