@@ -197,7 +197,7 @@ function getUserQuery(req, res, next, msg, callBack) {
     });
 }
 
-function renderUserPosts(res, uid, user_name, results,  msg) {
+function renderUserPosts(res, uid, results,  msg) {
     var query_friend_list = 'SELECT user_id2 FROM FRIEND WHERE user_id1='+uid;
     console.log(query_friend_list);
     connection.query(query_friend_list, function(err, friends) {
@@ -219,11 +219,11 @@ function renderUserPosts(res, uid, user_name, results,  msg) {
                 console.log(query_find_name);
                 connection.query(query_find_name, function(err, friendname){
                     if(err){
-                        res.render('user', {"user_id" : uid,  "user_name": user_name, "results": results, "message": msg});
+                        res.render('user', {"user_id" : uid, "results": results, "message": msg});
                     }
                     else{
                         console.log(friendname);
-                        res.render('user', {"user_id" : uid, "user_name": user_name, "friends" : friendname, "results": results, "message": msg});
+                        res.render('user', {"user_id" : uid, "friends" : friendname, "results": results, "message": msg});
                     }
                 });
 
@@ -250,7 +250,7 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
 
     connection.query(query, function(err, results) {
             if (err)
-                renderUserPosts(res, uid, "", results, "Get Posts failed!");
+                renderUserPosts(res, uid, results, "Get Posts failed!");
             else {
                 var user_id;
                 var user_name;
@@ -303,7 +303,7 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
                 }
                 finalresults.push(finalpost);
                 console.log(finalresults);
-                renderUserPosts(res, uid, user_name, finalresults, msg);
+                renderUserPosts(res, uid, finalresults, msg);
             }
         }
     );
