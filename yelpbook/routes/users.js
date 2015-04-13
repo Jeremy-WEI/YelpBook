@@ -387,6 +387,7 @@ function addFriend(req, res, next, err, uid, msg) { //req, res, next, err, useri
 
 //post request to create a new post
 router.post('/new_post', function(req, res, next) {
+    console.log("##############haha");
     getUserQuery(req, res, next, "New Post", newPost);
 });
 

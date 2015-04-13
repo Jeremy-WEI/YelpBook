@@ -1,11 +1,41 @@
+extends layout
 block content
-    h1 Members
-    .row
+  a(href='/business?business_id=#{business_id}') Back
+  h1 Members
+  .row
+    .col-md-8
+      section.content-wrapper
+        .content-box
+          for mem in members
+            .row
+              .col-md-8
+                p
+                  a(href='/homepage/#{mem}') #{mem}
+                  //a(href='/homepage/#{mem.user_id}') #{mem.fb_name}
+  h2(style='color:red') #{msg}
+  h1 News Feeds
+  .row
+    .col-md-8
+      section.content-wrapper
+        .content-box
+          for post in results
+              .row
+                  .col-md-8
+                      p
+                          a(href='/homepage/#{post.u_id}') #{post.fb_name}
+              .row
+                  .col-md-8
+                      p #{post.text}
+              .row
+                  .col-md-8
+                      p Posted on: #{post.date_time}
+
+
+
+  form(enctype='multipart/form-data', action='/group/new_post/#{business_id}', method='POST')
+    .form-group
+      .row
         .col-md-8
-            section.content-wrapper
-                .content-box
-                    for mem in members
-                        .row
-                            .col-md-8
-                                p
-                                    a(href='/homepage/#{mem.user_id}') #{mem.fb_name}s
+          input#new_post.form-control(name='new_post', placeholder='New Post', type='textarea', rows='4', cols='50')
+        .col-md-4
+          input(type='submit', value='Post')
