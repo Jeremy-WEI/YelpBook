@@ -11,6 +11,8 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var Bing = require('node-bing-api')({accKey:"NI7NeDBXR06vWzeRY1eRXUYG+J42BnjVZe2TNCaxtlU"})
 //var mongo = require('mongodb');
+var Benchmark = require('benchmark');
+
 
 var expressSession = require('express-session');
 
@@ -62,7 +64,24 @@ passport.use(new FacebookStrategy({
     }
 ));
 
-
+//var suite = new Benchmark.Suite;
+//
+//// add tests
+//suite.add('RegExp#test', function() {
+//    /o/.test('Hello World!');
+//})
+//    .add('String#indexOf', function() {
+//        'Hello World!'.indexOf('o') > -1;
+//    })
+//// add listeners
+//    .on('cycle', function(event) {
+//        console.log("cycle: " + String(event.target));
+//    })
+//    .on('complete', function() {
+//        console.log('Fastest is ' + this.filter('fastest').pluck('name'));
+//    })
+//// run async
+//    .run({ 'async': true });
 
 var app = express();
 
@@ -142,6 +161,10 @@ app.get('/login', function(req, res){
     res.render('login', { user: req.user });
 });
 
+app.get('/ab', function(req, res){
+    res.render('ab');
+});
+
 
 
 // GET /auth/facebook
@@ -185,7 +208,7 @@ app.get('/logout', function(req, res){
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
     req.session.returnTo = req.path;
-    console.log(("ensureAuthenticated req.session: ") + JSON.stringify(req.session));
+//    console.log(("ensureAuthenticated req.session: ") + JSON.stringify(req.session));
     res.redirect('/login');
 }
 

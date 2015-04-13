@@ -15,6 +15,8 @@ function doFollowingQuery(req, res, busInfo, categories, reviews, wordCounts, ra
     connection.query(query,
         function (err, follows) {
             if (!err) {
+                var msg = req.session.msg;
+                req.session.msg = undefined;
                 res.render('business', {
                     business: busInfo,
                     categories: categories,
@@ -22,6 +24,7 @@ function doFollowingQuery(req, res, busInfo, categories, reviews, wordCounts, ra
                     wordCounts: wordCounts,
                     ratingStatistic: ratingStatistic,
                     ratingTrend: ratingTrend,
+                    msg: msg,
                     follows: follows
                 })
             }
@@ -108,7 +111,6 @@ function doBusinessQuery(req, res, next) {
 
 function doBusinessSearch(req, res, next) {
     var query_string = req.query.search;
-    //console.log(query_string);
     var query = "SELECT * FROM BUSINESS WHERE upper(name) LIKE \"" + query_string.toUpperCase() + "%\" LIMIT 50";
     connection.query(query, function (err, results) {
         if (err) {
@@ -128,9 +130,10 @@ router.get('/', function (req, res, next) {
         doBusinessQuery(req, res, next);
 });
 
-function redirectBusiness(res, business_id, msg) {
+function redirectBusiness(req, res, business_id, msg) {
+    req.session.msg = msg;
     res.writeHead(302, {
-        'Location': '/business?business_id=' + business_id + '&msg=' + msg
+        'Location': '/business?business_id=' + business_id
     });
     res.end();
 }
@@ -155,7 +158,6 @@ function addReview(req, res, next) {
                 var rating = req.body.rating;
                 var date = new Date();
                 var nowdate = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-                //console.log(rating);
                 var query_add_review = "INSERT INTO REVIEW (business_id, user_id, text, stars, date) VALUES (\"" + business_id + "\", " + user_id
                     + ", \"" + review + "\", " + rating + ", \"" + nowdate + "\")";
                 connection.query(query_add_review, function (err, review) {
@@ -163,7 +165,7 @@ function addReview(req, res, next) {
                         next(new Error(500));
                     }
                     // successfully add review
-                    redirectBusiness(res, business_id, "The review was added!");
+                    redirectBusiness(req, res, business_id, "The review was added!");
                 });
             }
         });
@@ -211,7 +213,7 @@ function doFollow(req, res, next) {
                         req.session.follow = 'exist';
                     }
                 });
-                redirectBusiness(res, business_id, "You've followed the business!");
+                redirectBusiness(req, res, business_id, "You've followed the business!");
 
             }
         });

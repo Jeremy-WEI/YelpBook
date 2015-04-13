@@ -19,16 +19,16 @@ var Grid = require('gridfs-stream'); //mongoDB file IO
 var gridfs; //mongoDB file IO, bounded to var DB
 // Retrieve
 
-//console.log("__dirname: " + __dirname);
+////console.log("__dirname: " + __dirname);
 
 // Connect to the db
 MongoClient.connect("mongodb://dichenli:5data5base0@ds061671.mongolab.com:61671/yelpbook_mongo", function(err, db) {
     if(err) {
-        console.log("mongo connection failed");
-        console.log(err.message);
+        //console.log("mongo connection failed");
+        //console.log(err.message);
         throw err; //connection failed, kill the whole server
     } else {
-        console.log("mongo connection opened");
+        //console.log("mongo connection opened");
         DB = db;
         gridfs = Grid(DB, mongo);
     }
@@ -45,10 +45,10 @@ function redirectLogin(res) {
 
 
 function undefined(obj) {
-    console.log("======undefined?");
-    console.log(obj);
-    console.log(typeof obj === 'undefined');
-    console.log("undefined=====");
+//    //console.log("======undefined?");
+//    //console.log(obj);
+//    //console.log(typeof obj === 'undefined');
+//    //console.log("undefined=====");
     return typeof obj === 'undefined';
 }
 
@@ -106,9 +106,17 @@ function redirectUser(res, user_id) {
     });
     res.end();
 }
+
+function redirectHomepage(req, res, user_id, msg) {
+    req.session.msg = msg;
+    res.setHeader("Location", '/homepage/' + user_id);
+    res.writeHead(302);
+    res.end();
+}
+
 //call back function to show my news feed
 function myFeed(req, res, next, err, userid, msg) {
-    console.log("myFeed callback found userid: " + userid);
+    ////console.log("myFeed callback found userid: " + userid);
     getPostsQuery(req, res, next, err, userid, msg);
 }
 
@@ -116,7 +124,7 @@ function myFeed(req, res, next, err, userid, msg) {
 //call back function to process a new post
 function newPost(req, res, next, err, userid, msg) {
     if (!undefined(global.done) && global.done != true) { //file upload not done
-        console.log("File uploaded done==false");
+        //console.log("File uploaded done==false");
     } else {
         var uid = userid;
         var post_text = req.body.new_post;
@@ -130,7 +138,7 @@ function newPost(req, res, next, err, userid, msg) {
             photo_name = uid + "_" + file.name;
         }
         var query = "INSERT INTO POST (user_id, text, datetime, photo_name) VALUES ('" + uid + "', '" + post_text + "', '" + datetime + "', '" + photo_name + "')";
-        console.log(query);
+        //console.log(query);
         connection.query(query,
             function(err, results) { //query returns
                 if (err)
@@ -148,7 +156,7 @@ function newPost(req, res, next, err, userid, msg) {
                     });
                     fs.createReadStream(file.path).pipe(writeStream);
                     writeStream.on("close", function () {
-                        console.log("file pipe to DB done");
+                        //console.log("file pipe to DB done");
                         fs.unlinkSync(__dirname + "/../uploads/" + file.name); //delete the file in local uploads
                         getPostsQuery(req, res, next, err, uid, "The post was sent successfully!");
                     });
@@ -164,14 +172,15 @@ function getUserQuery(req, res, next, msg, callBack) {
     if(undefined(req.user)){
         redirectLogin(res);
     }
-    console.log("getUserQuery fb: " + req.user.id); //get the user who sent request
+    //console.log("getUserQuery fb: " + req.user.id); //get the user who sent request
     var fb = req.user.id;
     var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb;
-    console.log(query_find_userid);
+    //console.log(query_find_userid);
     connection.query(query_find_userid, function (err, userid) {
         if (err) {
             redirectLogin(res);
-        } else if (userid.length != 1){
+        } else if (!userid || userid.length != 1 || !userid[0] || !userid[0].user_id){
+            console.log("invalid user id: " + userid[0].user_id); //userid 0 is not allowed!
             redirectLogin(res);
         } else {
             callBack(req, res, next, err, userid[0].user_id, msg);
@@ -184,20 +193,20 @@ function renderUserPosts(res, uid, results,  msg) {
 }
 
 function getPostsQuery(req, res, next, err, user_id, msg) {
-    console.log("getPostsQuery user_id: " + user_id);
+    //console.log("getPostsQuery user_id: " + user_id);
 //    var fb_name = null;
 //    var uid = connection.escape(user_id[0]);
-//    console.log("uid: " + uid);
+//    //console.log("uid: " + uid);
     var uid = user_id;
-    var query = "SELECT * FROM USER INNER JOIN ((SELECT * FROM POST WHERE user_id IN"
+    var query = "SELECT DISTINCT * FROM USER INNER JOIN ((SELECT * FROM POST WHERE user_id IN"
     + "(SELECT user_id2 as user_id FROM FRIEND WHERE user_id1='" + uid + "'))"
     + "UNION"
     + "(SELECT * FROM POST WHERE user_id IN"
     + "(SELECT user_id1 as user_id FROM FRIEND WHERE user_id2=" + uid + "))"
     + "UNION"
     + "(SELECT * FROM POST WHERE user_id IN (SELECT " + uid
-    + "))) AS POSTS ON USER.user_id = POSTS.user_id";
-    console.log(query);
+    + "))) AS POSTS ON USER.user_id = POSTS.user_id ORDER BY POSTS.datetime DESC";
+    //console.log(query);
     connection.query(query, function(err, results) {
             if (err)
                 renderUserPosts(res, uid, results, "Get Posts failed!");
@@ -221,23 +230,23 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
 //get photo from MongoDB
 function getPhotoQuery(req, res, next) {
     var photo_name = req.params.id;
-    console.log(photo_name);
+    //console.log(photo_name);
     if(undefined(photo_name)) {
-        console.log("photo_name === 'undefined'");
+        //console.log("photo_name === 'undefined'");
         next(new error(404));
     }
     var collection = gridfs.files;
-    console.log("collection" + collection);
+    //console.log("collection" + collection);
     collection.findOne({"filename": photo_name}, function(err, item) {
         if(err || !item) {
-            console.log("can't find file from mongoDB fs.files");
+            //console.log("can't find file from mongoDB fs.files");
             next(new Error(404));
         } else {
-            console.log("findone callback");
+            //console.log("findone callback");
             var length = item.length;
             var type = mime.lookup(photo_name);
-            console.log(length);
-            console.log(type);
+            //console.log(length);
+            //console.log(type);
             res.writeHead(200, {
                 'Content-Type': type,
                 'Content-Length': length
@@ -247,14 +256,36 @@ function getPhotoQuery(req, res, next) {
             var readstream = gridfs.createReadStream({
                 filename: photo_name
             });
-            console.log("done find readstream");
+            //console.log("done find readstream");
             readstream.pipe(res);
             readstream.on('error', function(err) {
-                console.log('file stream error!');
+                //console.log('file stream error!');
                 res.end(err);
             })
         }
     });
+}
+
+function addFriend(req, res, next, err, uid, msg) { //req, res, next, err, userid[0].user_id, msg
+    if(err) {
+        return next(new Error(404));
+    }
+    var friend_id = req.params.id;
+    if(!friend_id || !uid) {
+        return next(new Error(500));
+    }
+    if(friend_id == uid) { //return to the friend page, send message
+        redirectHomepage(req, res, friend_id, "You can't friend youself!");
+    }
+    var query = "INSERT INTO FRIEND (user_id1, user_id2) VALUES (" + uid + ", " + friend_id + "), (" + friend_id + ", " + uid + ")";
+    connection.query(query, function(err, results) {
+            if (err)
+                redirectHomepage(req, res, friend_id, "Add friend failed!");
+            else {
+                redirectHomepage(req, res, friend_id, "Add friend success");
+            }
+        }
+    );
 }
 
 
@@ -282,11 +313,14 @@ router.get('/homepage', function(req, res, next) {
 
 
 router.get('/images/:id', function(req, res, next) {
-    console.log("/images/:id");
+    //console.log("/images/:id");
     getPhotoQuery(req, res, next);
 });
 
-
+router.get('/friend/:id', function(req, res, next) {
+    //console.log("/images/:id");
+    getUserQuery(req, res, next, "", addFriend);
+});
 
 
 module.exports = router;
