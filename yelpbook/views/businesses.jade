@@ -2,14 +2,16 @@
    Created by dichenli on 3/30/15.
 extends layout
 block content
-  h1 Results
-    table
+  h1.text-center Search Results
+  table.table.table-striped.table-bordered.table-hover
+    thead
       tr
-        th Name
+        th Business Name
         th Address
-        th Rating
-      //show searching results
-      for result in results
+        th Avrerage Rating
+    //show searching results
+    tbody
+      each result, index in results
         tr
           td
             a(href='/business?business_id=#{result.business_id}') #{result.name}
