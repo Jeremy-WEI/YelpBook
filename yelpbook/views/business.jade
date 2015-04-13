@@ -1,17 +1,13 @@
 extends layout
 
 block content
-  p Bing Search
-    br
-    a(href='/business/bing/#{business[0].name}/#{business[0].business_id}') Bing
-
   p Group
     br
     a(href='/group/#{business[0].business_id}') Go
   p(style='color:red')= msg
   //h1= Object.keys(wordCounts).length
   style.
-    #map_canvas, #route_div, #street_view, #chart1, #chart2 {
+    #map_canvas, #route_div, #street_view, #chart1, #chart2, #following {
       width: 100%;
       height: 350px;
       overflow: scroll;
@@ -25,13 +21,17 @@ block content
     h6.rating2.hide= rate.date + '\t' + rate.stars
   each word, index in wordCounts
     h6.hidden_word= word.WORD + ' ' + word.COUNT
+
   h6.hide#longitude= business[0].longitude
   h6.hide#latitude= business[0].latitude
+
   form.form-inline(action='/business/follow/#{business[0].business_id}', method='post')
     .form-group
       label
         h1 #{business[0].name}&nbsp&nbsp&nbsp&nbsp
     button.label.label-primary(type='submit') Follow
+    button.label.label-info
+      a(href='/business/bing/#{business[0].name}/#{business[0].business_id}') Bing
   .row
     .col-lg-8.col-md-12
       .row
@@ -141,8 +141,8 @@ block content
                     .timeline-heading
                       .row
                         .col-md-4
-                          h4
-                            a(href='/homepage/#{review.user_id}') #{review.fb_name}
+                          a(href='/homepage/#{review.user_id}')
+                            h4= review.fb_name
                         .col-md-4
                           h5(align="right")
                             if parseInt(review.stars) == 1
@@ -167,7 +167,8 @@ block content
                     .timeline-heading
                       .row
                         .col-md-4
-                          h4= review.fb_name
+                          a(href='/homepage/#{review.user_id}')
+                            h4= review.fb_name
                         .col-md-4
                           h5(align="right")
                             if parseInt(review.stars) == 1
@@ -221,6 +222,32 @@ block content
             i.fa.fa-clock-o.fa-fw
             | Rating Trend
           .panel-body#chart2
+      .row
+        .panel.panel-default
+          .panel-heading
+            i.fa.fa-clock-o.fa-fw
+            | Who's Following
+          .panel-body#following
+            ul.chat
+              each follow, index in follows
+                if (index % 2 == 0)
+                  li.clearfix.left
+                    .header
+                      small.text-muted
+                        i.fa.fa-clock-o.fa-fw
+                        |  #{follow.time}
+                      strong.pull-right.primary-font= follow.fb_name
+                    p
+                      | #{follow.fb_name} follows #{business[0].name}.
+                else
+                  li.clearfix.right
+                    .header
+                      strong.primary-font= follow.fb_name
+                      small.pull-right.text-muted
+                        i.fa.fa-clock-o.fa-fw
+                        |  #{follow.time}
+                    p
+                      | #{follow.fb_name} follows #{business[0].name}.
   script.
     var wordle_canvas = document.getElementById('wordle_canvas')
     wordle_canvas.width = 320
