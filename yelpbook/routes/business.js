@@ -3,6 +3,7 @@ var router = express.Router();
 var mysql = require('mysql');
 var Bing = require('node-bing-api')({accKey: "NI7NeDBXR06vWzeRY1eRXUYG+J42BnjVZe2TNCaxtlU"})
 var moment = require('moment')
+
 var connection = mysql.createConnection({
     host: 'mydatabase.cfxag8k1xo7h.us-east-1.rds.amazonaws.com',
     user: 'linjie',

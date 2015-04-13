@@ -1,42 +1,73 @@
 extends layout
 
 block content
-    if !myself
-      a(href='/users/friend/#{user_id}') Add Friend
-    p(style='color:red') #{msg}
-    h1 Friend Lists
-    .row
-        .col-md-8
-            section.content-wrapper
-                .content-box
-                    for friend in friends
-                        .row
-                            .col-md-8
-                              p
-                                a(href='/homepage/#{friend.user_id}') friend name: #{friend.fb_name}
+  style.
+    #friend_panel {
+      width: 100%;
+      height: 350px;
+      overflow: scroll;
+    }
 
-    h1 My Posts
-    .row
-      .col-md-8
-        section.content-wrapper
-          .content-box
-            for post in posts
-              .row
-                .col-md-8
-                  p post: #{post.text}
-              .row
-                .col-md-8
+    #post_panel {
+      width: 100%;
+      height: 300px;
+      overflow: scroll;
+    }
+
+    img {
+      max-width: 100%;
+    }
+  if !myself
+    a(href='/users/friend/#{user_id}') Add Friend
+  p(style='color:red') #{msg}
+  .row
+    .col-lg-6.col-md-12
+      .panel.panel-default
+        .panel-heading
+          i.fa.fa-clock-o.fa-fw
+          | Friend List
+        .panel-body#friend_panel
+          table.table.table-striped.table-bordered.table-hover
+            thead
+              tr
+                th Friend Name
+            tbody
+              each friend in friends
+                tr
+                  td
+                    a(href='/homepage/#{friend.user_id}')= friend.fb_name
+    .col-lg-6.col-md-12
+      .panel.panel-default
+        .panel-heading
+          i.fa.fa-clock-o.fa-fw
+          | Businesses Followed
+        .panel-body#friend_panel
+          table.table.table-striped.table-bordered.table-hover
+            thead
+              tr
+                th Business Name
+                th Following Time
+            tbody
+              each follow in follows
+                tr
+                  td
+                    a(href='/business?business_id=#{follow.business_id}') business name: #{follow.name}
+                  td= follow.time
+  .row
+    .col-lg-12
+      .panel.panel-default
+        .panel-heading
+          i.fa.fa-clock-o.fa-fw
+          | Post List
+        .panel-body
+          each post in posts
+            .col-lg-4.col-md-6
+              .panel.panel-default#post_panel
+                .panel-heading Post Time: #{post.datetime}
+                .panel-body
                   if post.photo_name != 'NULL'
-                    img(src='/users/images/#{post.photo_name}', alt='Photo missing')
+                    img(src='/users/images/#{post.photo_name}', alt='Photo')
+                hr
+                p= post.text
 
 
-    h1 Following Business
-    .row
-        .col-md-8
-            section.content-wrapper
-                .content-box
-                    for follow in follows
-                        .row
-                            .col-md-8
-                                p
-                                  a(href='/business?business_id=#{follow.business_id}') business name: #{follow.name}
