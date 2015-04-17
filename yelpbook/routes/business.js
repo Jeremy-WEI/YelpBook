@@ -42,6 +42,7 @@ function doNearbyQuery(req, res, busInfo, categories, reviews, wordCounts, ratin
                 req.session.msg = undefined;
                 res.render('business', {
                     nearInfo: nearby,
+                    user_id: req.user,
                     business: busInfo,
                     categories: categories,
                     reviews: reviews,
@@ -140,7 +141,7 @@ function doBusinessSearch(req, res, next) {
         if (err) {
             next(new Error(500));
         } else {
-            res.render('businesses', {results: results});
+            res.render('businesses', {user_id: req.user, results: results});
         }
     });
 }
@@ -282,6 +283,7 @@ router.get('/bing/:name/:id', function (req, res, next) {
         Bing.web(req.params.name, function (error, ress, body) {
             console.log(body.d.results);
             res.render('bingresult', {
+                user: req.user,
                 bodyresults: body.d.results,
                 b_id: req.params.id
             });
