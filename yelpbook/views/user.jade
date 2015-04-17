@@ -119,7 +119,10 @@ block content
                     for friend in post.friend_list
                       a(href='/homepage/#{friend[0]}') #{friend[1]}
                       &nbsp
-
+            .row
+              .col-md-8
+                if(post.business != null)
+                  a(href='/business?business_id=#{post.business_id}') #{post.business}
             .row
               .col-md-8
                 p #{post.text}

@@ -256,11 +256,18 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
 //    var uid = connection.escape(user_id[0]);
 //    // console.log("uid: " + uid);
     var uid = user_id;
-    var query = 'SELECT FF.user_id, FF.fb_name, text, datetime, photo_name, friend_id, USER.fb_name as friend_fb_name FROM (SELECT R.user_id, USER.fb_name, text, datetime, photo_name, friend_id FROM (SELECT P.user_id as user_id, P.text as text, P.datetime as datetime,'
-    + 'P.photo_name as photo_name, W.friend_id as friend_id FROM (SELECT * FROM (SELECT * FROM POST WHERE POST.user_id='+uid+' OR POST.user_id IN '
-    + '(SELECT FRIEND.user_id2 FROM USER INNER JOIN FRIEND ON USER.user_id=FRIEND.user_id1 WHERE FRIEND.user_id1='+uid+')) as buffer) P '
-    + 'LEFT OUTER JOIN WITH_FRIEND W on P.user_id=W.user_id and P.datetime=W.post_datetime) R '
-    + 'INNER JOIN USER ON R.user_id = USER.user_id) FF LEFT OUTER JOIN USER on FF.friend_id = USER.user_id ORDER BY user_id, datetime';
+    var query = 'SELECT user_id, fb_name, B.name, B.business_id, text, datetime, photo_name, friend_id, friend_fb_name FROM ' +
+        '(SELECT FF.user_id, FF.fb_name, FF.business, text, datetime, photo_name, ' +
+        'friend_id, USER.fb_name as friend_fb_name FROM (SELECT R.user_id, USER.fb_name, ' +
+        'business, text, datetime, photo_name, friend_id FROM (SELECT P.user_id as user_id, ' +
+        'P.text as text, P.datetime as datetime, P.photo_name as photo_name, P.business_ref ' +
+        'as business, W.friend_id as friend_id FROM (SELECT * FROM (SELECT * FROM POST ' +
+        'WHERE POST.user_id='+uid+' OR POST.user_id IN (SELECT FRIEND.user_id2 FROM USER ' +
+        'INNER JOIN FRIEND ON USER.user_id=FRIEND.user_id1 WHERE FRIEND.user_id1='+uid+')) as buffer) P ' +
+        'LEFT OUTER JOIN WITH_FRIEND W on P.user_id=W.user_id and P.datetime=W.post_datetime) R ' +
+        'INNER JOIN USER ON R.user_id = USER.user_id) FF LEFT OUTER JOIN USER ' +
+        'on FF.friend_id = USER.user_id) M LEFT OUTER JOIN BUSINESS B ON M.business=B.business_id '+
+        'ORDER BY M.datetime DESC, M.user_id';
     console.log(query);
     // console.log(query);
 
@@ -277,32 +284,38 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
                 var friend_name;
                 var finalresults = [];
                 var friend_list = [];
+                var business;
+                var business_id;
                 for(var i=0;i<results.length;i++) {
                     if (results[i].user_id == user_id && String(results[i].datetime) == String(datetime)) {
                         // same post
                         if(friend_name != null) friend_list.push([results[i].friend_id, results[i].friend_fb_name]);
                     }
                     else {
-                        if (user_id != undefined) {
+                        if (typeof user_id != 'undefined') {
                             var post = {
                                 "user_id": user_id,
                                 "user_name": user_name,
                                 "text": text,
                                 "datetime": datetime,
                                 "photo_name": photo_name,
-                                "friend_list": friend_list
+                                "friend_list": friend_list,
+                                "business": business,
+                                "business_id": business_id
                             }
+                            console.log("push to final results");
+                            console.log(post);
                             finalresults.push(post);
                         }
                         user_id = results[i].user_id;
                         user_name = results[i].fb_name;
                         text = results[i].text;
                         datetime = results[i].datetime;
-                        console.log("new datetime");
-                        console.log(datetime);
                         photo_name = results[i].photo_name;
                         friend_id = results[i].friend_id;
                         friend_name = results[i].friend_fb_name;
+                        business = results[i].name;
+                        business_id = results[i].business_id;
                         friend_list = [];
                         if(friend_name != null) {
                             friend_list.push([friend_id, friend_name]);
@@ -315,10 +328,11 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
                     "text": text,
                     "datetime": datetime,
                     "photo_name": photo_name,
-                    "friend_list": friend_list
+                    "friend_list": friend_list,
+                    "business": business,
+                    "business_id": business_id
                 }
                 finalresults.push(finalpost);
-                console.log(finalresults);
                 renderUserPosts(res, uid, finalresults, msg);
             }
         }
