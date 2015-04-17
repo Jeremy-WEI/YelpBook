@@ -133,14 +133,17 @@ function newPost(req, res, next, err, userid, msg) {
         var file = req.file;
         var photo_name;
         var friend_list = req.body.friend;
+        var business = req.body.location;
         if(undefined(file)) {
-            photo_name = "NULL";
+            photo_name = 'NULL';
             global.done = true;
         } else {
             photo_name = uid + "_" + file.name;
         }
-        var query = "INSERT INTO POST (user_id, text, datetime, photo_name) VALUES ('" + uid + "', '" + post_text + "', '" + datetime + "', '" + photo_name + "')";
-
+        var query = "";
+        console.log(business);
+        if(business == "null") query = "INSERT INTO POST (user_id, text, datetime, photo_name) VALUES ('" + uid + "', '" + post_text + "', '" + datetime + "', '" + photo_name + "')";
+        else query = "INSERT INTO POST (user_id, text, datetime, photo_name, business_ref) VALUES ('" + uid + "', '" + post_text + "', '" + datetime + "', '" + photo_name + "', '" + business + "')";
         var query_with_friend = 'INSERT INTO WITH_FRIEND (user_id, post_datetime, friend_id) VALUES ';
         if(friend_list) {
             for(var i=0;i<friend_list.length;i++){
@@ -154,8 +157,10 @@ function newPost(req, res, next, err, userid, msg) {
         console.log(query);
         connection.query(query,
             function(err, results) { //query returns
-                if (err)
+                if (err) {
+                    console.log(err);
                     getPostsQuery(req, res, next, err, uid, "The post Failed in mysql query!");
+                }
                 else if (undefined(file)) {
                     getPostsQuery(req, res, next, err, uid, "The post was sent successfully, no image!");
                 } else {
@@ -225,7 +230,16 @@ function renderUserPosts(res, uid, results,  msg) {
                     }
                     else{
                         console.log(friendname);
-                        res.render('user', {"user_id" : uid, "friends" : friendname, "results": results, "message": msg});
+                        var query_find_follows = 'SELECT B.business_id, B.name FROM FOLLOWS F INNER JOIN BUSINESS B ON '
+                        +'F.business_id=B.business_id WHERE user_id='+uid;
+                        connection.query(query_find_follows, function(err, businesses){
+                            if(err){
+                                res.render('user', {"user_id" : uid, "results" : results, "message" : msg});
+                            }
+                            else{
+                                res.render('user', {"user_id" : uid, "friends" : friendname, "businesses": businesses, "results": results, "message": msg})
+                            }
+                        });
                     }
                 });
 
