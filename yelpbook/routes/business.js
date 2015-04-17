@@ -16,9 +16,32 @@ function doFollowingQuery(req, res, busInfo, categories, reviews, wordCounts, ra
     connection.query(query,
         function (err, follows) {
             if (!err) {
+                doNearbyQuery(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic, ratingTrend, follows, next)
+            }
+            else
+                next(new Error(500));
+        })
+}
+
+
+
+function doNearbyQuery(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic, ratingTrend, follows, next) {
+    var query = 'SELECT DISTINCT B.business_id, B.name, B.latitude, B.longitude FROM BUSINESS B INNER JOIN CATEGORY C ON B.business_id = C.business_id ' +
+        'WHERE ABS(B.longitude - (SELECT B1.longitude FROM BUSINESS B1 ' +
+        'WHERE B1.business_id = "' + req.query.business_id + '")) < 0.01 ' +
+        'AND ABS(B.latitude - (SELECT B2.latitude FROM BUSINESS B2 ' +
+        'WHERE B2.business_id = "' + req.query.business_id + '")) < 0.01 ' +
+        'AND B.avg_stars > 3.0 AND C.category IN ' +
+        '(SELECT C3.category FROM BUSINESS B3 INNER JOIN CATEGORY C3 ON B3.business_id = C3.business_id) ' +
+        'AND B.business_id <> "' + req.query.business_id + '" ORDER BY B.business_id LIMIT 10';
+    console.log(query);
+    connection.query(query,
+        function (err, nearby) {
+            if (!err) {
                 var msg = req.session.msg;
                 req.session.msg = undefined;
                 res.render('business', {
+                    nearInfo: nearby,
                     user_id: req.user,
                     business: busInfo,
                     categories: categories,

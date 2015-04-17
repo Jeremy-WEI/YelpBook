@@ -3,7 +3,7 @@ block content
   p(style='color:red')= msg
   //h1= Object.keys(wordCounts).length
   style.
-    #map_canvas, #route_div, #street_view, #chart1, #chart2, #following {
+    #map_canvas, #route_div, #street_view, #chart1, #chart2, #nearby, #following {
       width: 100%;
       height: 350px;
       overflow: scroll;
@@ -11,6 +11,11 @@ block content
     .hidden_word {
       display: none;
     }
+
+  each near in nearInfo
+    p
+      a(href='/business?business_id=#{near.business_id}') #{near.name}
+
   each rate, index in ratingStatistic
     h6.rating1.hide= rate.stars + '\t' + rate.count
   each rate, index in ratingTrend
@@ -223,6 +228,12 @@ block content
         .panel.panel-default
           .panel-heading
             i.fa.fa-clock-o.fa-fw
+            | Business Nearby
+          .panel-body#nearby
+      .row
+        .panel.panel-default
+          .panel-heading
+            i.fa.fa-clock-o.fa-fw
             | Who's Following
           .panel-body#following
             ul.chat
@@ -423,4 +434,6 @@ block content
       classicChart = new google.visualization.LineChart(classicDiv);
       classicChart.draw(data2, classicOptions);
     }
+
+
                                  
