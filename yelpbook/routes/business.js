@@ -182,7 +182,7 @@ function doBusinessSearch(req, res, next) {
         query += "AND upper(name) LIKE \"" + name.toUpperCase() + "%\" ";
     }
     if(!empty(city)) {
-        query += "AND upper(city) = \"" + city.toUpperCase() + "\" ";
+        query += "AND upper(city) LIKE \"" + city.toUpperCase() + "%\" ";
     }
     if(!empty(state) && state != "none") {
         query += "AND state = \"" + state + "\" ";

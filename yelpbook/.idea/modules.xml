@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../../../../pennapps/FUrniTURE/.idea/FUrniTURE.iml" filepath="$PROJECT_DIR$/../../../../../pennapps/FUrniTURE/.idea/FUrniTURE.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../../../assignment/hw5/.idea/hw5.iml" filepath="$PROJECT_DIR$/../../../assignment/hw5/.idea/hw5.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/yelpbook.iml" filepath="$PROJECT_DIR$/.idea/yelpbook.iml" />
     </modules>
   </component>
 </project>
+
