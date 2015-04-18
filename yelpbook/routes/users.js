@@ -371,8 +371,11 @@ function addFriend(req, res, next, err, uid, msg) { //req, res, next, err, useri
     if(!friend_id || !uid) {
         return next(new Error(500));
     }
+
+    console.log("friend_id: " + friend_id + " uid: " + uid);
     if(friend_id == uid) { //return to the friend page, send message
         redirectHomepage(req, res, friend_id, "You can't friend youself!");
+        return;
     }
     var query = "INSERT INTO FRIEND (user_id1, user_id2) VALUES (" + uid + ", " + friend_id + "), (" + friend_id + ", " + uid + ")";
     connection.query(query, function(err, results) {
