@@ -133,14 +133,17 @@ function newPost(req, res, next, err, userid, msg) {
         var file = req.file;
         var photo_name;
         var friend_list = req.body.friend;
+        var business = req.body.location;
         if(undefined(file)) {
-            photo_name = "NULL";
+            photo_name = 'NULL';
             global.done = true;
         } else {
             photo_name = uid + "_" + file.name;
         }
-        var query = "INSERT INTO POST (user_id, text, datetime, photo_name) VALUES ('" + uid + "', '" + post_text + "', '" + datetime + "', '" + photo_name + "')";
-
+        var query = "";
+        console.log(business);
+        if(business == "null") query = "INSERT INTO POST (user_id, text, datetime, photo_name) VALUES ('" + uid + "', '" + post_text + "', '" + datetime + "', '" + photo_name + "')";
+        else query = "INSERT INTO POST (user_id, text, datetime, photo_name, business_ref) VALUES ('" + uid + "', '" + post_text + "', '" + datetime + "', '" + photo_name + "', '" + business + "')";
         var query_with_friend = 'INSERT INTO WITH_FRIEND (user_id, post_datetime, friend_id) VALUES ';
         if(friend_list) {
             for(var i=0;i<friend_list.length;i++){
@@ -154,8 +157,10 @@ function newPost(req, res, next, err, userid, msg) {
         console.log(query);
         connection.query(query,
             function(err, results) { //query returns
-                if (err)
+                if (err) {
+                    console.log(err);
                     getPostsQuery(req, res, next, err, uid, "The post Failed in mysql query!");
+                }
                 else if (undefined(file)) {
                     getPostsQuery(req, res, next, err, uid, "The post was sent successfully, no image!");
                 } else {
@@ -225,7 +230,16 @@ function renderUserPosts(res, uid, results,  msg) {
                     }
                     else{
                         console.log(friendname);
-                        res.render('user', {"user_id" : uid, "friends" : friendname, "results": results, "message": msg});
+                        var query_find_follows = 'SELECT B.business_id, B.name FROM FOLLOWS F INNER JOIN BUSINESS B ON '
+                        +'F.business_id=B.business_id WHERE user_id='+uid;
+                        connection.query(query_find_follows, function(err, businesses){
+                            if(err){
+                                res.render('user', {"user_id" : uid, "results" : results, "message" : msg});
+                            }
+                            else{
+                                res.render('user', {"user_id" : uid, "friends" : friendname, "businesses": businesses, "results": results, "message": msg})
+                            }
+                        });
                     }
                 });
 
@@ -242,11 +256,18 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
 //    var uid = connection.escape(user_id[0]);
 //    // console.log("uid: " + uid);
     var uid = user_id;
-    var query = 'SELECT FF.user_id, FF.fb_name, text, datetime, photo_name, friend_id, USER.fb_name as friend_fb_name FROM (SELECT R.user_id, USER.fb_name, text, datetime, photo_name, friend_id FROM (SELECT P.user_id as user_id, P.text as text, P.datetime as datetime,'
-    + 'P.photo_name as photo_name, W.friend_id as friend_id FROM (SELECT * FROM (SELECT * FROM POST WHERE POST.user_id='+uid+' OR POST.user_id IN '
-    + '(SELECT FRIEND.user_id2 FROM USER INNER JOIN FRIEND ON USER.user_id=FRIEND.user_id1 WHERE FRIEND.user_id1='+uid+')) as buffer) P '
-    + 'LEFT OUTER JOIN WITH_FRIEND W on P.user_id=W.user_id and P.datetime=W.post_datetime) R '
-    + 'INNER JOIN USER ON R.user_id = USER.user_id) FF LEFT OUTER JOIN USER on FF.friend_id = USER.user_id ORDER BY user_id, datetime';
+    var query = 'SELECT user_id, fb_name, B.name, B.business_id, text, datetime, photo_name, friend_id, friend_fb_name FROM ' +
+        '(SELECT FF.user_id, FF.fb_name, FF.business, text, datetime, photo_name, ' +
+        'friend_id, USER.fb_name as friend_fb_name FROM (SELECT R.user_id, USER.fb_name, ' +
+        'business, text, datetime, photo_name, friend_id FROM (SELECT P.user_id as user_id, ' +
+        'P.text as text, P.datetime as datetime, P.photo_name as photo_name, P.business_ref ' +
+        'as business, W.friend_id as friend_id FROM (SELECT * FROM (SELECT * FROM POST ' +
+        'WHERE POST.user_id='+uid+' OR POST.user_id IN (SELECT FRIEND.user_id2 FROM USER ' +
+        'INNER JOIN FRIEND ON USER.user_id=FRIEND.user_id1 WHERE FRIEND.user_id1='+uid+')) as buffer) P ' +
+        'LEFT OUTER JOIN WITH_FRIEND W on P.user_id=W.user_id and P.datetime=W.post_datetime) R ' +
+        'INNER JOIN USER ON R.user_id = USER.user_id) FF LEFT OUTER JOIN USER ' +
+        'on FF.friend_id = USER.user_id) M LEFT OUTER JOIN BUSINESS B ON M.business=B.business_id '+
+        'ORDER BY M.datetime DESC, M.user_id';
     console.log(query);
     // console.log(query);
 
@@ -263,32 +284,38 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
                 var friend_name;
                 var finalresults = [];
                 var friend_list = [];
+                var business;
+                var business_id;
                 for(var i=0;i<results.length;i++) {
                     if (results[i].user_id == user_id && String(results[i].datetime) == String(datetime)) {
                         // same post
                         if(friend_name != null) friend_list.push([results[i].friend_id, results[i].friend_fb_name]);
                     }
                     else {
-                        if (user_id != undefined) {
+                        if (typeof user_id != 'undefined') {
                             var post = {
                                 "user_id": user_id,
                                 "user_name": user_name,
                                 "text": text,
                                 "datetime": datetime,
                                 "photo_name": photo_name,
-                                "friend_list": friend_list
+                                "friend_list": friend_list,
+                                "business": business,
+                                "business_id": business_id
                             }
+                            console.log("push to final results");
+                            console.log(post);
                             finalresults.push(post);
                         }
                         user_id = results[i].user_id;
                         user_name = results[i].fb_name;
                         text = results[i].text;
                         datetime = results[i].datetime;
-                        console.log("new datetime");
-                        console.log(datetime);
                         photo_name = results[i].photo_name;
                         friend_id = results[i].friend_id;
                         friend_name = results[i].friend_fb_name;
+                        business = results[i].name;
+                        business_id = results[i].business_id;
                         friend_list = [];
                         if(friend_name != null) {
                             friend_list.push([friend_id, friend_name]);
@@ -301,10 +328,11 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
                     "text": text,
                     "datetime": datetime,
                     "photo_name": photo_name,
-                    "friend_list": friend_list
+                    "friend_list": friend_list,
+                    "business": business,
+                    "business_id": business_id
                 }
                 finalresults.push(finalpost);
-                console.log(finalresults);
                 renderUserPosts(res, uid, finalresults, msg);
             }
         }

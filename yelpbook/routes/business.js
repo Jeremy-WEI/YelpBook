@@ -16,17 +16,39 @@ function doFollowingQuery(req, res, busInfo, categories, reviews, wordCounts, ra
     connection.query(query,
         function (err, follows) {
             if (!err) {
+                doNearbyQuery(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic, ratingTrend, follows, next)
+            }
+            else
+                next(new Error(500));
+        })
+}
+
+
+function doNearbyQuery(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic, ratingTrend, follows, next) {
+    var query = 'SELECT DISTINCT (B.business_id), B.name FROM BUSINESS B ' +
+        'INNER JOIN CATEGORY C ON B.business_id = C.business_id ' +
+        'WHERE ABS(B.longitude - ' + busInfo[0].longitude + ') < 0.01 ' +
+        'AND ABS(B.latitude - ' + busInfo[0].latitude + ') < 0.01 ' +
+        'AND C.category IN (SELECT C3.category FROM BUSINESS B3 ' +
+        'INNER JOIN CATEGORY C3 ON B3.business_id = C3.business_id) ' +
+        'AND B.business_id <> "' + req.query.business_id + '" ORDER BY B.business_id LIMIT 10';
+    //console.log(query);
+    connection.query(query,
+        function (err, nearby) {
+            if (!err) {
                 var msg = req.session.msg;
                 req.session.msg = undefined;
                 res.render('business', {
+                    nearInfo: nearby,
+                    user_id: req.user,
                     business: busInfo,
                     categories: categories,
                     reviews: reviews,
                     wordCounts: wordCounts,
                     ratingStatistic: ratingStatistic,
                     ratingTrend: ratingTrend,
-                    msg: msg,
-                    follows: follows
+                    follows: follows,
+                    msg: msg
                 })
             }
             else
@@ -117,7 +139,7 @@ function doBusinessSearch(req, res, next) {
         if (err) {
             next(new Error(500));
         } else {
-            res.render('businesses', {results: results});
+            res.render('businesses', {user_id: req.user, results: results});
         }
     });
 }
@@ -262,6 +284,7 @@ router.get('/bing/:name/:id', function (req, res, next) {
         Bing.web(req.params.name, function (error, ress, body) {
             console.log(body.d.results);
             res.render('bingresult', {
+                user: req.user,
                 bodyresults: body.d.results,
                 b_id: req.params.id
             });

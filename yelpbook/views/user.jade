@@ -64,13 +64,13 @@ block content
   form(enctype='multipart/form-data', action='/users/new_post', method='POST')
     .form-group
       .row
-        .col-md-6
+        .col-md-4
           input#new_post.form-control(name='new_post', placeholder='New Post', type='textarea', rows='10', cols='50')
         .col-md-4
           dl.dropdown
             dt
               a(href='#')
-                span.hida Select
+                span.hida With Friends
                 p.multiSel
             dd
               .mutliSelect
@@ -80,6 +80,12 @@ block content
                       li
                         input(name='friend', type='checkbox', value=friend.user_id)
                         =friend.fb_name
+        .col-md-4
+          select(name='location')
+            option(value="null")
+            if businesses
+              each business in businesses
+                option(value="#{business.business_id}") #{business.name}
       .row
         .col-md-4
           input(type='submit', value='Post')
@@ -102,7 +108,10 @@ block content
                   p with friend&nbsp
                     for friend in post.friend_list
                       a(href='/homepage/#{friend[0]}') #{friend[1]}
-
+            .row
+              .col-md-8
+                if(post.business != null)
+                  a(href='/business?business_id=#{post.business_id}') #{post.business}
             .row
               .col-md-8
                 p #{post.text}
