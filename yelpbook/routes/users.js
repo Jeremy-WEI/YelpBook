@@ -127,6 +127,7 @@ function newPost(req, res, next, err, userid, msg) {
         // console.log("File uploaded done==false");
     }
     else {
+        console.log(req.body);
         var uid = userid;
         var post_text = req.body.new_post;
         var datetime = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -141,7 +142,6 @@ function newPost(req, res, next, err, userid, msg) {
             photo_name = uid + "_" + file.name;
         }
         var query = "";
-        console.log(business);
         if(business == "null") query = "INSERT INTO POST (user_id, text, datetime, photo_name) VALUES ('" + uid + "', '" + post_text + "', '" + datetime + "', '" + photo_name + "')";
         else query = "INSERT INTO POST (user_id, text, datetime, photo_name, business_ref) VALUES ('" + uid + "', '" + post_text + "', '" + datetime + "', '" + photo_name + "', '" + business + "')";
         var query_with_friend = 'INSERT INTO WITH_FRIEND (user_id, post_datetime, friend_id) VALUES ';
@@ -152,8 +152,9 @@ function newPost(req, res, next, err, userid, msg) {
                 else query_with_friend = query_with_friend + ","+tuple;
             }
         }
-
-
+        query = query+";"+query_with_friend;
+        console.log("*******************************************");
+        console.log("insert post and with friend");
         console.log(query);
         connection.query(query,
             function(err, results) { //query returns
@@ -303,8 +304,8 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
                                 "business": business,
                                 "business_id": business_id
                             }
-                            console.log("push to final results");
-                            console.log(post);
+                            //console.log("push to final results");
+                            //console.log(post);
                             finalresults.push(post);
                         }
                         user_id = results[i].user_id;
@@ -399,8 +400,11 @@ function addFriend(req, res, next, err, uid, msg) { //req, res, next, err, useri
     if(!friend_id || !uid) {
         return next(new Error(500));
     }
+
+    console.log("friend_id: " + friend_id + " uid: " + uid);
     if(friend_id == uid) { //return to the friend page, send message
         redirectHomepage(req, res, friend_id, "You can't friend youself!");
+        return;
     }
     var query = "INSERT INTO FRIEND (user_id1, user_id2) VALUES (" + uid + ", " + friend_id + "), (" + friend_id + ", " + uid + ")";
     connection.query(query, function(err, results) {

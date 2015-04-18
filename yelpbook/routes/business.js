@@ -132,9 +132,64 @@ function doBusinessQuery(req, res, next) {
         });
 }
 
+function empty(field) {
+    return field == "" || field == '' || !field;
+}
+
+function distance(lat1, lon1, lat2, lon2) {
+    var dlon = lon2 - lon1;
+    var dlat = lat2 - lat1;
+    var a = Math.pow(Math.sin(dlat / 360 * Math.PI), 2)
+          + Math.cos(lat1 / 180 * Math.PI)
+          * Math.cos(lat2 / 180 * Math.PI)
+          * Math.pow(Math.sin(dlon / 360 * Math.PI), 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = 3959 * c;
+    return d;
+}
+
 function doBusinessSearch(req, res, next) {
-    var query_string = req.query.search;
-    var query = "SELECT * FROM BUSINESS WHERE upper(name) LIKE \"" + query_string.toUpperCase() + "%\" LIMIT 50";
+    console.log(req.query.name);
+    console.log(req.query.city);
+    console.log(req.query.state);
+    console.log(req.query.category);
+    console.log(req.query.stars_range);
+    console.log(req.query.stars_value);
+    var name = req.query.name.trim();
+    var city = req.query.city.trim();
+    var state = req.query.state.trim();
+    var category = req.query.category.trim();
+    var stars_range = req.query.stars_range.trim();
+    var stars_query = "avg_stars ";
+    var stars_value = req.query.stars_value.trim();
+    var ranges = [">", ">=", "=", "<=", "<", "<>"];
+    if(empty(stars_range) || stars_range == 'none' || isNaN(stars_value)) {
+        stars_query += ">= 0 ";
+    } else if (ranges.indexOf(stars_range) > -1) {
+        stars_query += (stars_range + " " + stars_value + " ");
+    } else {
+        stars_query += ">= 0 ";
+    }
+
+    var query = "SELECT * FROM BUSINESS ";
+    if(!empty(category)) {
+        query += "INNER JOIN CATEGORY ON BUSINESS.business_id = CATEGORY.business_id ";
+    }
+    query += ("WHERE " + stars_query);
+    if(!empty(name)) {
+        query += "AND upper(name) LIKE \"" + name.toUpperCase() + "%\" ";
+    }
+    if(!empty(city)) {
+        query += "AND upper(city) = \"" + city.toUpperCase() + "\" ";
+    }
+    if(!empty(state) && state != "none") {
+        query += "AND state = \"" + state + "\" ";
+    }
+    if(!empty(category)) {
+        query += "AND upper(category) LIKE \"%" + category + "%\" ";
+    }
+    query += "LIMIT 50";
+    console.log(query);
     connection.query(query, function (err, results) {
         if (err) {
             next(new Error(500));
@@ -247,11 +302,7 @@ function doFollow(req, res, next) {
 }
 
 router.get('/search', function (req, res, next) {
-    if (req.query.search == undefined)
-        next(new Error(404));
-    else {
-        doBusinessSearch(req, res, next);
-    }
+    doBusinessSearch(req, res, next);
 });
 
 //add review
