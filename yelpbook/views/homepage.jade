@@ -2,7 +2,7 @@ extends layout
 
 block content
   style.
-    #friend_panel {
+    .user_panel {
       width: 100%;
       height: 350px;
       overflow: scroll;
@@ -24,12 +24,12 @@ block content
     a(href='/users/friend/#{user_id}') Add Friend
   p(style='color:red') #{msg}
   .row
-    .col-lg-6.col-md-12
+    .col-md-4
       .panel.panel-default
         .panel-heading
           i.fa.fa-clock-o.fa-fw
           | Friend List
-        .panel-body#friend_panel
+        .panel-body.user_panel
           table.table.table-striped.table-bordered.table-hover
             thead
               tr
@@ -39,12 +39,12 @@ block content
                 tr
                   td
                     a(href='/homepage/#{friend.user_id}')= friend.fb_name
-    .col-lg-6.col-md-12
+    .col-md-4
       .panel.panel-default
         .panel-heading
           i.fa.fa-clock-o.fa-fw
           | Businesses Followed
-        .panel-body#friend_panel
+        .panel-body.user_panel
           table.table.table-striped.table-bordered.table-hover
             thead
               tr
@@ -54,10 +54,25 @@ block content
               each follow in follows
                 tr
                   td
-                    a(href='/business?business_id=#{follow.business_id}') business name: #{follow.name}
+                    a(href='/business?business_id=#{follow.business_id}') #{follow.name}
                   td= follow.time
+    .col-md-4
+      .panel.panel-default
+        .panel-heading
+          i.fa.fa-clock-o.fa-fw
+          | Interested Businesses Category
+        .panel-body.user_panel
+          table.table.table-striped.table-bordered.table-hover
+            thead
+              tr
+                th Business Category
+            tbody
+              each category in categories
+                tr
+                  td
+                    a #{category.category}
   .row
-    .col-lg-12
+    .col-md-12
       .panel.panel-default
         .panel-heading
           i.fa.fa-clock-o.fa-fw

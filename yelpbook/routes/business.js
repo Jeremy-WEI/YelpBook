@@ -127,8 +127,11 @@ router.get('/', function (req, res, next) {
     //});
     if (req.query.business_id == undefined)
         next(new Error(404));
-    else
+    else {
+        //var ip = req.connection.remoteAddress;
+        //console.log(ip)
         doBusinessQuery(req, res, next);
+    }
 });
 
 function redirectBusiness(req, res, business_id, msg) {
