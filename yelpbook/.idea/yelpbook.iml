@@ -4,7 +4,14 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="haml (v4.0.5, RVM: ruby-2.1.2) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="tilt (v1.4.1, RVM: ruby-2.1.2) [gem]" level="application" />
   </component>
+<<<<<<< HEAD
 </module>
+=======
+<<<<<<< HEAD
+</module>
+
+=======
+</module>
+>>>>>>> 4e67a5f16f2b13807a3b88914866d71fc4cb786e
+>>>>>>> 6bf96020500fc01cb835dcdcd2e3b44124abec2b

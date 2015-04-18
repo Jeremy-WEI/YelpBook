@@ -24,17 +24,15 @@ function doFollowingQuery(req, res, busInfo, categories, reviews, wordCounts, ra
 }
 
 
-
 function doNearbyQuery(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic, ratingTrend, follows, next) {
-    var query = 'SELECT DISTINCT B.business_id, B.name, B.latitude, B.longitude FROM BUSINESS B INNER JOIN CATEGORY C ON B.business_id = C.business_id ' +
-        'WHERE ABS(B.longitude - (SELECT B1.longitude FROM BUSINESS B1 ' +
-        'WHERE B1.business_id = "' + req.query.business_id + '")) < 0.01 ' +
-        'AND ABS(B.latitude - (SELECT B2.latitude FROM BUSINESS B2 ' +
-        'WHERE B2.business_id = "' + req.query.business_id + '")) < 0.01 ' +
-        'AND B.avg_stars > 3.0 AND C.category IN ' +
-        '(SELECT C3.category FROM BUSINESS B3 INNER JOIN CATEGORY C3 ON B3.business_id = C3.business_id) ' +
+    var query = 'SELECT DISTINCT (B.business_id), B.name FROM BUSINESS B ' +
+        'INNER JOIN CATEGORY C ON B.business_id = C.business_id ' +
+        'WHERE ABS(B.longitude - ' + busInfo[0].longitude + ') < 0.01 ' +
+        'AND ABS(B.latitude - ' + busInfo[0].latitude + ') < 0.01 ' +
+        'AND C.category IN (SELECT C3.category FROM BUSINESS B3 ' +
+        'INNER JOIN CATEGORY C3 ON B3.business_id = C3.business_id) ' +
         'AND B.business_id <> "' + req.query.business_id + '" ORDER BY B.business_id LIMIT 10';
-    console.log(query);
+    //console.log(query);
     connection.query(query,
         function (err, nearby) {
             if (!err) {
@@ -49,8 +47,8 @@ function doNearbyQuery(req, res, busInfo, categories, reviews, wordCounts, ratin
                     wordCounts: wordCounts,
                     ratingStatistic: ratingStatistic,
                     ratingTrend: ratingTrend,
-                    msg: msg,
-                    follows: follows
+                    follows: follows,
+                    msg: msg
                 })
             }
             else
@@ -182,7 +180,7 @@ function doBusinessSearch(req, res, next) {
         query += "AND upper(name) LIKE \"" + name.toUpperCase() + "%\" ";
     }
     if(!empty(city)) {
-        query += "AND upper(city) = \"" + city.toUpperCase() + "\" ";
+        query += "AND upper(city) LIKE \"" + city.toUpperCase() + "%\" ";
     }
     if(!empty(state) && state != "none") {
         query += "AND state = \"" + state + "\" ";
@@ -206,8 +204,11 @@ router.get('/', function (req, res, next) {
     //});
     if (req.query.business_id == undefined)
         next(new Error(404));
-    else
+    else {
+        //var ip = req.connection.remoteAddress;
+        //console.log(ip)
         doBusinessQuery(req, res, next);
+    }
 });
 
 function redirectBusiness(req, res, business_id, msg) {
