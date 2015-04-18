@@ -2,6 +2,11 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="" />
+<<<<<<< HEAD
+=======
+    <mapping directory="$PROJECT_DIR$/../../../../Penn Apps/FUrniTURE" vcs="Git" />
+    <mapping directory="$USER_HOME$/pennapps/FUrniTURE" vcs="Git" />
+>>>>>>> 4e67a5f16f2b13807a3b88914866d71fc4cb786e
   </component>
 </project>
 
