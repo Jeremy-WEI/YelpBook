@@ -267,6 +267,7 @@ block content
     });
     words.push(['amazing', 0.8], ['awesome', 0.8], ['fantastic', 0.8], ['wonderful', 0.8], ['nice', 0.8], ['gorgeous', 0.8], ['good', 0.8], ['worthy', 0.8], ['best', 0.8], ['pretty', 0.8], ['I love it.', 0.8])
     WordCloud(wordle_canvas, {list: words, fontWeight: 600, weightFactor: 20})
+
     var stepDisplay;
     var directionsService = new google.maps.DirectionsService()
     var map
@@ -343,6 +344,7 @@ block content
       }
     }
     initialize()
+
     google.load("visualization", "1", {packages: ["corechart"]});
     google.setOnLoadCallback(drawChart);
     var ratings1 = [['Stars', 'Count']];

@@ -13,12 +13,18 @@ var connection = mysql.createConnection({
 var uid;
 var utils = require('./utils');
 
-function doCategoryQuery(req, res, id, friendInfo, ownposts, myself, follows, next) {
-    connection.query('SELECT category FROM BUSINESS B1 INNER JOIN FOLLOWS F ' +
-        'ON B1.business_id = F.business_id INNER JOIN CATEGORY C1 ' +
-        'ON F.business_id = C1.business_id WHERE F.user_id = ' + id +
-        ' GROUP BY C1.category ORDER BY COUNT(*) DESC',
-        function (err, categories) {
+function doRecommendationQuery(req, res, id, friendInfo, ownposts, myself, follows, categories, next) {
+    var query = 'SELECT * FROM BUSINESS B2 NATURAL JOIN CATEGORY C2 WHERE C2.category ' +
+        'IN (SELECT DISTINCT(category) FROM BUSINESS B1 INNER JOIN FOLLOWS ' +
+        'F ON B1.business_id = F.business_id INNER JOIN CATEGORY C1 ' +
+        'ON F.business_id = C1.business_id WHERE F.user_id = ' + id + ') AND ' +
+        'ABS(B2.longitude + 75) <= 5 AND ABS(B2.latitude - 40) <= 5 ' +
+        'AND B2.business_id NOT IN (SELECT B.business_id FROM BUSINESS B ' +
+        'INNER JOIN FOLLOWS F ON B.business_id = F.business_id WHERE F.user_id = ' + id + ' ) ' +
+        'ORDER BY B2.avg_stars DESC LIMIT 30;'
+    console.log(query);
+    connection.query(query,
+        function (err, recommendation) {
             if (!err) {
                 var msg = req.session.msg;
                 req.session.msg = undefined;
@@ -29,8 +35,24 @@ function doCategoryQuery(req, res, id, friendInfo, ownposts, myself, follows, ne
                     myself: myself,
                     user_id: id,
                     categories: categories,
+                    recommendation: recommendation,
                     msg: msg
                 });
+            }
+            else
+                next(new Error(500));
+        }
+    )
+}
+
+function doCategoryQuery(req, res, id, friendInfo, ownposts, myself, follows, next) {
+    connection.query('SELECT category FROM BUSINESS B1 INNER JOIN FOLLOWS F ' +
+        'ON B1.business_id = F.business_id INNER JOIN CATEGORY C1 ' +
+        'ON F.business_id = C1.business_id WHERE F.user_id = ' + id +
+        ' GROUP BY C1.category ORDER BY COUNT(*) DESC',
+        function (err, categories) {
+            if (!err) {
+                doRecommendationQuery(req, res, id, friendInfo, ownposts, myself, follows, categories, next)
             }
             else
                 next(new Error(500));

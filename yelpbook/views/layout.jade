@@ -49,14 +49,6 @@ html
     form.form-horizontal(action='/business/search', method='GET')
       .form-group
         .row
-          .col-lg-11.col-md-11
-            label(for='name') Name
-            input.form-control(name='name', id='name', type='text', placeholder='Search for Business')
-          .col-lg-1.col-md-1.form-group(align='right')
-            br
-            button.btn.btn-info.btn-sm(type='submit') Search
-        br
-        .row
           .col-lg-2.col-md-2
             label(for='city') City
             input.form-control(name='city', id='city', type='text', placeholder='City')
@@ -140,7 +132,7 @@ html
               option(value='<') below
               option(value='<>') not
           .col-lg-2.col-md-2
-            label(for='stars_value')
+            label(for='stars_value') Stars
             select.form-control(name='stars_value', id='stars_value', type='number')
               option(value='5') 5
               option(value='4.5') 4.5
@@ -151,6 +143,12 @@ html
               option(value='2') 2
               option(value='1.5') 1.5
               option(value='1') 1
+        br
+        .row
+          .col-lg-11.col-md-11
+            input.form-control(name='name', id='name', type='text', placeholder='Search for Business')
+          .col-lg-1.col-md-1.form-group(align='right')
+            button.btn.btn-info.btn-sm(type='submit') Search
     block content
     script(src='/scripts/benchmark.js', type='text/javascript')
     hr
