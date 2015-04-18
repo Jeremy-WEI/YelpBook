@@ -304,8 +304,8 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
                                 "business": business,
                                 "business_id": business_id
                             }
-                            //console.log("push to final results");
-                            //console.log(post);
+                            console.log("push to final results");
+                            console.log(post);
                             finalresults.push(post);
                         }
                         user_id = results[i].user_id;
@@ -333,7 +333,7 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
                     "business": business,
                     "business_id": business_id
                 }
-                finalresults.push(finalpost);
+                if(typeof user_id != 'undefined') finalresults.push(finalpost);
                 renderUserPosts(res, uid, finalresults, msg);
             }
         }
