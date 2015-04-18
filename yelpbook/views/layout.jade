@@ -40,12 +40,12 @@ html
             if user_id
               a(href='/logout') LogOut
             else
-              a(href='/login') Login
+              a(href='/auth/facebook') Login
         ul.nav.navbar-nav.nav.pull-left(style="text-align: center;")
           li
             a.brand(href='/') YELPBOOK
     br
-    form.form-horizontal(action='/business/search', method='GET')
+    form.form-horizontal.col-md-12(action='/business/search', method='GET')
       .form-group
         .row
           .col-lg-2.col-md-2
@@ -151,4 +151,3 @@ html
     block content
     script(src='/scripts/benchmark.js', type='text/javascript')
     hr
-    br
