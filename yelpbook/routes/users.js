@@ -273,6 +273,7 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
     // console.log(query);
 
     connection.query(query, function(err, results) {
+
             if (err)
                 renderUserPosts(res, uid, results, "Get Posts failed!");
             else {
