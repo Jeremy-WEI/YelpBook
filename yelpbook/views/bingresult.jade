@@ -1,11 +1,16 @@
 extends layout
 block content
+  table.table.table-striped.table-bordered.table-hover
+    tbody
+      for b in bodyresults
+        tr
+          td
+            a(href=b.Url) #{b.Title}
+            p #{b.Description}
+  .row
+    .col-md-1.col-md-offset-11
+      a(href='/business?business_id=#{b_id}')
+        button.btn-default.btn.btn-block.pull-right Back
 
-    a(href='/business?business_id=#{b_id}') Back
-    table
-        for b in bodyresults
-            tr
-                td
-                    a(href=b.Url) #{b.Title}
-                    p #{b.Description}
-
+  br
+  br

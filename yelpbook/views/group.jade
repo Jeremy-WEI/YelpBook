@@ -1,41 +1,51 @@
 extends layout
 block content
-  a(href='/business?business_id=#{business_id}') Back
-  h1 Members
+  style.
+    .sec {
+      width: 100%;
+      height: 600px;
+      overflow: scroll;
+    }
   .row
+    .col-md-4
+      .panel.panel-default
+        .panel-heading
+          i.fa.fa-clock-o.fa-fw
+          | Members
+        .panel-body.sec
+          table.table.table-striped.table-bordered.table-hover
+            tbody
+              each mem in members
+                tr
+                  td
+                    a(href='/homepage/#{mem.user_id}') #{mem.fb_name}
     .col-md-8
-      section.content-wrapper
-        .content-box
-          for mem in members
-            .row
-              .col-md-8
-                p
-                  //a(href='/homepage/#{mem}') #{mem.}
-                  a(href='/homepage/#{mem.user_id}') #{mem.fb_name}
-  h2(style='color:red') #{msg}
-  h1 News Feeds
-  .row
-    .col-md-8
-      section.content-wrapper
-        .content-box
-          for post in results
-              .row
-                  .col-md-8
-                      p
-                          a(href='/homepage/#{post.u_id}') #{post.fb_name}
-              .row
-                  .col-md-8
-                      p #{post.text}
-              .row
-                  .col-md-8
-                      p Posted on: #{post.date_time}
-
-
-
-  form(enctype='multipart/form-data', action='/group/new_post/#{business_id}', method='POST')
-    .form-group
-      .row
-        .col-md-8
+      .panel.panel-default
+        .panel-heading
+          i.fa.fa-clock-o.fa-fw
+          | News Feeds
+        .panel-body.sec
+          h2(style='color:red') #{msg}
+          table.table.table-striped.table-bordered.table-hover
+            tbody
+              for post in results
+                tr
+                  td
+                    a(href='/homepage/#{post.u_id}') #{post.fb_name}
+                  td
+                    p #{post.text}
+                  td
+                    p Posted on: #{post.date_time}
+  .row(style="padding:20px")
+    form.form-horizontal(enctype='multipart/form-data', action='/group/new_post/#{business_id}', method='POST')
+      .form-group
+        .col-md-11
           input#new_post.form-control(name='new_post', placeholder='New Post', type='textarea', rows='4', cols='50')
-        .col-md-4
-          input(type='submit', value='Post')
+        .col-md-1(align='right')
+          button.btn-warning.btn.btn-block(type='submit') Post
+  .row
+    .col-md-1.col-md-offset-11
+      a(href='/business?business_id=#{b_id}')
+        button.btn-default.btn.btn-block.pull-right Back
+  br
+  br

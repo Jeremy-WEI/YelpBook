@@ -151,8 +151,8 @@ function newPost(req, res, next, err, userid, msg) {
                 if(i==0) query_with_friend = query_with_friend + tuple;
                 else query_with_friend = query_with_friend + ","+tuple;
             }
+            query = query+";"+query_with_friend;
         }
-        query = query+";"+query_with_friend;
         console.log("*******************************************");
         console.log("insert post and with friend");
         console.log(query);
@@ -223,7 +223,9 @@ function renderUserPosts(res, uid, results,  msg) {
                     else str = str + ","+ friends[i].user_id2;
                 }
                 str = "("+str+")";
-                var query_find_name = 'SELECT user_id, fb_name FROM USER WHERE user_id in '+str;
+                var query_find_name;
+                if(str == "()") query_find_name = 'SELECT user_id, fb_name FROM USER WHERE user_id in (null)';
+                else query_find_name = 'SELECT user_id, fb_name FROM USER WHERE user_id in '+str;
                 console.log(query_find_name);
                 connection.query(query_find_name, function(err, friendname){
                     if(err){
@@ -273,6 +275,7 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
     // console.log(query);
 
     connection.query(query, function(err, results) {
+
             if (err)
                 renderUserPosts(res, uid, results, "Get Posts failed!");
             else {
@@ -304,14 +307,14 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
                                 "business": business,
                                 "business_id": business_id
                             }
-                            //console.log("push to final results");
-                            //console.log(post);
+                            console.log("push to final results");
+                            console.log(post);
                             finalresults.push(post);
                         }
                         user_id = results[i].user_id;
                         user_name = results[i].fb_name;
                         text = results[i].text;
-                        datetime = results[i].datetime;
+                        datetime = moment(results[i].datetime).format('MM-DD-YYYY HH:mm:ss');
                         photo_name = results[i].photo_name;
                         friend_id = results[i].friend_id;
                         friend_name = results[i].friend_fb_name;
@@ -333,7 +336,7 @@ function getPostsQuery(req, res, next, err, user_id, msg) {
                     "business": business,
                     "business_id": business_id
                 }
-                finalresults.push(finalpost);
+                if(typeof user_id != 'undefined') finalresults.push(finalpost);
                 renderUserPosts(res, uid, finalresults, msg);
             }
         }
