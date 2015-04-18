@@ -22,8 +22,8 @@ var users = require('./routes/users');
 var homepage = require('./routes/homepage');
 var group = require('./routes/group')
 
-var FACEBOOK_APP_ID = "1423345787976364";
-var FACEBOOK_APP_SECRET = "02b611212b606a730589d2dbf4ef5497";
+global.FACEBOOK_APP_ID = require('./facebook').FACEBOOK_APP_ID;
+global.FACEBOOK_APP_SECRET = require('./facebook').FACEBOOK_APP_SECRET;
 
 
 // Passport session setup.
