@@ -1,0 +1,8 @@
+
+> yelpbook@0.0.0 start /Users/YunchenWei/Documents/Courses/CIS 550/YELP-PROJECT/yelpbook
+> node ./bin/www
+
+Wed, 29 Apr 2015 23:28:14 GMT express-session deprecated undefined resave option; provide resave option at app.js:99:9
+Wed, 29 Apr 2015 23:28:14 GMT express-session deprecated undefined saveUninitialized option; provide saveUninitialized option at app.js:99:9
+Wed, 29 Apr 2015 23:28:14 GMT express-session deprecated undefined resave option; provide resave option at app.js:101:9
+Wed, 29 Apr 2015 23:28:14 GMT express-session deprecated undefined saveUninitialized option; provide saveUninitialized option at app.js:101:9
