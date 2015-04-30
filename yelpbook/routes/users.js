@@ -54,7 +54,7 @@ function undefined(obj) {
 
 
 function doFollowsQuery(req, res, id, friendInfo, ownposts, next) {
-    connection.query('SELECT B.name FROM BUSINESS B INNER JOIN FOLLOWS ON B.business_id = F.business_id WHERE  =' + id,
+    connection.query('SELECT B.name FROM BUSINESS B INNER JOIN FOLLOWS ON B.business_id = F.business_id WHERE  B.user_id=' + id,
         function (err, follows) {
             if (!err)
                 res.render('userpage', {
@@ -192,12 +192,12 @@ function getUserQuery(req, res, next, msg, callBack) {
     }
     var fb = req.user.id;
     var query_find_userid = "SELECT user_id FROM USER WHERE fb_account=" + fb;
-    //console.log(query_find_userid);
+//    console.log(query_find_userid);
     connection.query(query_find_userid, function (err, userid) {
         if (err) {
             redirectLogin(res);
         } else if (!userid || userid.length != 1 || !userid[0] || !userid[0].user_id){
-            console.log("invalid user id: " + userid[0].user_id); //userid 0 is not allowed!
+//            console.log("invalid user id: " + userid[0].user_id); //userid 0 is not allowed!
             redirectLogin(res);
         } else {
             callBack(req, res, next, err, userid[0].user_id, msg);
