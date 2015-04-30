@@ -7,8 +7,10 @@ block content
           td
             a(href=b.Url) #{b.Title}
             p #{b.Description}
-  a(href='/business?business_id=#{b_id}')
-    button.btn-default.btn.pull-right Back
+  .row
+    .col-md-1.col-md-offset-11
+      a(href='/business?business_id=#{b_id}')
+        button.btn-default.btn.btn-block.pull-right Back
 
   br
   br
