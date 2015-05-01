@@ -54,7 +54,7 @@ function undefined(obj) {
 
 
 function doFollowsQuery(req, res, id, friendInfo, ownposts, next) {
-    connection.query('SELECT B.name FROM BUSINESS B INNER JOIN FOLLOWS ON B.business_id = F.business_id WHERE  =' + id,
+    connection.query('SELECT B.name FROM BUSINESS B INNER JOIN FOLLOWS ON B.business_id = F.business_id WHERE F.user_id=' + id,
         function (err, follows) {
             if (!err)
                 res.render('userpage', {
@@ -81,7 +81,7 @@ function doFollowsQuery(req, res, id, friendInfo, ownposts, next) {
     function doFriendQuery(req, res, id, next) {
 
         // connection.connect();
-        connection.query('SELECT U.fb_name FROM FRIEND F INNER JOIN ON F.user_id2 = U.user_id WHERE F.user_id1 =' + id,
+        connection.query('SELECT U.fb_name FROM FRIEND F INNER JOIN USER U ON F.user_id2 = U.user_id WHERE F.user_id1 =' + id,
             function (err, friendInfo) {
                 if (!err) {
                     doPostQuery(req, res, uid, friendInfo, next);

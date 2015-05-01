@@ -27,9 +27,11 @@ function doFollowingQuery(req, res, busInfo, categories, reviews, wordCounts, ra
 function doNearbyQuery(req, res, busInfo, categories, reviews, wordCounts, ratingStatistic, ratingTrend, follows, next) {
     var query = 'SELECT DISTINCT (B.business_id), B.name FROM BUSINESS B ' +
         'INNER JOIN CATEGORY C ON B.business_id = C.business_id ' +
-        'WHERE ABS(B.longitude - ' + busInfo[0].longitude + ') < 0.01 ' +
-        'AND ABS(B.latitude - ' + busInfo[0].latitude + ') < 0.01 ' +
-        'AND C.category IN (SELECT C3.category FROM BUSINESS B3 ' +
+        'WHERE B.longitude BETWEEN ' + (busInfo[0].longitude - 0.01)
+        + ' AND ' + (busInfo[0].longitude + 0.01) +
+        ' AND B.latitude BETWEEN ' + (busInfo[0].latitude - 0.01)
+        + ' AND ' + (busInfo[0].latitude + 0.01) +
+        ' AND C.category IN (SELECT C3.category FROM BUSINESS B3 ' +
         'INNER JOIN CATEGORY C3 ON B3.business_id = C3.business_id) ' +
         'AND B.business_id <> "' + req.query.business_id + '" ORDER BY B.business_id LIMIT 10';
     //console.log(query);
@@ -140,9 +142,9 @@ function distance(lat1, lon1, lat2, lon2) {
     var dlon = lon2 - lon1;
     var dlat = lat2 - lat1;
     var a = Math.pow(Math.sin(dlat / 360 * Math.PI), 2)
-          + Math.cos(lat1 / 180 * Math.PI)
-          * Math.cos(lat2 / 180 * Math.PI)
-          * Math.pow(Math.sin(dlon / 360 * Math.PI), 2);
+        + Math.cos(lat1 / 180 * Math.PI)
+        * Math.cos(lat2 / 180 * Math.PI)
+        * Math.pow(Math.sin(dlon / 360 * Math.PI), 2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     var d = 3959 * c;
     return d;
@@ -163,7 +165,7 @@ function doBusinessSearch(req, res, next) {
     var stars_query = "avg_stars ";
     var stars_value = req.query.stars_value.trim();
     var ranges = [">", ">=", "=", "<=", "<", "<>"];
-    if(empty(stars_range) || stars_range == 'none' || isNaN(stars_value)) {
+    if (empty(stars_range) || stars_range == 'none' || isNaN(stars_value)) {
         stars_query += ">= 0 ";
     } else if (ranges.indexOf(stars_range) > -1) {
         stars_query += (stars_range + " " + stars_value + " ");
@@ -172,20 +174,20 @@ function doBusinessSearch(req, res, next) {
     }
 
     var query = "SELECT * FROM BUSINESS ";
-    if(!empty(category)) {
+    if (!empty(category)) {
         query += "INNER JOIN CATEGORY ON BUSINESS.business_id = CATEGORY.business_id ";
     }
     query += ("WHERE " + stars_query);
-    if(!empty(name)) {
+    if (!empty(name)) {
         query += "AND upper(name) LIKE \"" + name.toUpperCase() + "%\" ";
     }
-    if(!empty(city)) {
+    if (!empty(city)) {
         query += "AND upper(city) LIKE \"" + city.toUpperCase() + "%\" ";
     }
-    if(!empty(state) && state != "none") {
+    if (!empty(state) && state != "none") {
         query += "AND state = \"" + state + "\" ";
     }
-    if(!empty(category)) {
+    if (!empty(category)) {
         query += "AND upper(category) LIKE \"%" + category + "%\" ";
     }
     query += "LIMIT 50";
