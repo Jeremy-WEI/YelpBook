@@ -10,6 +10,7 @@ var FACEBOOK_ACCOUNTS = [
         url: "http://ec2-52-1-123-35.compute-1.amazonaws.com/auth/facebook/callback"
     }
 ];
-exports.FACEBOOK_APP_ID = FACEBOOK_ACCOUNTS[1].id;
-exports.FACEBOOK_APP_SECRET = FACEBOOK_ACCOUNTS[1].secret;
-exports.CALLBACK_URL = FACEBOOK_ACCOUNTS[1].url;
+var choice = 1; //1: on AWS EC2. 0: on localhost
+exports.FACEBOOK_APP_ID = FACEBOOK_ACCOUNTS[choice].id;
+exports.FACEBOOK_APP_SECRET = FACEBOOK_ACCOUNTS[choice].secret;
+exports.CALLBACK_URL = FACEBOOK_ACCOUNTS[choice].url;
