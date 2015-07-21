@@ -1,4 +1,4 @@
-# [YelpBook - A Yelp-based project](https://quiet-coast-7670.herokuapp.com)
+# [YelpBook - A Yelp-based project](http://ec2-52-1-123-35.compute-1.amazonaws.com)
 > [Most Technically Challenging Project in CIS550](http://www.seas.upenn.edu/~cis330/)
 
 > Framework: NodeJS
